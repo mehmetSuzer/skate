@@ -1,2 +1,0 @@
-/usr/bin/ar qc libvao.a CMakeFiles/vao.dir/vao.cpp.o
-/usr/bin/ranlib libvao.a
