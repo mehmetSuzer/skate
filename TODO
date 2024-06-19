@@ -1,0 +1,7 @@
+1- learn to use triangle fan and triangle strip 
+2- is throw or assert better?
+3- write a Constants class
+4- learn Gimbal lock: https://learnopengl.com/Getting-started/Transformations
+5- learn quaternions
+6- learn how projection and orthographics matrices are calculated: https://www.songho.ca/opengl/gl_projectionmatrix.html
+

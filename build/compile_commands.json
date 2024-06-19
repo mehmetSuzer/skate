@@ -1,0 +1,52 @@
+[
+{
+  "directory": "/home/mehmet/Codes/opengl/build",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -I/home/mehmet/Codes/opengl/lib/json -I/home/mehmet/Codes/opengl/lib/glad -I/home/mehmet/Codes/opengl/lib/glm -I/home/mehmet/Codes/opengl/lib/vbo -I/home/mehmet/Codes/opengl/lib/ebo -I/home/mehmet/Codes/opengl/lib/vao -I/home/mehmet/Codes/opengl/lib/shader -I/home/mehmet/Codes/opengl/lib/texture -I/home/mehmet/Codes/opengl/lib/glm/.. -g -std=gnu++17 -o CMakeFiles/opengl.dir/main.cpp.o -c /home/mehmet/Codes/opengl/main.cpp",
+  "file": "/home/mehmet/Codes/opengl/main.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/error",
+  "command": "/usr/bin/g++   -g -std=gnu++17 -o CMakeFiles/error.dir/error.cpp.o -c /home/mehmet/Codes/opengl/lib/error/error.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/error/error.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/stb",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -g -std=gnu++17 -o CMakeFiles/stb.dir/stb_image.cpp.o -c /home/mehmet/Codes/opengl/lib/stb/stb_image.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/stb/stb_image.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/json",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -g -std=gnu++17 -o CMakeFiles/json.dir/json.cpp.o -c /home/mehmet/Codes/opengl/lib/json/json.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/json/json.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/glad",
+  "command": "/usr/bin/gcc  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -I/home/mehmet/Codes/opengl/lib/json -g -std=gnu11 -o CMakeFiles/glad.dir/glad.c.o -c /home/mehmet/Codes/opengl/lib/glad/glad.c",
+  "file": "/home/mehmet/Codes/opengl/lib/glad/glad.c"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/vbo",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -I/home/mehmet/Codes/opengl/lib/json -I/home/mehmet/Codes/opengl/lib/glad -I/home/mehmet/Codes/opengl/lib/glm -g -std=gnu++17 -o CMakeFiles/vbo.dir/vbo.cpp.o -c /home/mehmet/Codes/opengl/lib/vbo/vbo.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/vbo/vbo.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/ebo",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -I/home/mehmet/Codes/opengl/lib/json -I/home/mehmet/Codes/opengl/lib/glad -I/home/mehmet/Codes/opengl/lib/glm -I/home/mehmet/Codes/opengl/lib/vbo -g -std=gnu++17 -o CMakeFiles/ebo.dir/ebo.cpp.o -c /home/mehmet/Codes/opengl/lib/ebo/ebo.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/ebo/ebo.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/vao",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -I/home/mehmet/Codes/opengl/lib/json -I/home/mehmet/Codes/opengl/lib/glad -I/home/mehmet/Codes/opengl/lib/glm -I/home/mehmet/Codes/opengl/lib/vbo -I/home/mehmet/Codes/opengl/lib/ebo -g -std=gnu++17 -o CMakeFiles/vao.dir/vao.cpp.o -c /home/mehmet/Codes/opengl/lib/vao/vao.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/vao/vao.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/shader",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -I/home/mehmet/Codes/opengl/lib/json -I/home/mehmet/Codes/opengl/lib/glad -I/home/mehmet/Codes/opengl/lib/glm -I/home/mehmet/Codes/opengl/lib/vbo -I/home/mehmet/Codes/opengl/lib/ebo -I/home/mehmet/Codes/opengl/lib/vao -g -std=gnu++17 -o CMakeFiles/shader.dir/shader.cpp.o -c /home/mehmet/Codes/opengl/lib/shader/shader.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/shader/shader.cpp"
+},
+{
+  "directory": "/home/mehmet/Codes/opengl/build/lib/texture",
+  "command": "/usr/bin/g++  -I/home/mehmet/Codes/opengl/lib/error -I/home/mehmet/Codes/opengl/lib/stb -I/home/mehmet/Codes/opengl/lib/json -I/home/mehmet/Codes/opengl/lib/glad -I/home/mehmet/Codes/opengl/lib/glm -I/home/mehmet/Codes/opengl/lib/vbo -I/home/mehmet/Codes/opengl/lib/ebo -I/home/mehmet/Codes/opengl/lib/vao -I/home/mehmet/Codes/opengl/lib/shader -g -std=gnu++17 -o CMakeFiles/texture.dir/texture2D.cpp.o -c /home/mehmet/Codes/opengl/lib/texture/texture2D.cpp",
+  "file": "/home/mehmet/Codes/opengl/lib/texture/texture2D.cpp"
+}
+]
