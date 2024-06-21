@@ -7,12 +7,18 @@
 #include <glm.hpp>
 
 #define BASIC_VERTEX    0
-#define TEXTURE_VERTEX  1
-#define COLOR_VERTEX    2
+#define NORMAL_VERTEX   1
+#define TEXTURE_VERTEX  2
+#define COLOR_VERTEX    3
 
 typedef struct {
     glm::vec3 position;
 } BasicVertex;
+
+typedef struct {
+    glm::vec3 position;
+    glm::vec3 normal;
+} NormalVertex;
 
 typedef struct {
     glm::vec3 position;
@@ -23,7 +29,7 @@ typedef struct {
 typedef struct {
     glm::vec3 position;
     glm::vec3 normal;
-    glm::vec3 color;
+    glm::vec4 color;
 } ColorVertex;
 
 class VBO {

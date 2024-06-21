@@ -13,26 +13,26 @@ typedef struct {
 
 class Light {
 private:
-    glm::vec3 color;
+    glm::vec4 color;
     bool active;
 
-    void AssertColorValidity(float red, float green, float blue) const;
+    void AssertColorValidity(float red, float green, float blue, float alpha) const;
 
 public:
-    Light(float red, float green, float blue);
-    Light(const glm::vec3& color_);
+    Light(float red, float green, float blue, float alpha);
+    Light(const glm::vec4& color_);
 
-    const glm::vec3& GetColor(void) const {
+    const glm::vec4& GetColor(void) const {
         return color;
     }
 
-    void SetColor(float red, float green, float blue) {
-        AssertColorValidity(red, green, blue);
-        color = glm::vec3(red, green, blue);
+    void SetColor(float red, float green, float blue, float alpha) {
+        AssertColorValidity(red, green, blue, alpha);
+        color = glm::vec4(red, green, blue, alpha);
     }
 
-    void SetColor(const glm::vec3& color_) {
-        SetColor(color_.r, color_.g, color_.b);
+    void SetColor(const glm::vec4& color_) {
+        SetColor(color_.r, color_.g, color_.b, color_.a);
     }
 
     bool IsActive(void) const {
@@ -48,8 +48,6 @@ public:
     }
 
     virtual float GetIntensity(float distance) const = 0;
-
-    // Returns .distance = NAN if the point cannot get light from the light source
     virtual LightInfo Shine(const glm::vec3& point) const = 0;
 };
 

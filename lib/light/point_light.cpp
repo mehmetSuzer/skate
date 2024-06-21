@@ -8,22 +8,21 @@ void PointLight::AssertIntensityCoefficients(float a_, float b_) const {
     }
 }
 
-PointLight::PointLight(const glm::vec3& position_, float red, float green, float blue, float a_, float b_)
-    : Light(red, green, blue), position(position_)  {
+PointLight::PointLight(const glm::vec3& position_, float red, float green, float blue, float alpha, float a_, float b_)
+    : Light(red, green, blue, alpha), position(position_)  {
     SetIntensityCoefficients(a_, b_);
 }
 
-PointLight::PointLight(const glm::vec3& position_, const glm::vec3& color_, float a_, float b_)
-    : PointLight(position_, color_.r, color_.g, color_.b, a_, b_) {}
+PointLight::PointLight(const glm::vec3& position_, const glm::vec4& color_, float a_, float b_)
+    : PointLight(position_, color_.r, color_.g, color_.b, color_.a, a_, b_) {}
 
 LightInfo PointLight::Shine(const glm::vec3& point) const {
-    const glm::vec3 pointToPosition = position - point;
-    const float distance = glm::length(pointToPosition);
-    const float intensity = GetIntensity(distance);
+    glm::vec3 pointToPosition = position - point;
+    float distance = glm::length(pointToPosition);
 
     return LightInfo{
         pointToPosition / distance,
         distance,
-        intensity,
+        GetIntensity(distance),
     };
 }

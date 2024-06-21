@@ -5,13 +5,12 @@ out vec4 FragColor;
 
 in vec3 position;
 in vec3 normal;
-in vec2 tex;
 
 uniform vec3 cameraPosition;
 uniform vec4 lightColor;
 uniform vec3 lightPosition;
 
-uniform sampler2D textureImage;
+uniform vec4 color;
 
 void main() {
     vec3 positionToLightPosition = lightPosition - position;
@@ -29,5 +28,5 @@ void main() {
     vec3 reflectionDirection = reflect(-directionToLight, normal);
     float specular = (diffuse > 0.0f) ? 0.5f * pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
-    FragColor = texture(textureImage, tex) * lightColor * (ambient + lightIntensity * (diffuse + specular));
+    FragColor = color * lightColor * (ambient + lightIntensity * (diffuse + specular));
 }

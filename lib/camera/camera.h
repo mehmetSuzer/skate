@@ -53,6 +53,10 @@ public:
         return instance;
     }
 
+    const glm::vec3& GetPosition(void) const {
+        return position;
+    }
+
     const glm::mat4& GetView(void) const {
         return view;
     }

@@ -14,8 +14,8 @@ protected:
     float b;
 
 public:
-    PointLight(const glm::vec3& position_, float red, float green, float blue, float a_, float b_);
-    PointLight(const glm::vec3& position_, const glm::vec3& color_, float a_, float b_);
+    PointLight(const glm::vec3& position_, float red, float green, float blue, float alpha, float a_, float b_);
+    PointLight(const glm::vec3& position_, const glm::vec4& color_, float a_, float b_);
 
     const glm::vec3& GetPosition(void) const {
         return position;

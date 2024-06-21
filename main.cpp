@@ -1,6 +1,5 @@
 
 #include <iostream>
-
 #include <ebo.h>
 #include <vao.h>
 #include <scene.h>
@@ -53,6 +52,39 @@ int main(int argc, char **argv) {
     // Enable the depth buffer
 	glEnable(GL_DEPTH_TEST);
 
+    /***************************************** LIGHT MODEL *****************************************/
+
+    glm::vec3 lightPosition = glm::vec3(1.0f, 0.25f, -2.0f);
+    float lightRadian = 0.0f;
+    glm::quat lightRotation = glm::angleAxis(lightRadian, glm::vec3(0.0f, 1.0f, 0.0f));
+    float lightScalar = 1.0f;
+
+    glm::mat4 lightModel = glm::mat4(1.0f);
+    lightModel = glm::translate(lightModel, lightPosition);
+	lightModel = lightModel * glm::mat4_cast(lightRotation);
+    lightModel = glm::scale(lightModel, glm::vec3(lightScalar));
+    
+    PointLight lightSource = PointLight(lightPosition, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0.2f, 0.2f);
+
+    VAO lightVAO = VAO();
+    lightVAO.Bind();
+    EBO lightEBO = EBO(lightIndices);
+    VBO lightVBO = VBO(lightVertices, GL_STATIC_DRAW);
+
+    lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(BasicVertex), (void*)0); // position
+
+    lightVAO.Unbind();
+    lightVBO.Unbind();
+    lightEBO.Unbind();
+
+    Shader lightShader = Shader(
+        (Common::Instance().GetGLSLPath() + "basic_vertex.glsl").c_str(), 
+        (Common::Instance().GetGLSLPath() + "basic_fragment.glsl").c_str()
+    );
+
+    lightShader.Use();
+    lightShader.SetUniformVec4(lightSource.GetColor(), "color");
+
     /***************************************** OBJECT MODEL *****************************************/
 
     glm::vec3 objectPosition = glm::vec3(0.0f, -0.25f, -2.5f);
@@ -74,11 +106,16 @@ int main(int argc, char **argv) {
     objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)0);                         // position
     objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(sizeof(glm::vec3)));       // normal
     objectVAO.LinkAttrib(objectVBO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(2 * sizeof(glm::vec3)));   // texture
-#else
-    VBO objectVBO = VBO(objectColorVertices);
+#elif OBJECT_VERTEX_TYPE == COLOR_VERTEX
+    VBO objectVBO = VBO(objectColorVertices, GL_STATIC_DRAW);
     objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)0);                           // position
     objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(sizeof(glm::vec3)));         // normal
-    objectVAO.LinkAttrib(objectVBO, 2, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(2 * sizeof(glm::vec3)));     // color
+    objectVAO.LinkAttrib(objectVBO, 2, 4, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(2 * sizeof(glm::vec3)));     // color
+#elif OBJECT_VERTEX_TYPE == NORMAL_VERTEX
+    VBO objectVBO = VBO(objectNormalVertices, GL_STATIC_DRAW);
+    objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)0);                          // position
+    objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)(sizeof(glm::vec3)));        // normal
+#else
 #endif
 
     objectVAO.Unbind();
@@ -92,48 +129,31 @@ int main(int argc, char **argv) {
         (Common::Instance().GetGLSLPath() + "texture_vertex.glsl").c_str(), 
         (Common::Instance().GetGLSLPath() + "texture_fragment.glsl").c_str()
     );
-#else
+#elif OBJECT_VERTEX_TYPE == COLOR_VERTEX
     Shader objectShader = Shader(
         (Common::Instance().GetGLSLPath() + "color_vertex.glsl").c_str(), 
         (Common::Instance().GetGLSLPath() + "color_fragment.glsl").c_str()
     );
+#elif OBJECT_VERTEX_TYPE == NORMAL_VERTEX
+    glm::vec4 objectColor = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+    Shader objectShader = Shader(
+        (Common::Instance().GetGLSLPath() + "normal_vertex.glsl").c_str(), 
+        (Common::Instance().GetGLSLPath() + "normal_fragment.glsl").c_str()
+    );
+#else
 #endif
 
     objectShader.Use();
+    objectShader.SetUniformMat4(objectModel, "model");
+    objectShader.SetUniformVec4(lightSource.GetColor(), "lightColor");
+    objectShader.SetUniformVec3(lightSource.GetPosition(), "lightPosition");
+
+#if OBJECT_VERTEX_TYPE == TEXTURE_VERTEX
     objectShader.SetUniformInt(0, "textureImage");
-
-    /***************************************** LIGHT MODEL *****************************************/
-
-    glm::vec3 lightPosition = glm::vec3(1.0f, 0.25f, -2.0f);
-    float lightRadian = 0.0f;
-    glm::quat lightRotation = glm::angleAxis(lightRadian, glm::vec3(0.0f, 1.0f, 0.0f));
-    float lightScalar = 1.0f;
-
-    glm::mat4 lightModel = glm::mat4(1.0f);
-    lightModel = glm::translate(lightModel, lightPosition);
-	lightModel = lightModel * glm::mat4_cast(lightRotation);
-    lightModel = glm::scale(lightModel, glm::vec3(lightScalar));
-    
-    PointLight lightSource = PointLight(lightPosition, glm::vec3(1.0f, 1.0f, 1.0f), 0.2f, 0.2f);
-
-    VAO lightVAO = VAO();
-    lightVAO.Bind();
-    EBO lightEBO = EBO(lightIndices);
-    VBO lightVBO = VBO(lightVertices, GL_STATIC_DRAW);
-
-    lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(BasicVertex), (void*)0); // position
-
-    lightVAO.Unbind();
-    lightVBO.Unbind();
-    lightEBO.Unbind();
-
-    Shader lightShader = Shader(
-        (Common::Instance().GetGLSLPath() + "basic_vertex.glsl").c_str(), 
-        (Common::Instance().GetGLSLPath() + "basic_fragment.glsl").c_str()
-    );
-
-    lightShader.Use();
-    lightShader.SetUniformVec3(lightSource.GetColor(), "color");
+#elif OBJECT_VERTEX_TYPE == NORMAL_VERTEX
+    objectShader.SetUniformVec4(objectColor, "color");
+#else
+#endif
 
     /*********************************************************************************/
 
@@ -153,8 +173,9 @@ int main(int argc, char **argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         objectShader.Use();
-        glm::mat4 objectTransform = Camera::Instance().GetPerspective() * Camera::Instance().GetView() * objectModel;
-        objectShader.SetUniformMat4(objectTransform, "transform");
+        glm::mat4 perspectiveView = Camera::Instance().GetPerspective() * Camera::Instance().GetView();
+        objectShader.SetUniformMat4(perspectiveView, "perspectiveView");
+        objectShader.SetUniformVec3(Camera::Instance().GetPosition(), "cameraPosition");
         objectTexture.Bind(0);
         objectVAO.Bind();
         glDrawElements(GL_TRIANGLES, objectIndices.size(), GL_UNSIGNED_INT, (void*)0);
@@ -162,7 +183,7 @@ int main(int argc, char **argv) {
         objectVAO.Unbind();
 
         lightShader.Use();
-        glm::mat4 lightTransform = Camera::Instance().GetPerspective() * Camera::Instance().GetView() * lightModel;
+        glm::mat4 lightTransform = perspectiveView * lightModel;
         lightShader.SetUniformMat4(lightTransform, "transform");
         lightVAO.Bind();
         glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, (void*)0);

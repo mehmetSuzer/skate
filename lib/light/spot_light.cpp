@@ -15,24 +15,20 @@ void SpotLight::AssertDirection(const glm::vec3& direction) const {
     }
 }
 
-SpotLight::SpotLight(const glm::vec3& position_, float red, float green, float blue, float a_, float b_, const glm::vec3& direction_, float FOVradian)
-    : PointLight(position_, red, green, blue, a_, b_) {
+SpotLight::SpotLight(const glm::vec3& position_, float red, float green, float blue, float alpha, float a_, float b_, const glm::vec3& direction_, float FOVradian)
+    : PointLight(position_, red, green, blue, alpha, a_, b_) {
     SetDirection(direction_);
     SetFOVradian(FOVradian);
 }
 
-SpotLight::SpotLight(const glm::vec3& position_, const glm::vec3& color_, float a_, float b_, const glm::vec3& direction_, float FOVradian)
-    : SpotLight(position_, color_.r, color_.g, color_.b, a_, b_, direction_, FOVradian) {}
+SpotLight::SpotLight(const glm::vec3& position_, const glm::vec4& color_, float a_, float b_, const glm::vec3& direction_, float FOVradian)
+    : SpotLight(position_, color_.r, color_.g, color_.b, color_.a, a_, b_, direction_, FOVradian) {}
 
 LightInfo SpotLight::Shine(const glm::vec3& point) const {
-    const glm::vec3 positionToPoint = point - position;
-    const float distance = glm::length(positionToPoint);
-    const glm::vec3 directionToPoint = positionToPoint / distance;
-    const float intensity = GetIntensity(distance);
-
-    if (glm::dot(directionToPoint, direction) <= cosHalfFOVradian) {
-        return LightInfo{ .distance = NAN };
-    }
+    glm::vec3 positionToPoint = point - position;
+    float distance = glm::length(positionToPoint);
+    glm::vec3 directionToPoint = positionToPoint / distance;
+    float intensity = (glm::dot(directionToPoint, direction) > cosHalfFOVradian) ? GetIntensity(distance) : 0.0f;
 
     return LightInfo{
         -directionToPoint,

@@ -1,17 +1,20 @@
 
 #version 330 core
 
-layout (location = 0) in vec3 aPos;
+layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec3 aColor;
+layout (location = 2) in vec4 aColor;
 
+out vec3 position;
 out vec3 normal;
-out vec3 color;
+out vec4 color;
 
-uniform mat4 transform;
+uniform mat4 model;
+uniform mat4 perspectiveView;
 
 void main() {
-    gl_Position = transform * vec4(aPos, 1.0f);
+    position = vec3(model * vec4(aPosition, 1.0f));
+    gl_Position = perspectiveView * vec4(position, 1.0f);
     normal = aNormal;
     color = aColor;
 }
