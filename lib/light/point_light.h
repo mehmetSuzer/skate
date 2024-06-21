@@ -14,13 +14,8 @@ protected:
     float b;
 
 public:
-    PointLight(const glm::vec3& position_, float red, float green, float blue, float a_, float b_)
-        : Light(red, green, blue), position(position_)  {
-        SetIntensityCoefficients(a_, b_);
-    }
-    
-    PointLight(const glm::vec3& position_, const glm::vec3& color_, float a_, float b_)
-        : PointLight(position_, color_.r, color_.g, color_.b, a_, b_) {}
+    PointLight(const glm::vec3& position_, float red, float green, float blue, float a_, float b_);
+    PointLight(const glm::vec3& position_, const glm::vec3& color_, float a_, float b_);
 
     const glm::vec3& GetPosition(void) const {
         return position;

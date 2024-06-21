@@ -14,19 +14,13 @@ private:
     void AssertIntensity(float intensity) const;
 
 public:
-    DirectionalLight(const glm::vec3& direction_, float red, float green, float blue, float intensity_) 
-        : Light(red, green, blue) {
-        SetDirection(direction_);
-        SetIntensity(intensity_);
-    }
-
-    DirectionalLight(const glm::vec3& direction_, const glm::vec3& color_, float intensity_)
-        : DirectionalLight(direction_, color_.r, color_.g, color_.b, intensity_) {}
+    DirectionalLight(const glm::vec3& direction_, float red, float green, float blue, float intensity_);
+    DirectionalLight(const glm::vec3& direction_, const glm::vec3& color_, float intensity_);
 
     const glm::vec3& GetDirection(void) const {
         return direction;
     }
-
+;
     void SetDirection(const glm::vec3& direction_) {
         AssertDirection(direction_);
         direction = direction_;
@@ -36,7 +30,7 @@ public:
         return intensity;
     }
 
-    float SetIntensity(float intensity_) {
+    void SetIntensity(float intensity_) {
         AssertIntensity(intensity_);
         intensity = intensity_;
     }

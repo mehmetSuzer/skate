@@ -45,34 +45,6 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glDeleteShader(fragmentShader);
 }
 
-GLuint Shader::GetID(void) const {
-    return ID;
-}
-
-void Shader::Use(void) const {
-    glUseProgram(ID);
-}
-
-void Shader::Delete(void) const {
-    glDeleteProgram(ID);
-}
-
-void Shader::SetUniformInt(GLint value, const char* uniform) const {
-    glUniform1i(glGetUniformLocation(ID, uniform), value);
-}
-
-void Shader::SetUniformFloat(GLfloat value, const char* uniform) const {
-    glUniform1f(glGetUniformLocation(ID, uniform), value);
-}
-
-void Shader::SetUniformVec4(const glm::vec4& vector, const char* uniform) const {
-    glUniform4f(glGetUniformLocation(ID, uniform), vector.x, vector.y, vector.z, vector.w);
-}
-
-void Shader::SetUniformMat4(const glm::mat4& matrix, const char* uniform) const {
-    glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
-}
-
 void Shader::CheckShaderError(GLuint shader, ShaderError type) const {
     GLint success;
     GLchar shaderInfoLog[shaderInfoLogSize];

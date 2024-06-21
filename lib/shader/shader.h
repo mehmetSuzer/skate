@@ -20,14 +20,37 @@ private:
 public:
     Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
 
-    GLuint GetID(void) const;
-    void Use(void) const;
-    void Delete(void) const;
+    GLuint GetID(void) const {
+        return ID;
+    }
 
-    void SetUniformInt(GLint value, const char* uniform) const;
-    void SetUniformFloat(GLfloat value, const char* uniform) const;
-    void SetUniformVec4(const glm::vec4& vector, const char* uniform) const;
-    void SetUniformMat4(const glm::mat4& matrix, const char* uniform) const;
+    void Use(void) const {
+    glUseProgram(ID);
+    }
+
+    void Delete(void) const {
+        glDeleteProgram(ID);
+    }
+
+    void SetUniformInt(GLint value, const char* uniform) const {
+        glUniform1i(glGetUniformLocation(ID, uniform), value);
+    }
+
+    void SetUniformFloat(GLfloat value, const char* uniform) const {
+        glUniform1f(glGetUniformLocation(ID, uniform), value);
+    }
+
+    void SetUniformVec3(const glm::vec3& vector, const char* uniform) const {
+        glUniform3f(glGetUniformLocation(ID, uniform), vector.x, vector.y, vector.z);
+    }
+
+    void SetUniformVec4(const glm::vec4& vector, const char* uniform) const {
+        glUniform4f(glGetUniformLocation(ID, uniform), vector.x, vector.y, vector.z, vector.w);
+    }
+
+    void SetUniformMat4(const glm::mat4& matrix, const char* uniform) const {
+        glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
+    }
 
     void CheckShaderError(GLuint shader, ShaderError type) const;
 };

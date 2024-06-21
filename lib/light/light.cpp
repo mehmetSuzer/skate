@@ -8,3 +8,9 @@ void Light::AssertColorValidity(float red, float green, float blue) const {
     }
 }
 
+Light::Light(float red, float green, float blue) {
+    SetColor(red, green, blue);
+    Activate();
+}
+
+Light::Light(const glm::vec3& color_) : Light(color_.r, color_.g, color_.b) {}

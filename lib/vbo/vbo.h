@@ -6,14 +6,20 @@
 #include <glad.h>
 #include <glm.hpp>
 
-#define TEXTURE_VERTEX  0
+#define BASIC_VERTEX    0
+#define TEXTURE_VERTEX  1
+#define COLOR_VERTEX    2
+
+typedef struct {
+    glm::vec3 position;
+} BasicVertex;
+
 typedef struct {
     glm::vec3 position;
     glm::vec3 normal;
     glm::vec2 texture;
 } TextureVertex;
 
-#define COLOR_VERTEX    1
 typedef struct {
     glm::vec3 position;
     glm::vec3 normal;

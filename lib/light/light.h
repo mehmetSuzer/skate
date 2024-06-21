@@ -19,12 +19,8 @@ private:
     void AssertColorValidity(float red, float green, float blue) const;
 
 public:
-    Light(float red, float green, float blue) {
-        SetColor(red, green, blue);
-        Activate();
-    }
-
-    Light(const glm::vec3& color_) : Light(color_.r, color_.g, color_.b) {}
+    Light(float red, float green, float blue);
+    Light(const glm::vec3& color_);
 
     const glm::vec3& GetColor(void) const {
         return color;
