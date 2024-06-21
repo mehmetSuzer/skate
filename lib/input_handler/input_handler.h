@@ -9,12 +9,23 @@ class InputHandler {
 private:
     static InputHandler instance;
 
+    float cursorPosSensitivity = M_PIf / 1800.0f;
+    float scrollSensitivity = M_PIf / 180.0f;
+
 public:
     static InputHandler& Instance(void) {
         return instance;
     }
 
     void Initialize(GLFWwindow* window);
+
+    float GetCursorPosSensitivity(void) const {
+        return cursorPosSensitivity;
+    }
+
+    float GetScrollSensitivity(void) const {
+        return scrollSensitivity;
+    }
 
     void ActivateInputs(GLFWwindow *window);
     void DeactivateInputs(GLFWwindow* window);

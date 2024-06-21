@@ -38,6 +38,15 @@ include_directories(${LIB_DIR}/glm)
 add_subdirectory(${LIB_DIR}/common)
 include_directories(${LIB_DIR}/common)
 
+add_subdirectory(${LIB_DIR}/camera)
+include_directories(${LIB_DIR}/camera)
+
+add_subdirectory(${LIB_DIR}/input_handler)
+include_directories(${LIB_DIR}/input_handler)
+
+add_subdirectory(${LIB_DIR}/light)
+include_directories(${LIB_DIR}/light)
+
 add_subdirectory(${LIB_DIR}/vbo)
 include_directories(${LIB_DIR}/vbo)
 
@@ -53,12 +62,6 @@ include_directories(${LIB_DIR}/scene)
 add_subdirectory(${LIB_DIR}/texture)
 include_directories(${LIB_DIR}/texture)
 
-add_subdirectory(${LIB_DIR}/camera)
-include_directories(${LIB_DIR}/camera)
-
-add_subdirectory(${LIB_DIR}/input_handler)
-include_directories(${LIB_DIR}/input_handler)
-
 add_subdirectory(${LIB_DIR}/shader)
 include_directories(${LIB_DIR}/shader)
 
@@ -69,12 +72,13 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME} 
     shader
-    input_handler
-    camera
     texture
     vao
     ebo
     vbo
+    light
+    input_handler
+    camera
     common
     glm
     glad

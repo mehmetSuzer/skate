@@ -3,6 +3,37 @@
 
 Camera Camera::instance;
 
+void Camera::UpdateVectors(void) {
+    forward = glm::vec3(
+        cosf(yaw) * cosf(pitch),    // x
+        sinf(pitch),                // y
+        sinf(yaw) * cosf(pitch)     // z
+    );
+    up = glm::vec3(sinf(roll), cosf(roll), 0.0f);
+    right = glm::normalize(glm::cross(forward, up));
+}
+
+void Camera::Initialize(void) {
+    if (initialized) {
+        return;
+    }
+    initialized = true;
+
+    UpdateVectors();
+    UpdateView();
+    UpdatePerspective();
+}
+
+void Camera::UpdateFOVradian(float deltaFOVradian) {
+    FOVradian += deltaFOVradian;
+    if (FOVradian < minFOVradian) {
+        FOVradian = minFOVradian;
+    } else if (FOVradian > maxFOVradian) {
+        FOVradian = maxFOVradian;
+    }
+    UpdatePerspective();
+}
+
 void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {
     glm::vec3 velocityDirection = glm::vec3(0.0f, 0.0f, 0.0f);
 
@@ -32,8 +63,8 @@ void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {
 }
 
 void Camera::UpdateOrientation(float xOffset, float yOffset) {
-    yaw   += xOffset * mouseSensitivity;
-    pitch += yOffset * mouseSensitivity;
+    yaw   += xOffset;
+    pitch += yOffset;
 
     // Prevent the camera from looking at too up or too down
     if (pitch > maxPitch) {
@@ -42,12 +73,6 @@ void Camera::UpdateOrientation(float xOffset, float yOffset) {
 		pitch = -maxPitch;
 	}
 
-    // Update the orientation
-	forward = glm::vec3(
-        cosf(yaw) * cosf(pitch),    // x
-        sinf(pitch),                // y
-        sinf(yaw) * cosf(pitch)     // z
-    );
-    right = glm::normalize(glm::cross(forward, up));
+	UpdateVectors();
     UpdateView();
 }

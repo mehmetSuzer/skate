@@ -1,6 +1,0 @@
-1- learn to use triangle fan and triangle strip 
-2- is throw or assert better?
-3- learn Gimbal lock: https://learnopengl.com/Getting-started/Transformations
-4- learn quaternions
-5- learn how projection and orthographics matrices are calculated: https://www.songho.ca/opengl/gl_projectionmatrix.html
-6- prevent camera to overshoot after activating inputs

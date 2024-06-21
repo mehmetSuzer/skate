@@ -6,6 +6,10 @@
 #include <shader.h>
 #include <texture2D.h>
 
+#include <point_light.h>
+#include <spot_light.h>
+#include <directional_light.h>
+
 int main(int argc, char **argv) {
     if (glfwInit() == GLFW_FALSE) {
         throw Error("Failed to initialize GLFW!");

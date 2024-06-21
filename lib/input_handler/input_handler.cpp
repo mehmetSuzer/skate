@@ -102,12 +102,17 @@ void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
     }
   
     // Update the last positions
-    float xOffset = static_cast<float>(xPos - lastX);
-    float yOffset = static_cast<float>(lastY - yPos); 
+    float xOffset = static_cast<float>(xPos - lastX) * InputHandler::Instance().GetCursorPosSensitivity();
+    float yOffset = static_cast<float>(lastY - yPos) * InputHandler::Instance().GetCursorPosSensitivity(); 
     lastX = xPos;
     lastY = yPos;
 
     Camera::Instance().UpdateOrientation(xOffset, yOffset);
+}
+
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
+    float deltaFOVradian = yOffset * InputHandler::Instance().GetScrollSensitivity();
+    Camera::Instance().UpdateFOVradian(deltaFOVradian);
 }
 
 void InputHandler::Initialize(GLFWwindow* window) {
@@ -120,10 +125,12 @@ void InputHandler::ActivateInputs(GLFWwindow *window) {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, cursorPosCallback);
     glfwSetKeyCallback(window, activeKeyCallback);
+    glfwSetScrollCallback(window, scrollCallback);
 }
     
 void InputHandler::DeactivateInputs(GLFWwindow* window) {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     glfwSetCursorPosCallback(window, NULL);
     glfwSetKeyCallback(window, deactiveKeyCallback);
+    glfwSetScrollCallback(window, NULL);
 }

@@ -24,22 +24,24 @@ private:
     static constexpr float lowSpeed = 0.8f; 
     static constexpr float highSpeed = 2.4f;
     static constexpr float maxPitch = M_PIf * 89.0f / 180.0f;
-    static constexpr float mouseSensitivity = M_PIf / 1800.0f;
-    static constexpr glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+    static constexpr float minFOVradian = M_PIf / 90.0f;
+    static constexpr float maxFOVradian = M_PIf / 3.0f;
 
-    float pitch;
-    float yaw;
+    float pitch = 0.0f;
+    float yaw = -M_PIf / 2.0f;
+    float roll = 0.0f;
     
-    float FOVradian;
-    float near;
-    float far;
+    float FOVradian = M_PIf / 4.0f;
+    float near = 0.1f;
+    float far = 100.0f;
 
-    CameraDirection direction;
-    float speed;
+    CameraDirection direction = {AXIS_NONE, AXIS_NONE, AXIS_NONE};
+    float speed = lowSpeed;
 
+    glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 forward;
-    glm::vec3 position;
     glm::vec3 right;
+    glm::vec3 up;
 
     glm::mat4 view;
     glm::mat4 perspective;
@@ -49,35 +51,6 @@ private:
 public:
     static Camera& Instance(void) {
         return instance;
-    }
-
-    void Initialize(void) {
-        if (initialized) {
-            return;
-        }
-        initialized = true;
-
-        pitch = 0.0f;
-        yaw = -M_PIf / 2.0f;
-        
-        FOVradian = M_PIf / 4.0f;
-        near = 0.1f;
-        far = 100.0f;
-
-        direction = {AXIS_NONE, AXIS_NONE, AXIS_NONE};
-        speed = lowSpeed;
-
-        forward = glm::vec3(
-            cosf(yaw) * cosf(pitch),    // x
-            sinf(pitch),                // y
-            sinf(yaw) * cosf(pitch)     // z
-        );
-
-        position = glm::vec3(0.0f, 0.0f, 0.0f);
-        right = glm::normalize(glm::cross(forward, up));
-
-        view = glm::lookAt(position, position + forward, up);
-        perspective = glm::perspective(FOVradian, Common::Instance().GetAspectRatio(), near, far);
     }
 
     const glm::mat4& GetView(void) const {
@@ -116,6 +89,9 @@ public:
         perspective = glm::perspective(FOVradian, Common::Instance().GetAspectRatio(), near, far);
     }
 
+    void UpdateVectors(void);
+    void Initialize(void);
+    void UpdateFOVradian(float deltaFOVradian);
     void UpdatePosition(float elapsedTimeSinceLastFrame);
     void UpdateOrientation(float xOffset, float yOffset);
 };
