@@ -2,17 +2,9 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-#include <iostream>
 #include <fstream>
-
 #include <error.h>
-#include <glad.h>
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
-
-
-#define SHADER_INFO_LOG_SIZE ((GLsizei)1024)
+#include <common.h>
 
 typedef enum {
     VERTEX_SHADER_COMPILE_ERROR,
@@ -22,6 +14,7 @@ typedef enum {
 
 class Shader {
 private:
+    static const GLsizei shaderInfoLogSize = 1024;
     GLuint ID;
 
 public:

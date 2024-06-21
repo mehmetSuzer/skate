@@ -75,12 +75,12 @@ void Shader::SetUniformMat4(const glm::mat4& matrix, const char* uniform) const 
 
 void Shader::CheckShaderError(GLuint shader, ShaderError type) const {
     GLint success;
-    GLchar shaderInfoLog[SHADER_INFO_LOG_SIZE];
+    GLchar shaderInfoLog[shaderInfoLogSize];
 
     if (type == VERTEX_SHADER_COMPILE_ERROR || type == FRAGMENT_SHADER_COMPILE_ERROR) {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
         if (!success) {
-            glGetShaderInfoLog(shader, SHADER_INFO_LOG_SIZE, NULL, shaderInfoLog);
+            glGetShaderInfoLog(shader, shaderInfoLogSize, NULL, shaderInfoLog);
             std::string shaderType = (type == VERTEX_SHADER_COMPILE_ERROR) ? "VERTEX" : "FRAGMENT";
             std::string errorMessage = "ERROR::SHADER::" + shaderType + "::COMPILATION_FAILED\n" + std::string(shaderInfoLog);
             throw Error(errorMessage);
@@ -88,7 +88,7 @@ void Shader::CheckShaderError(GLuint shader, ShaderError type) const {
     } else if (type == SHADER_PROGRAM_LINKING_ERROR) {
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
         if (!success) {
-            glGetProgramInfoLog(shader, SHADER_INFO_LOG_SIZE, NULL, shaderInfoLog);
+            glGetProgramInfoLog(shader, shaderInfoLogSize, NULL, shaderInfoLog);
             std::string errorMessage = "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" + std::string(shaderInfoLog);
             throw Error(errorMessage);
         }

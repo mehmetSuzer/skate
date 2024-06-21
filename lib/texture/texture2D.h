@@ -3,7 +3,8 @@
 #define __TEXTURE2D_H__
 
 #include <stb_image.h>
-#include <shader.h>
+#include <error.h>
+#include <glad.h>
 
 class Texture2D {
 private:

@@ -35,6 +35,9 @@ include_directories(${LIB_DIR}/glad)
 add_subdirectory(${LIB_DIR}/glm)
 include_directories(${LIB_DIR}/glm)
 
+add_subdirectory(${LIB_DIR}/common)
+include_directories(${LIB_DIR}/common)
+
 add_subdirectory(${LIB_DIR}/vbo)
 include_directories(${LIB_DIR}/vbo)
 
@@ -44,22 +47,35 @@ include_directories(${LIB_DIR}/ebo)
 add_subdirectory(${LIB_DIR}/vao)
 include_directories(${LIB_DIR}/vao)
 
-add_subdirectory(${LIB_DIR}/shader)
-include_directories(${LIB_DIR}/shader)
+add_subdirectory(${LIB_DIR}/scene)
+include_directories(${LIB_DIR}/scene)
 
 add_subdirectory(${LIB_DIR}/texture)
 include_directories(${LIB_DIR}/texture)
+
+add_subdirectory(${LIB_DIR}/camera)
+include_directories(${LIB_DIR}/camera)
+
+add_subdirectory(${LIB_DIR}/input_handler)
+include_directories(${LIB_DIR}/input_handler)
+
+add_subdirectory(${LIB_DIR}/shader)
+include_directories(${LIB_DIR}/shader)
+
 
 add_executable(${PROJECT_NAME}
     main.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} 
-    texture
     shader
+    input_handler
+    camera
+    texture
     vao
     ebo
     vbo
+    common
     glm
     glad
     json
