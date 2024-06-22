@@ -18,7 +18,7 @@ enum Event {
 template<typename T>
 class Subject;
 
-// #define OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
+#define OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
 
 #ifdef OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
 #define MAX_SUBJECT_NUMBER  20UL
@@ -33,7 +33,7 @@ private:
     uint32_t subjectNumber = 0;
 
     bool AddSubject(Subject<T>* subject);
-    bool RemoveSubjecbt(Subject<T>* subject);
+    bool RemoveSubject(Subject<T>* subject);
 
 public:
     ~Observer();

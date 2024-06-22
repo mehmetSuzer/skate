@@ -26,6 +26,9 @@ include_directories(${LIB_DIR}/error)
 add_subdirectory(${LIB_DIR}/observer_subject)
 include_directories(${LIB_DIR}/observer_subject)
 
+add_subdirectory(${LIB_DIR}/object_pool)
+include_directories(${LIB_DIR}/object_pool)
+
 add_subdirectory(${LIB_DIR}/stb)
 include_directories(${LIB_DIR}/stb)
 
@@ -87,6 +90,7 @@ target_link_libraries(${PROJECT_NAME}
     glad
     json
     stb
+    object_pool
     observer_subject
     error
     glfw
