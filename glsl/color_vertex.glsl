@@ -11,10 +11,11 @@ out vec4 color;
 
 uniform mat4 model;
 uniform mat4 perspectiveView;
+uniform mat3 normalMatrix;
 
 void main() {
     position = vec3(model * vec4(aPosition, 1.0f));
     gl_Position = perspectiveView * vec4(position, 1.0f);
-    normal = aNormal;
+    normal = normalMatrix * aNormal;
     color = aColor;
 }

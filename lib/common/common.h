@@ -67,6 +67,10 @@ public:
     float GetSecondsPerPhysicsUpdate(void) const {
         return secondsPerPhysicsUpdate;
     }
+
+    float RGB2Gray(float red, float green, float blue) const {
+        return 0.299f * red + 0.587f * green + 0.114f * blue;
+    }
 };
 
 #endif // __COMMON_H__

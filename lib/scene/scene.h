@@ -4,7 +4,7 @@
 
 #include <vbo.h>
 
-#define OBJECT_VERTEX_TYPE     TEXTURE_VERTEX
+#define OBJECT_VERTEX_TYPE     COLOR_VERTEX
 
 const std::vector<ColorVertex> objectColorVertices =
 {  			   //         positions          /            normals            /               colors               //

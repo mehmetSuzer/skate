@@ -48,6 +48,10 @@ public:
         glUniform4f(glGetUniformLocation(ID, uniform), vector.x, vector.y, vector.z, vector.w);
     }
 
+    void SetUniformMat3(const glm::mat3& matrix, const char* uniform) const {
+        glUniformMatrix3fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
     void SetUniformMat4(const glm::mat4& matrix, const char* uniform) const {
         glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
     }

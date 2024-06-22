@@ -90,12 +90,15 @@ int main(int argc, char **argv) {
     glm::vec3 objectPosition = glm::vec3(0.0f, -0.25f, -2.5f);
     float objectRadian = 0.0f;
     glm::quat objectRotation = glm::angleAxis(objectRadian, glm::vec3(0.0f, 1.0f, 0.0f));
-    float objectScalar = 1.0f;
+    float objectScalarX = 1.0f;
+    float objectScalarY = 3.0f;
+    float objectScalarZ = 1.0f;
 
     glm::mat4 objectModel = glm::mat4(1.0f);
     objectModel = glm::translate(objectModel, objectPosition);
 	objectModel = objectModel * glm::mat4_cast(objectRotation);
-    objectModel = glm::scale(objectModel, glm::vec3(objectScalar));
+    objectModel = glm::scale(objectModel, glm::vec3(objectScalarX, objectScalarY, objectScalarZ));
+    glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(objectModel)));
 
     VAO objectVAO = VAO();
     objectVAO.Bind();
@@ -144,6 +147,7 @@ int main(int argc, char **argv) {
 #endif
 
     objectShader.Use();
+    objectShader.SetUniformMat3(normalMatrix, "normalMatrix");
     objectShader.SetUniformMat4(objectModel, "model");
     objectShader.SetUniformVec4(lightSource.GetColor(), "lightColor");
     objectShader.SetUniformVec3(lightSource.GetPosition(), "lightPosition");
