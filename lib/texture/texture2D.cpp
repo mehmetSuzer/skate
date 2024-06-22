@@ -1,7 +1,7 @@
 
 #include "texture2D.h"
 
-float Texture2D::borderColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+float Texture2D::borderColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 Texture2D::Texture2D(const char* imageFile, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter) {
     int imageWidth, imageHeight, colorChannelNumber;

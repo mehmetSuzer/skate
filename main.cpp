@@ -1,5 +1,4 @@
 
-#include <iostream>
 #include <ebo.h>
 #include <vao.h>
 #include <scene.h>
@@ -10,6 +9,8 @@
 #include <point_light.h>
 #include <spot_light.h>
 #include <directional_light.h>
+
+#define FULL_SCREEN 0
 
 int main(int argc, char **argv) {
     /***************************************** INITIALIZATION *****************************************/
@@ -26,13 +27,22 @@ int main(int argc, char **argv) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    GLFWwindow* window = glfwCreateWindow(
-        Common::Instance().GetWindowWidth(),
-        Common::Instance().GetWindowHeight(),
-        "Learn OpenGL", 
-        NULL, 
-        NULL
-    ); 
+#if FULL_SCREEN
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+    if (!monitor) {
+        throw Error("Failed to Find the Primary Monitor!");
+    }
+
+    const GLFWvidmode* videoMode = glfwGetVideoMode(monitor);
+    if (!videoMode) {
+        throw Error("Failed to Get the Video Mode of the Monitor!");
+    }
+
+    GLFWwindow* window = glfwCreateWindow(videoMode->width, videoMode->height, "Learn OpenGL", monitor, NULL); 
+#else
+    GLFWwindow* window = glfwCreateWindow(Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight(), "Learn OpenGL", NULL, NULL); 
+#endif
+
     if (window == NULL) {
         glfwTerminate();
         throw Error("Failed to create GLFW Window!");
@@ -41,13 +51,17 @@ int main(int argc, char **argv) {
 
     Camera::Instance().Initialize();
     InputHandler::Instance().Initialize(window);
-    Texture2D::SetBorderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         glfwTerminate();
         throw Error("Failed to initialize GLAD!");
     }
+
+#if FULL_SCREEN
+    glViewport(0, 0, videoMode->width, videoMode->height);
+#else
     glViewport(0, 0, Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight());
+#endif
 
     // Enable the depth buffer
 	glEnable(GL_DEPTH_TEST);

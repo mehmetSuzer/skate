@@ -21,15 +21,14 @@ class Subject;
 #define OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
 
 #ifdef OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
-#define MAX_SUBJECT_NUMBER  20UL
-#define MAX_OBSERVER_NUMBER 20UL
 
 template<typename T>
 class Observer {
     friend class Subject<T>;
 
 private:
-    Subject<T>* subjects[MAX_SUBJECT_NUMBER];
+    static const uint32_t maxSubjectNumber = 20;
+    Subject<T>* subjects[maxSubjectNumber];
     uint32_t subjectNumber = 0;
 
     bool AddSubject(Subject<T>* subject);
@@ -43,7 +42,8 @@ public:
 template<typename T>
 class Subject {
 private:
-    Observer<T>* observers[MAX_OBSERVER_NUMBER];
+    static const uint32_t maxObserverNumber = 20;
+    Observer<T>* observers[maxObserverNumber];
     uint32_t observerNumber = 0;
 
 protected:

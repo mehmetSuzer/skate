@@ -18,7 +18,7 @@ bool Observer<T>::AddSubject(Subject<T>* subject) {
     }
 
     // If it is not in the array, add to the end
-    if (subjectNumber < MAX_SUBJECT_NUMBER) {
+    if (subjectNumber < maxSubjectNumber) {
         subjects[subjectNumber++] = subject;
         return true;
     }
@@ -76,7 +76,7 @@ void Subject<T>::AddObserver(Observer<T>* observer) {
     }
 
     // If it is not in the array, add to the end
-    if (observerNumber < MAX_OBSERVER_NUMBER && observer->AddSubject(this)) {
+    if (observerNumber < maxObserverNumber && observer->AddSubject(this)) {
         observers[observerNumber++] = observer;
     }
 }
