@@ -8,15 +8,16 @@ Texture2D::Texture2D(const char* imageFile, GLint wrapS, GLint wrapT, GLint minF
     stbi_set_flip_vertically_on_load(true);
     unsigned char* bytes = stbi_load(imageFile, &imageWidth, &imageHeight, &colorChannelNumber, 0);
 
+#if COMPILE_ERROR_HANDLERS
     if (bytes == NULL) {
         std::string errorMessage = "Failed to read " + std::string(imageFile);
         throw Error(errorMessage);
     }
-
     if (colorChannelNumber != 1 && colorChannelNumber != 3 && colorChannelNumber != 4) {
         std::string errorMessage = "Invalid Color Channel: " + std::to_string(colorChannelNumber);
         throw Error(errorMessage);
     }
+#endif
 
     glGenTextures(1, &ID);
     glBindTexture(GL_TEXTURE_2D, ID);

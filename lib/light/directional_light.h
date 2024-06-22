@@ -22,7 +22,9 @@ public:
     }
 ;
     void SetDirection(const glm::vec3& direction_) {
+    #if COMPILE_ERROR_HANDLERS
         AssertDirection(direction_);
+    #endif
         direction = direction_;
     }
     
@@ -31,7 +33,9 @@ public:
     }
 
     void SetIntensity(float intensity_) {
+    #if COMPILE_ERROR_HANDLERS
         AssertIntensity(intensity_);
+    #endif
         intensity = intensity_;
     }
     

@@ -3,17 +3,21 @@
 
 std::string readFile(const char* filename) {
     std::ifstream in(filename, std::ios::binary);
-    if (in) {
-        std::string contents;
-        in.seekg(0, std::ios::end);
-        contents.resize(in.tellg());
-        in.seekg(0, std::ios::beg);
-        in.read(&contents[0], contents.size());
-        in.close();
-        return contents;
+
+    #if COMPILE_ERROR_HANDLERS
+    if (!in) {
+        std::string errorMessage = "File " + std::string(filename) + " couldn't be found!";
+        throw Error(errorMessage);
     }
-    std::string errorMessage = "File " + std::string(filename) + " couldn't be found!";
-    throw Error(errorMessage);
+    #endif 
+    
+    std::string contents;
+    in.seekg(0, std::ios::end);
+    contents.resize(in.tellg());
+    in.seekg(0, std::ios::beg);
+    in.read(&contents[0], contents.size());
+    in.close();
+    return contents;
 }
 
 Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
@@ -22,7 +26,10 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     const char* vertexShaderSource = vertexShaderCode.c_str();
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
+
+#if COMPILE_ERROR_HANDLERS
     CheckShaderError(vertexShader, VERTEX_SHADER_COMPILE_ERROR);
+#endif
 
     /* ----------------------------------------------------------------- */
 
@@ -31,7 +38,10 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     const char* fragmentShaderSource = fragmentShaderCode.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
+
+#if COMPILE_ERROR_HANDLERS
     CheckShaderError(fragmentShader, FRAGMENT_SHADER_COMPILE_ERROR);
+#endif 
 
     /* ----------------------------------------------------------------- */
 
@@ -39,7 +49,10 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glAttachShader(ID, vertexShader);
     glAttachShader(ID, fragmentShader);
     glLinkProgram(ID);
+
+#if COMPILE_ERROR_HANDLERS
     CheckShaderError(ID, SHADER_PROGRAM_LINKING_ERROR);
+#endif
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
