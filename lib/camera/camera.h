@@ -22,14 +22,14 @@ private:
     bool initialized = false;
 
     static constexpr float lowSpeed = 0.8f; 
-    static constexpr float highSpeed = 2.4f;
-    static constexpr float maxPitch = M_PIf * 89.0f / 180.0f;
+    static constexpr float highSpeed = 3.0f * lowSpeed;
+    static constexpr float maxPitch = M_PIf * 85.0f / 180.0f;
     static constexpr float minFOVradian = M_PIf / 90.0f;
     static constexpr float maxFOVradian = M_PIf / 3.0f;
+    static constexpr glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     float pitch = 0.0f;
     float yaw = -M_PIf / 2.0f;
-    float roll = 0.0f;
     
     float FOVradian = M_PIf / 4.0f;
     float near = 0.1f;
@@ -39,12 +39,11 @@ private:
     float speed = lowSpeed;
 
     glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 forward;
     glm::vec3 right;
-    glm::vec3 up;
+    glm::vec3 forward;
 
     glm::mat4 view;
-    glm::mat4 perspective;
+    glm::mat4 projection;
 
     Camera() {}
 
@@ -61,8 +60,8 @@ public:
         return view;
     }
 
-    const glm::mat4& GetPerspective(void) const {
-        return perspective;
+    const glm::mat4& GetProjection(void) const {
+        return projection;
     }
 
     void SetRightDirection(AXIS_DIRECTION axisDirection) {
@@ -89,8 +88,8 @@ public:
         view = glm::lookAt(position, position + forward, up);
     }
 
-    void UpdatePerspective(void) {
-        perspective = glm::perspective(FOVradian, Common::Instance().GetAspectRatio(), near, far);
+    void UpdateProjection(void) {
+        projection = glm::perspective(FOVradian, Common::Instance().GetAspectRatio(), near, far);
     }
 
     void UpdateVectors(void);

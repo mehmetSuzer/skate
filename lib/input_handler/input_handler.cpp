@@ -6,61 +6,62 @@ InputHandler InputHandler::instance;
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
     Common::Instance().SetWindowWidthAndHeight(width, height);
-    Camera::Instance().UpdatePerspective();
+    Camera::Instance().UpdateProjection();
 }
 
 void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    const uint8_t button = InputHandler::Instance().GetButton(key);
     if (action == GLFW_PRESS) {
-        switch (key)
+        switch (button)
         {
-        case GLFW_KEY_ESCAPE:
+        case ESCAPE_BUTTON:
             glfwSetWindowShouldClose(window, GLFW_TRUE);
             break;
-        case GLFW_KEY_1:
+        case INPUT_ACTIVATION_BUTTON:
             InputHandler::Instance().DeactivateInputs(window);
             break;
-        case GLFW_KEY_W:
+        case FORWARD_BUTTON:
             Camera::Instance().SetForwardDirection(AXIS_POSITIVE);
             break;
-        case GLFW_KEY_S:
+        case BACKWARD_BUTTON:
             Camera::Instance().SetForwardDirection(AXIS_NEGATIVE);
             break;
-        case GLFW_KEY_D:
+        case RIGHT_BUTTON:
             Camera::Instance().SetRightDirection(AXIS_POSITIVE);
             break;
-        case GLFW_KEY_A:
+        case LEFT_BUTTON:
             Camera::Instance().SetRightDirection(AXIS_NEGATIVE);
             break;
-        case GLFW_KEY_SPACE:
+        case UP_BUTTON:
             Camera::Instance().SetUpDirection(AXIS_POSITIVE);
             break;
-        case GLFW_KEY_LEFT_CONTROL:
+        case DOWN_BUTTON:
             Camera::Instance().SetUpDirection(AXIS_NEGATIVE);
             break;
-        case GLFW_KEY_LEFT_SHIFT:
+        case SPEED_UP_BUTTON:
             Camera::Instance().SetHighSpeed();
             break;
         default:
             break;
         }
     } else if (action == GLFW_RELEASE) {
-        switch (key)
+        switch (button)
         {
-        case GLFW_KEY_ESCAPE:
+        case ESCAPE_BUTTON:
             break;
-        case GLFW_KEY_W:
-        case GLFW_KEY_S:
+        case FORWARD_BUTTON:
+        case BACKWARD_BUTTON:
             Camera::Instance().SetForwardDirection(AXIS_NONE);
             break;
-        case GLFW_KEY_D:
-        case GLFW_KEY_A:
+        case RIGHT_BUTTON:
+        case LEFT_BUTTON:
             Camera::Instance().SetRightDirection(AXIS_NONE);
             break;
-        case GLFW_KEY_SPACE:
-        case GLFW_KEY_LEFT_CONTROL:
+        case UP_BUTTON:
+        case DOWN_BUTTON:
             Camera::Instance().SetUpDirection(AXIS_NONE);
             break;
-        case GLFW_KEY_LEFT_SHIFT:
+        case SPEED_UP_BUTTON:
             Camera::Instance().SetLowSpeed();
             break;
         default:
@@ -70,17 +71,18 @@ void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, in
 }
 
 void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+    const uint8_t button = InputHandler::Instance().GetButton(key);
     if (action == GLFW_PRESS) {
-        switch (key)
+        switch (button)
         {
-        case GLFW_KEY_1:
+        case INPUT_ACTIVATION_BUTTON:
             InputHandler::Instance().ActivateInputs(window);
             break;
         default:
             break;
         }
     } else if (action == GLFW_RELEASE) {
-        switch (key)
+        switch (button)
         {
         default:
             break;
@@ -115,7 +117,38 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
     Camera::Instance().UpdateFOVradian(deltaFOVradian);
 }
 
+void InputHandler::SetButton(GLuint key, Button button) {
+    for (uint32_t i = 0; i < buttonMapSize; i++) {
+        if (buttonMap[i] == button) {
+            buttonMap[i] = UNKNOWN_BUTTON;
+            break;
+        }
+    }
+    buttonMap[key] = button;
+}
+
 void InputHandler::Initialize(GLFWwindow* window) {
+    if (initialized) {
+        return;
+    }
+    initialized = true;
+
+    // Clear all buttons
+    for (uint32_t i = 0; i < buttonMapSize; i++) {
+        buttonMap[i] = UNKNOWN_BUTTON;
+    }
+
+    // Default buttons
+    buttonMap[GLFW_KEY_ESCAPE] = ESCAPE_BUTTON;
+    buttonMap[GLFW_KEY_1] = INPUT_ACTIVATION_BUTTON;
+    buttonMap[GLFW_KEY_W] = FORWARD_BUTTON;
+    buttonMap[GLFW_KEY_S] = BACKWARD_BUTTON;
+    buttonMap[GLFW_KEY_D] = RIGHT_BUTTON;
+    buttonMap[GLFW_KEY_A] = LEFT_BUTTON;
+    buttonMap[GLFW_KEY_SPACE] = UP_BUTTON;
+    buttonMap[GLFW_KEY_LEFT_CONTROL] = DOWN_BUTTON;
+    buttonMap[GLFW_KEY_LEFT_SHIFT] = SPEED_UP_BUTTON;
+
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     ActivateInputs(window);
 }

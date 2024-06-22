@@ -4,12 +4,16 @@
 Camera Camera::instance;
 
 void Camera::UpdateVectors(void) {
+    const float sinYaw = glm::sin(yaw);
+    const float cosYaw = glm::cos(yaw);
+    const float sinPitch = glm::sin(pitch);
+    const float cosPitch =  glm::cos(pitch);
+
     forward = glm::vec3(
-        cosf(yaw) * cosf(pitch),    // x
-        sinf(pitch),                // y
-        sinf(yaw) * cosf(pitch)     // z
+        cosYaw * cosPitch,  // x
+        sinPitch,           // y
+        sinYaw * cosPitch   // z
     );
-    up = glm::vec3(sinf(roll), cosf(roll), 0.0f);
     right = glm::normalize(glm::cross(forward, up));
 }
 
@@ -21,7 +25,7 @@ void Camera::Initialize(void) {
 
     UpdateVectors();
     UpdateView();
-    UpdatePerspective();
+    UpdateProjection();
 }
 
 void Camera::UpdateFOVradian(float deltaFOVradian) {
@@ -31,7 +35,7 @@ void Camera::UpdateFOVradian(float deltaFOVradian) {
     } else if (FOVradian > maxFOVradian) {
         FOVradian = maxFOVradian;
     }
-    UpdatePerspective();
+    UpdateProjection();
 }
 
 void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {

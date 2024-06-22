@@ -10,12 +10,12 @@ out vec3 normal;
 out vec2 tex;
 
 uniform mat4 model;
-uniform mat4 perspectiveView;
+uniform mat4 projectionView;
 uniform mat3 normalMatrix;
 
 void main() {
     position = vec3(model * vec4(aPosition, 1.0f));
-    gl_Position = perspectiveView * vec4(position, 1.0f);
+    gl_Position = projectionView * vec4(position, 1.0f);
     normal = normalMatrix * aNormal;
     tex = aTex;
 }

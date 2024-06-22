@@ -91,7 +91,7 @@ int main(int argc, char **argv) {
     float objectRadian = 0.0f;
     glm::quat objectRotation = glm::angleAxis(objectRadian, glm::vec3(0.0f, 1.0f, 0.0f));
     float objectScalarX = 1.0f;
-    float objectScalarY = 3.0f;
+    float objectScalarY = 1.0f;
     float objectScalarZ = 1.0f;
 
     glm::mat4 objectModel = glm::mat4(1.0f);
@@ -177,8 +177,8 @@ int main(int argc, char **argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         objectShader.Use();
-        glm::mat4 perspectiveView = Camera::Instance().GetPerspective() * Camera::Instance().GetView();
-        objectShader.SetUniformMat4(perspectiveView, "perspectiveView");
+        glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
+        objectShader.SetUniformMat4(projectionView, "projectionView");
         objectShader.SetUniformVec3(Camera::Instance().GetPosition(), "cameraPosition");
         objectTexture.Bind(0);
         objectVAO.Bind();
@@ -187,7 +187,7 @@ int main(int argc, char **argv) {
         objectVAO.Unbind();
 
         lightShader.Use();
-        glm::mat4 lightTransform = perspectiveView * lightModel;
+        glm::mat4 lightTransform = projectionView * lightModel;
         lightShader.SetUniformMat4(lightTransform, "transform");
         lightVAO.Bind();
         glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, (void*)0);
