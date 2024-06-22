@@ -23,6 +23,9 @@ file(COPY ${CMAKE_SOURCE_DIR}/${DATA_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 add_subdirectory(${LIB_DIR}/error)
 include_directories(${LIB_DIR}/error)
 
+add_subdirectory(${LIB_DIR}/observer_subject)
+include_directories(${LIB_DIR}/observer_subject)
+
 add_subdirectory(${LIB_DIR}/stb)
 include_directories(${LIB_DIR}/stb)
 
@@ -84,6 +87,7 @@ target_link_libraries(${PROJECT_NAME}
     glad
     json
     stb
+    observer_subject
     error
     glfw
     OpenGL::GL
