@@ -44,6 +44,9 @@ include_directories(${LIB_DIR}/glad)
 add_subdirectory(${LIB_DIR}/glm)
 include_directories(${LIB_DIR}/glm)
 
+add_subdirectory(${LIB_DIR}/material)
+include_directories(${LIB_DIR}/material)
+
 add_subdirectory(${LIB_DIR}/common)
 include_directories(${LIB_DIR}/common)
 
