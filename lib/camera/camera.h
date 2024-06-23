@@ -4,16 +4,16 @@
 
 #include <common.h>
 
-typedef enum {
+enum AxisDirection {
     AXIS_NONE,
     AXIS_POSITIVE,
     AXIS_NEGATIVE,
-} AXIS_DIRECTION;
+};
 
 typedef struct {
-    AXIS_DIRECTION right;
-    AXIS_DIRECTION up;
-    AXIS_DIRECTION forward;
+    enum AxisDirection right;
+    enum AxisDirection up;
+    enum AxisDirection forward;
 } CameraDirection;
 
 class Camera {
@@ -64,15 +64,15 @@ public:
         return projection;
     }
 
-    void SetRightDirection(AXIS_DIRECTION axisDirection) {
+    void SetRightDirection(enum AxisDirection axisDirection) {
         direction.right = axisDirection;
     }
 
-    void SetUpDirection(AXIS_DIRECTION axisDirection) {
+    void SetUpDirection(enum AxisDirection axisDirection) {
         direction.up = axisDirection;
     }
 
-    void SetForwardDirection(AXIS_DIRECTION axisDirection) {
+    void SetForwardDirection(enum AxisDirection axisDirection) {
         direction.forward = axisDirection;
     }
 

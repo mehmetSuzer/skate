@@ -5,7 +5,7 @@
 #include <camera.h>
 #include <GLFW/glfw3.h>
 
-typedef enum {
+enum Button {
     UNKNOWN_BUTTON = 0,
     ESCAPE_BUTTON,
     INPUT_ACTIVATION_BUTTON,
@@ -16,7 +16,7 @@ typedef enum {
     UP_BUTTON,
     DOWN_BUTTON,
     SPEED_UP_BUTTON,
-} Button;
+};
 
 class InputHandler {
 private:
@@ -59,11 +59,11 @@ public:
         firstMouse = boolean;
     }
 
-    uint8_t GetButton(GLuint key) const {
-        return buttonMap[key];
+    enum Button GetButton(GLuint key) const {
+        return (enum Button)buttonMap[key];
     }
 
-    void SetButton(GLuint key, Button button);
+    void SetButton(GLuint key, enum Button button);
     void Initialize(GLFWwindow* window);
     void ActivateInputs(GLFWwindow *window);
     void DeactivateInputs(GLFWwindow* window);

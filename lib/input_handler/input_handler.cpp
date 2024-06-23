@@ -10,7 +10,7 @@ void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
 }
 
 void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    const uint8_t button = InputHandler::Instance().GetButton(key);
+    const enum Button button = InputHandler::Instance().GetButton(key);
     if (action == GLFW_PRESS) {
         switch (button)
         {
@@ -71,7 +71,7 @@ void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, in
 }
 
 void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    const uint8_t button = InputHandler::Instance().GetButton(key);
+    const enum Button button = InputHandler::Instance().GetButton(key);
     if (action == GLFW_PRESS) {
         switch (button)
         {
@@ -116,7 +116,7 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
     Camera::Instance().UpdateFOVradian(deltaFOVradian);
 }
 
-void InputHandler::SetButton(GLuint key, Button button) {
+void InputHandler::SetButton(GLuint key, enum Button button) {
     for (uint32_t i = 0; i < buttonMapSize; i++) {
         if (buttonMap[i] == button) {
             buttonMap[i] = UNKNOWN_BUTTON;

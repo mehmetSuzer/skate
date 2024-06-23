@@ -58,7 +58,7 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glDeleteShader(fragmentShader);
 }
 
-void Shader::CheckShaderError(GLuint shader, ShaderError type) const {
+void Shader::CheckShaderError(GLuint shader, enum ShaderError type) const {
     GLint success;
     GLchar shaderInfoLog[shaderInfoLogSize];
 

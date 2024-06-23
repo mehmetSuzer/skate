@@ -6,11 +6,11 @@
 #include <error.h>
 #include <common.h>
 
-typedef enum {
+enum ShaderError {
     VERTEX_SHADER_COMPILE_ERROR,
     FRAGMENT_SHADER_COMPILE_ERROR,
     SHADER_PROGRAM_LINKING_ERROR,
-} ShaderError;
+};
 
 class Shader {
 private:
@@ -56,7 +56,7 @@ public:
         glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-    void CheckShaderError(GLuint shader, ShaderError type) const;
+    void CheckShaderError(GLuint shader, enum ShaderError type) const;
 };
 
 #endif // __SHADER_H__

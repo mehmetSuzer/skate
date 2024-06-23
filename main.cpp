@@ -148,14 +148,14 @@ int main(int argc, char **argv) {
     );
 #elif __OBJECT_VERTEX_TYPE__ == __COLOR_VERTEX__
     Shader objectShader = Shader(
-        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, VERTEX_SHADER, COLOR_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, FRAGMENT_SHADER, COLOR_VERTEX).c_str()
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, COLOR_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, COLOR_VERTEX).c_str()
     );
 #elif __OBJECT_VERTEX_TYPE__ == __NORMAL_VERTEX__
     glm::vec4 objectColor = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
     Shader objectShader = Shader(
-        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, VERTEX_SHADER, NORMAL_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, FRAGMENT_SHADER, NORMAL_VERTEX).c_str()
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, NORMAL_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, NORMAL_VERTEX).c_str()
     );
 #elif __OBJECT_VERTEX_TYPE__ == __MATERIAL_VERTEX__
     const Material& objectMaterial = material::cyanPlastic;

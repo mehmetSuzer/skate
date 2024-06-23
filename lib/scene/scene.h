@@ -6,26 +6,26 @@
 
 const std::vector<ColorVertex> objectColorVertices =
 {  			   //         positions          /            normals            /               colors               //
-	ColorVertex{glm::vec3(-0.6f, 0.0f,  0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Bottom side
-	ColorVertex{glm::vec3(-0.6f, 0.0f, -0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Bottom side
-	ColorVertex{glm::vec3( 0.6f, 0.0f, -0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Bottom side
-	ColorVertex{glm::vec3( 0.6f, 0.0f,  0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Bottom side
+	ColorVertex{glm::vec3(-0.6f, 0.0f,  0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)}, // Bottom side
+	ColorVertex{glm::vec3(-0.6f, 0.0f, -0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)}, // Bottom side
+	ColorVertex{glm::vec3( 0.6f, 0.0f, -0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)}, // Bottom side
+	ColorVertex{glm::vec3( 0.6f, 0.0f,  0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)}, // Bottom side
 
-	ColorVertex{glm::vec3(-0.6f, 0.0f,  0.6f), glm::vec3(-0.8f,  0.6f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Left Side
-	ColorVertex{glm::vec3(-0.6f, 0.0f, -0.6f), glm::vec3(-0.8f,  0.6f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Left Side
-	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3(-0.8f,  0.6f,  0.0f), glm::vec4(0.92f, 0.86f, 0.76f, 1.0f)}, // Left Side
+	ColorVertex{glm::vec3(-0.6f, 0.0f,  0.6f), glm::vec3(-0.8f,  0.6f,  0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)}, // Left Side
+	ColorVertex{glm::vec3(-0.6f, 0.0f, -0.6f), glm::vec3(-0.8f,  0.6f,  0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)}, // Left Side
+	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3(-0.8f,  0.6f,  0.0f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)}, // Left Side
 
-	ColorVertex{glm::vec3(-0.6f, 0.0f, -0.6f), glm::vec3( 0.0f,  0.6f, -0.8f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Non-facing side
-	ColorVertex{glm::vec3( 0.6f, 0.0f, -0.6f), glm::vec3( 0.0f,  0.6f, -0.8f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Non-facing side
-	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3( 0.0f,  0.6f, -0.8f), glm::vec4(0.92f, 0.86f, 0.76f, 1.0f)}, // Non-facing side
+	ColorVertex{glm::vec3(-0.6f, 0.0f, -0.6f), glm::vec3( 0.0f,  0.6f, -0.8f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)}, // Non-facing side
+	ColorVertex{glm::vec3( 0.6f, 0.0f, -0.6f), glm::vec3( 0.0f,  0.6f, -0.8f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)}, // Non-facing side
+	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3( 0.0f,  0.6f, -0.8f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)}, // Non-facing side
 
-	ColorVertex{glm::vec3( 0.6f, 0.0f, -0.6f), glm::vec3( 0.8f,  0.6f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Right side
-	ColorVertex{glm::vec3( 0.6f, 0.0f,  0.6f), glm::vec3( 0.8f,  0.6f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Right side
-	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3( 0.8f,  0.6f,  0.0f), glm::vec4(0.92f, 0.86f, 0.76f, 1.0f)}, // Right side
+	ColorVertex{glm::vec3( 0.6f, 0.0f, -0.6f), glm::vec3( 0.8f,  0.6f,  0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f)}, // Right side
+	ColorVertex{glm::vec3( 0.6f, 0.0f,  0.6f), glm::vec3( 0.8f,  0.6f,  0.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)}, // Right side
+	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3( 0.8f,  0.6f,  0.0f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)}, // Right side
 
-	ColorVertex{glm::vec3( 0.6f, 0.0f,  0.6f), glm::vec3( 0.0f,  0.6f,  0.8f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Facing side
-	ColorVertex{glm::vec3(-0.6f, 0.0f,  0.6f), glm::vec3( 0.0f,  0.6f,  0.8f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Facing side
-	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3( 0.0f,  0.6f,  0.8f), glm::vec4(0.92f, 0.86f, 0.76f, 1.0f)}, // Facing side
+	ColorVertex{glm::vec3( 0.6f, 0.0f,  0.6f), glm::vec3( 0.0f,  0.6f,  0.8f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)}, // Facing side
+	ColorVertex{glm::vec3(-0.6f, 0.0f,  0.6f), glm::vec3( 0.0f,  0.6f,  0.8f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)}, // Facing side
+	ColorVertex{glm::vec3( 0.0f, 0.8f,  0.0f), glm::vec3( 0.0f,  0.6f,  0.8f), glm::vec4(0.0f, 1.0f, 1.0f, 1.0f)}, // Facing side
 };
 
 const std::vector<TextureVertex> objectTextureVertices =
