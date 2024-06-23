@@ -21,11 +21,11 @@ int main(int argc, char **argv) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef APPLE
+#ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-#ifdef FULL_SCREEN
+#ifdef __FULL_SCREEN__
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     if (!monitor) {
         throw Error("Failed to Find the Primary Monitor!");
@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
         throw Error("Failed to initialize GLAD!");
     }
 
-#ifdef FULL_SCREEN
+#ifdef __FULL_SCREEN__
     glViewport(0, 0, videoMode->width, videoMode->height);
 #else
     glViewport(0, 0, Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight());
@@ -90,11 +90,12 @@ int main(int argc, char **argv) {
     lightEBO.Unbind();
 
     Shader lightShader = Shader(
-        (Common::Instance().GetGLSLPath() + "basic_vertex.glsl").c_str(), 
-        (Common::Instance().GetGLSLPath() + "basic_fragment.glsl").c_str()
+        Common::Instance().GetShaderProgramPath(FLAT_SHADING, VERTEX_SHADER, BASIC_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(FLAT_SHADING, FRAGMENT_SHADER, BASIC_VERTEX).c_str()
     );
 
     lightShader.Use();
+    lightShader.SetUniformMat4(lightModel, "model");
     lightShader.SetUniformVec4(lightSource.GetColor(), "color");
 
     /***************************************** OBJECT MODEL *****************************************/
@@ -116,17 +117,17 @@ int main(int argc, char **argv) {
     objectVAO.Bind();
     EBO objectEBO = EBO(objectIndices);
 
-#if OBJECT_VERTEX_TYPE == TEXTURE_VERTEX
+#if __OBJECT_VERTEX_TYPE__ == __TEXTURE_VERTEX__
     VBO objectVBO = VBO(objectTextureVertices, GL_STATIC_DRAW);
     objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)0);                         // position
     objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(sizeof(glm::vec3)));       // normal
     objectVAO.LinkAttrib(objectVBO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(2 * sizeof(glm::vec3)));   // texture
-#elif OBJECT_VERTEX_TYPE == COLOR_VERTEX
+#elif __OBJECT_VERTEX_TYPE__ == __COLOR_VERTEX__
     VBO objectVBO = VBO(objectColorVertices, GL_STATIC_DRAW);
     objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)0);                           // position
     objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(sizeof(glm::vec3)));         // normal
     objectVAO.LinkAttrib(objectVBO, 2, 4, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(2 * sizeof(glm::vec3)));     // color
-#elif OBJECT_VERTEX_TYPE == NORMAL_VERTEX
+#elif __OBJECT_VERTEX_TYPE__ == __NORMAL_VERTEX__
     VBO objectVBO = VBO(objectNormalVertices, GL_STATIC_DRAW);
     objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)0);                          // position
     objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)(sizeof(glm::vec3)));        // normal
@@ -139,21 +140,21 @@ int main(int argc, char **argv) {
 
     Texture2D objectTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     
-#if OBJECT_VERTEX_TYPE == TEXTURE_VERTEX
+#if __OBJECT_VERTEX_TYPE__ == __TEXTURE_VERTEX__
     Shader objectShader = Shader(
-        (Common::Instance().GetGLSLPath() + "texture_vertex.glsl").c_str(), 
-        (Common::Instance().GetGLSLPath() + "texture_fragment.glsl").c_str()
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, TEXTURE_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, TEXTURE_VERTEX).c_str()
     );
-#elif OBJECT_VERTEX_TYPE == COLOR_VERTEX
+#elif __OBJECT_VERTEX_TYPE__ == __COLOR_VERTEX__
     Shader objectShader = Shader(
-        (Common::Instance().GetGLSLPath() + "color_vertex.glsl").c_str(), 
-        (Common::Instance().GetGLSLPath() + "color_fragment.glsl").c_str()
+        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, VERTEX_SHADER, COLOR_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, FRAGMENT_SHADER, COLOR_VERTEX).c_str()
     );
-#elif OBJECT_VERTEX_TYPE == NORMAL_VERTEX
+#elif __OBJECT_VERTEX_TYPE__ == __NORMAL_VERTEX__
     glm::vec4 objectColor = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
     Shader objectShader = Shader(
-        (Common::Instance().GetGLSLPath() + "normal_vertex.glsl").c_str(), 
-        (Common::Instance().GetGLSLPath() + "normal_fragment.glsl").c_str()
+        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, VERTEX_SHADER, NORMAL_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, FRAGMENT_SHADER, NORMAL_VERTEX).c_str()
     );
 #else
 #endif
@@ -164,9 +165,9 @@ int main(int argc, char **argv) {
     objectShader.SetUniformVec4(lightSource.GetColor(), "lightColor");
     objectShader.SetUniformVec3(lightSource.GetPosition(), "lightPosition");
 
-#if OBJECT_VERTEX_TYPE == TEXTURE_VERTEX
+#if __OBJECT_VERTEX_TYPE__ == __TEXTURE_VERTEX__
     objectShader.SetUniformInt(0, "textureImage");
-#elif OBJECT_VERTEX_TYPE == NORMAL_VERTEX
+#elif __OBJECT_VERTEX_TYPE__ == __NORMAL_VERTEX__
     objectShader.SetUniformVec4(objectColor, "color");
 #else
 #endif
@@ -199,8 +200,7 @@ int main(int argc, char **argv) {
         objectVAO.Unbind();
 
         lightShader.Use();
-        glm::mat4 lightTransform = projectionView * lightModel;
-        lightShader.SetUniformMat4(lightTransform, "transform");
+        lightShader.SetUniformMat4(projectionView, "projectionView");
         lightVAO.Bind();
         glDrawElements(GL_TRIANGLES, lightIndices.size(), GL_UNSIGNED_INT, (void*)0);
         lightVAO.Unbind();

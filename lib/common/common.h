@@ -7,15 +7,47 @@
 #include <glm.hpp>
 #include <gtc/type_ptr.hpp>
 
+enum ShadingType {
+    FLAT_SHADING,
+    GOURAUD_SHADING,
+    PHONG_SHADING,
+};
+
+enum ShaderType {
+    VERTEX_SHADER,
+    FRAGMENT_SHADER,
+};
+
+enum VertexType {
+    BASIC_VERTEX,
+    COLOR_VERTEX,
+    NORMAL_VERTEX,
+    TEXTURE_VERTEX,
+};
+
 class Common {
 private:
     static Common instance;
 
-    std::string glslPath = "glsl/";
-    std::string modelsPath = "data/models/";
-    std::string texturesPath = "data/textures/";
+    const std::string glslPath = "glsl/";
+    const std::string flatShadingPath = glslPath + "flat/";
+    const std::string gouraudShadingPath = glslPath + "gouraud/";
+    const std::string phongShadingPath = glslPath + "phong/";
 
-    glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
+    const std::string vertexShaderPath = "vertex/";
+    const std::string fragmentShaderPath = "fragment/";
+
+    const std::string glslFileExtension = ".glsl";
+    const std::string basicVertexGLSL = "basic" + glslFileExtension;
+    const std::string colorVertexGLSL = "color" + glslFileExtension;
+    const std::string normalVertexGLSL = "normal" + glslFileExtension;
+    const std::string textureVertexGLSL = "texture" + glslFileExtension;
+
+    const std::string dataPath = "data/";
+    const std::string modelsPath = dataPath + "models/";
+    const std::string texturesPath = dataPath + "textures/";
+
+    const glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
 
     GLsizei windowWidth = 1000;
     GLsizei windowHeight = 800;
@@ -28,10 +60,6 @@ private:
 public:
     static Common& Instance(void) {
         return instance;
-    }
-
-    const std::string& GetGLSLPath(void) const {
-        return glslPath;
     }
 
     const std::string& GetModelsPath(void) const {
@@ -71,6 +99,8 @@ public:
     float RGB2Gray(float red, float green, float blue) const {
         return 0.299f * red + 0.587f * green + 0.114f * blue;
     }
+
+    const std::string GetShaderProgramPath(enum ShadingType shading, enum ShaderType shader, enum VertexType vertex) const;
 };
 
 #endif // __COMMON_H__

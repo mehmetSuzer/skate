@@ -27,7 +27,7 @@ public:
     }
 
     void SetColor(float red, float green, float blue, float alpha) {
-    #ifdef COMPILE_ERROR_HANDLERS
+    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertColorValidity(red, green, blue, alpha);
     #endif
         color = glm::vec4(red, green, blue, alpha);

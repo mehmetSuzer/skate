@@ -22,14 +22,14 @@ public:
     }
 
     void SetDirection(const glm::vec3& direction_) {
-    #ifdef COMPILE_ERROR_HANDLERS
+    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertDirection(direction_);
     #endif
         direction = direction_;
     }
 
     void SetFOVradian(float FOVradian) {
-    #ifdef COMPILE_ERROR_HANDLERS
+    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertFOVradian(FOVradian);
     #endif
         cosHalfFOVradian = cosf(FOVradian / 2.0f);

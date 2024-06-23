@@ -19,7 +19,7 @@ enum Event {
 template<typename T>
 class Subject;
 
-#ifdef OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
+#ifdef __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__
 
 template<typename T>
 class Observer {
@@ -83,6 +83,6 @@ public:
     void RemoveObserver(Observer<T>* observer);
 };
 
-#endif // OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
+#endif // __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__
 
 #endif // __OBSERVER_H__

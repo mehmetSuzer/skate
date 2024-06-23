@@ -1,7 +1,7 @@
 
 #include "observer_subject.h"
 
-#ifdef OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
+#ifdef __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__
 
 //-------------------------------------- OBSERVER --------------------------------------// 
 
@@ -182,4 +182,4 @@ void Subject<T>::RemoveObserver(Observer<T>* observer) {
     }
 }
 
-#endif // OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
+#endif // __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__

@@ -30,7 +30,7 @@ public:
     }
 
     void SetIntensityCoefficients(float a_, float b_) {
-    #ifdef COMPILE_ERROR_HANDLERS
+    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertIntensityCoefficients(a_, b_);
     #endif
         a = a_;

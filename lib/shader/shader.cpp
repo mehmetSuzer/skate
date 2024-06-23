@@ -4,7 +4,7 @@
 std::string readFile(const char* filename) {
     std::ifstream in(filename, std::ios::binary);
 
-    #ifdef COMPILE_ERROR_HANDLERS
+    #ifdef __COMPILE_ERROR_HANDLERS__
     if (!in) {
         std::string errorMessage = "File " + std::string(filename) + " couldn't be found!";
         throw Error(errorMessage);
@@ -27,7 +27,7 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
-#ifdef COMPILE_ERROR_HANDLERS
+#ifdef __COMPILE_ERROR_HANDLERS__
     CheckShaderError(vertexShader, VERTEX_SHADER_COMPILE_ERROR);
 #endif
 
@@ -39,7 +39,7 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-#ifdef COMPILE_ERROR_HANDLERS
+#ifdef __COMPILE_ERROR_HANDLERS__
     CheckShaderError(fragmentShader, FRAGMENT_SHADER_COMPILE_ERROR);
 #endif 
 
@@ -50,7 +50,7 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glAttachShader(ID, fragmentShader);
     glLinkProgram(ID);
 
-#ifdef COMPILE_ERROR_HANDLERS
+#ifdef __COMPILE_ERROR_HANDLERS__
     CheckShaderError(ID, SHADER_PROGRAM_LINKING_ERROR);
 #endif
 
