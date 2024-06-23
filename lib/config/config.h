@@ -20,6 +20,6 @@
 #define __TEXTURE_VERTEX__  1
 #define __COLOR_VERTEX__    2
 #define __MATERIAL_VERTEX__ 3
-#define __OBJECT_VERTEX_TYPE__     __TEXTURE_VERTEX__
+#define __PYRAMID_VERTEX_TYPE__     __TEXTURE_VERTEX__
 
 #endif // __CONFIG_H__

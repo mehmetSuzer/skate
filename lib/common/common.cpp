@@ -11,11 +11,12 @@ const std::string Common::GetShaderProgramPath(enum ShadingType shading, enum Sh
     const std::string& shaderPath = (shader == VERTEX_SHADER) ? vertexShaderPath : 
                                                                 fragmentShaderPath;
 
-    const std::string& vertexPath = (vertex == BASIC_VERTEX)   ? basicVertexGLSL : 
-                                    (vertex == COLOR_VERTEX)   ? colorVertexGLSL : 
-                                    (vertex == NORMAL_VERTEX)  ? normalVertexGLSL : 
-                                    (vertex == TEXTURE_VERTEX) ? textureVertexGLSL :
-                                                                 materialVertexGLSL;
-                                                                    
+    const std::string& vertexPath = (vertex == BASIC_VERTEX)    ? basicVertexGLSL : 
+                                    (vertex == COLOR_VERTEX)    ? colorVertexGLSL : 
+                                    (vertex == NORMAL_VERTEX)   ? normalVertexGLSL : 
+                                    (vertex == TEXTURE_VERTEX)  ? textureVertexGLSL :
+                                    (vertex == MATERIAL_VERTEX) ? materialVertexGLSL :
+                                                                  lightingMapVertexGLSL;
+
     return shadingPath + shaderPath + vertexPath;
 }
