@@ -1,4 +1,5 @@
 
+#include <material.h>
 #include <ebo.h>
 #include <vao.h>
 #include <scene.h>
@@ -127,7 +128,7 @@ int main(int argc, char **argv) {
     objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)0);                           // position
     objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(sizeof(glm::vec3)));         // normal
     objectVAO.LinkAttrib(objectVBO, 2, 4, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(2 * sizeof(glm::vec3)));     // color
-#elif __OBJECT_VERTEX_TYPE__ == __NORMAL_VERTEX__
+#elif __OBJECT_VERTEX_TYPE__ == __NORMAL_VERTEX__ || __OBJECT_VERTEX_TYPE__ == __MATERIAL_VERTEX__
     VBO objectVBO = VBO(objectNormalVertices, GL_STATIC_DRAW);
     objectVAO.LinkAttrib(objectVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)0);                          // position
     objectVAO.LinkAttrib(objectVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)(sizeof(glm::vec3)));        // normal
@@ -156,19 +157,30 @@ int main(int argc, char **argv) {
         Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, VERTEX_SHADER, NORMAL_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(GOURAUD_SHADING, FRAGMENT_SHADER, NORMAL_VERTEX).c_str()
     );
+#elif __OBJECT_VERTEX_TYPE__ == __MATERIAL_VERTEX__
+    const Material& objectMaterial = material::cyanPlastic;
+    Shader objectShader = Shader(
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, MATERIAL_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, MATERIAL_VERTEX).c_str()
+    );
 #else
 #endif
 
     objectShader.Use();
     objectShader.SetUniformMat3(normalMatrix, "normalMatrix");
     objectShader.SetUniformMat4(objectModel, "model");
-    objectShader.SetUniformVec4(lightSource.GetColor(), "lightColor");
-    objectShader.SetUniformVec3(lightSource.GetPosition(), "lightPosition");
+    objectShader.SetUniformVec4(lightSource.GetColor(), "light.color");
+    objectShader.SetUniformVec3(lightSource.GetPosition(), "light.position");
 
 #if __OBJECT_VERTEX_TYPE__ == __TEXTURE_VERTEX__
     objectShader.SetUniformInt(0, "textureImage");
 #elif __OBJECT_VERTEX_TYPE__ == __NORMAL_VERTEX__
     objectShader.SetUniformVec4(objectColor, "color");
+#elif __OBJECT_VERTEX_TYPE__ == __MATERIAL_VERTEX__
+    objectShader.SetUniformVec3(objectMaterial.ambient, "material.ambient");
+    objectShader.SetUniformVec3(objectMaterial.diffuse, "material.diffuse");
+    objectShader.SetUniformVec3(objectMaterial.specular, "material.specular");
+    objectShader.SetUniformFloat(objectMaterial.shininess, "material.shininess");
 #else
 #endif
 

@@ -11,6 +11,7 @@ typedef struct {
     float shininess;
 } Material; 
 
+namespace material {
                                   //                    AMBIENT               /                         DIFFUSE                     /                          SPECULAR                    /  SHININESS  //
                                   //            RED      GREEN       BLUE     /             RED          GREEN           BLUE       /               RED          GREEN           BLUE      /             //  
 const Material emerald          = {glm::vec3(0.0215f,   0.1745f,    0.0215f),   glm::vec3(0.07568f,     0.61424f,       0.07568f),      glm::vec3(0.633f,       0.727811f,      0.633f),        77.0f};
@@ -37,5 +38,7 @@ const Material greenRubber      = {glm::vec3(0.0f,      0.05f,      0.0f),      
 const Material redRubber        = {glm::vec3(0.05f,     0.0f,       0.0f),      glm::vec3(0.5f,         0.4f,           0.4f),          glm::vec3(0.7f,         0.04f,          0.04f),         10.0f};
 const Material whiteRubber      = {glm::vec3(0.05f,     0.05f,      0.05f),     glm::vec3(0.5f,         0.5f,           0.5f),          glm::vec3(0.7f,         0.7f,           0.7f),          10.0f};
 const Material yellowRubber     = {glm::vec3(0.05f,     0.05f,      0.0f),      glm::vec3(0.5f,         0.5f,           0.4f),          glm::vec3(0.7f,         0.7f,           0.04f),         10.0f};
+
+}
 
 #endif // __MATERIAL_H__

@@ -1,6 +1,11 @@
 
 #version 330 core
 
+struct Light {
+    vec4 color;
+    vec3 position;
+};
+
 out vec4 FragColor;
 
 in vec3 position;
@@ -8,13 +13,11 @@ in vec3 normal;
 in vec2 tex;
 
 uniform vec3 cameraPosition;
-uniform vec4 lightColor;
-uniform vec3 lightPosition;
-
+uniform Light light;
 uniform sampler2D textureImage;
 
 void main() {
-    vec3 positionToLightPosition = lightPosition - position;
+    vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
 
@@ -29,5 +32,5 @@ void main() {
     vec3 reflectionDirection = reflect(-directionToLight, normal);
     float specular = (diffuse > 0.0f) ? 0.5f * pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
-    FragColor = texture(textureImage, tex) * lightColor * (ambient + lightIntensity * (diffuse + specular));
+    FragColor = texture(textureImage, tex) * light.color * (ambient + lightIntensity * (diffuse + specular));
 }

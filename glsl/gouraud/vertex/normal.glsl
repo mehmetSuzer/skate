@@ -1,6 +1,11 @@
 
 #version 330 core
 
+struct Light {
+    vec4 color;
+    vec3 position;
+};
+
 layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec3 aNormal;
 
@@ -11,15 +16,14 @@ uniform mat4 projectionView;
 uniform mat3 normalMatrix;
 
 uniform vec3 cameraPosition;
-uniform vec4 lightColor;
-uniform vec3 lightPosition;
+uniform Light light;
 
 void main() {
     vec3 position = vec3(model * vec4(aPosition, 1.0f));
     gl_Position = projectionView * vec4(position, 1.0f);
     vec3 normal = normalMatrix * aNormal;
 
-    vec3 positionToLightPosition = lightPosition - position;
+    vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
 
@@ -34,5 +38,5 @@ void main() {
     vec3 reflectionDirection = reflect(-directionToLight, normal);
     float specular = (diffuse > 0.0f) ? 0.5f * pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
-    lightingColor = lightColor * (ambient + lightIntensity * (diffuse + specular));
+    lightingColor = light.color * (ambient + lightIntensity * (diffuse + specular));
 }

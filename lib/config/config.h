@@ -19,6 +19,7 @@
 #define __NORMAL_VERTEX__   0
 #define __TEXTURE_VERTEX__  1
 #define __COLOR_VERTEX__    2
-#define __OBJECT_VERTEX_TYPE__     __TEXTURE_VERTEX__
+#define __MATERIAL_VERTEX__ 3
+#define __OBJECT_VERTEX_TYPE__     __MATERIAL_VERTEX__
 
 #endif // __CONFIG_H__

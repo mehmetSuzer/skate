@@ -23,6 +23,7 @@ enum VertexType {
     COLOR_VERTEX,
     NORMAL_VERTEX,
     TEXTURE_VERTEX,
+    MATERIAL_VERTEX,
 };
 
 class Common {
@@ -42,6 +43,7 @@ private:
     const std::string colorVertexGLSL = "color" + glslFileExtension;
     const std::string normalVertexGLSL = "normal" + glslFileExtension;
     const std::string textureVertexGLSL = "texture" + glslFileExtension;
+    const std::string materialVertexGLSL = "material" + glslFileExtension;
 
     const std::string dataPath = "data/";
     const std::string modelsPath = dataPath + "models/";
