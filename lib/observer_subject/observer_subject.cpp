@@ -3,7 +3,7 @@
 
 #ifdef OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
 
-/* -------------------------------------- OBSERVER --------------------------------------*/ 
+//-------------------------------------- OBSERVER --------------------------------------// 
 
 // Called only in subject->addObserver().
 // Returns true if the subject is added successfully.
@@ -48,7 +48,7 @@ Observer<T>::~Observer() {
     }
 }
 
-// -------------------------------------- SUBJECT --------------------------------------// 
+//-------------------------------------- SUBJECT --------------------------------------// 
 
 // Notifies all observers in the array.
 template<typename T>
@@ -96,7 +96,7 @@ void Subject<T>::RemoveObserver(Observer<T>* observer) {
 
 #else
 
-/* -------------------------------------- OBSERVER --------------------------------------*/ 
+//-------------------------------------- OBSERVER --------------------------------------// 
 
 // Removes itself from the linked list.
 template<typename T>

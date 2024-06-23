@@ -94,13 +94,12 @@ void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
     // Last positions from the last mouse callback
 	static double lastX = Common::Instance().GetWindowWidth() / 2.0; 
 	static double lastY = Common::Instance().GetWindowHeight() / 2.0;
-    static bool firstMouse = true;
 
     // Prevent mouse to overshoot the scene in the first mouse callback
-    if (firstMouse) {
+    if (InputHandler::Instance().GetFirstMouse()) {
         lastX = xPos;
         lastY = yPos;
-        firstMouse = false;
+        InputHandler::Instance().SetFirstMouse(false);
     }
   
     // Update the last positions
@@ -159,6 +158,7 @@ void InputHandler::ActivateInputs(GLFWwindow *window) {
     glfwSetCursorPosCallback(window, cursorPosCallback);
     glfwSetKeyCallback(window, activeKeyCallback);
     glfwSetScrollCallback(window, scrollCallback);
+    SetFirstMouse(true);
 }
     
 void InputHandler::DeactivateInputs(GLFWwindow* window) {

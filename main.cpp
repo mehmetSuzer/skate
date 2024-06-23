@@ -10,8 +10,6 @@
 #include <spot_light.h>
 #include <directional_light.h>
 
-#define FULL_SCREEN 0
-
 int main(int argc, char **argv) {
     /***************************************** INITIALIZATION *****************************************/
 
@@ -23,11 +21,11 @@ int main(int argc, char **argv) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
+#ifdef APPLE
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-#if FULL_SCREEN
+#ifdef FULL_SCREEN
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
     if (!monitor) {
         throw Error("Failed to Find the Primary Monitor!");
@@ -57,7 +55,7 @@ int main(int argc, char **argv) {
         throw Error("Failed to initialize GLAD!");
     }
 
-#if FULL_SCREEN
+#ifdef FULL_SCREEN
     glViewport(0, 0, videoMode->width, videoMode->height);
 #else
     glViewport(0, 0, Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight());

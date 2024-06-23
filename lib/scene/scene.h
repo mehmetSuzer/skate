@@ -4,8 +4,6 @@
 
 #include <vbo.h>
 
-#define OBJECT_VERTEX_TYPE     TEXTURE_VERTEX
-
 const std::vector<ColorVertex> objectColorVertices =
 {  			   //         positions          /            normals            /               colors               //
 	ColorVertex{glm::vec3(-0.6f, 0.0f,  0.6f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec4(0.83f, 0.70f, 0.44f, 1.0f)}, // Bottom side

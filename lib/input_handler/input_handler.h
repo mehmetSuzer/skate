@@ -25,6 +25,7 @@ private:
 
     float cursorPosSensitivity = M_PIf / 1800.0f;
     float scrollSensitivity = M_PIf / 180.0f;
+    bool firstMouse = true;
 
     static const uint32_t buttonMapSize = GLFW_KEY_LAST+1;
     uint8_t buttonMap[buttonMapSize];
@@ -48,6 +49,14 @@ public:
 
     void SetScrollSensitivity(float sensitivity) {
         scrollSensitivity = sensitivity;
+    }
+
+    bool GetFirstMouse(void) const {
+        return firstMouse;
+    }
+
+    void SetFirstMouse(bool boolean) {
+        firstMouse = boolean;
     }
 
     uint8_t GetButton(GLuint key) const {

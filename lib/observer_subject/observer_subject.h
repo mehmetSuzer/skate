@@ -2,6 +2,7 @@
 #ifndef __OBSERVER_H__
 #define __OBSERVER_H__
 
+#include <config.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -17,8 +18,6 @@ enum Event {
 
 template<typename T>
 class Subject;
-
-#define OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
 
 #ifdef OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION
 

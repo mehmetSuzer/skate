@@ -20,6 +20,9 @@ set(GLSL_DIR glsl)
 file(COPY ${CMAKE_SOURCE_DIR}/${GLSL_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY ${CMAKE_SOURCE_DIR}/${DATA_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
+add_subdirectory(${LIB_DIR}/config)
+include_directories(${LIB_DIR}/config)
+
 add_subdirectory(${LIB_DIR}/error)
 include_directories(${LIB_DIR}/error)
 

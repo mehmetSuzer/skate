@@ -6,11 +6,6 @@
 #include <glad.h>
 #include <glm.hpp>
 
-#define BASIC_VERTEX    0
-#define NORMAL_VERTEX   1
-#define TEXTURE_VERTEX  2
-#define COLOR_VERTEX    3
-
 typedef struct {
     glm::vec3 position;
 } BasicVertex;
