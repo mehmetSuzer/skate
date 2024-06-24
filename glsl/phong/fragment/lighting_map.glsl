@@ -30,9 +30,9 @@ void main() {
 
     float a = 0.2f;
     float b = 0.7f;
-    float lightIntensity = 1.0f / ((a * distanceToLight + b) * distanceToLight + 1.0f);
+    float attenuation = 1.0f / ((a * distanceToLight + b) * distanceToLight + 1.0f);
 
-    float ambientPower = 0.15f;
+    float ambientPower = 0.2f;
     vec4 ambient = texture(materialMap.diffuse, tex) * ambientPower;
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
     vec4 diffuse = texture(materialMap.diffuse, tex) * diffusePower;
@@ -46,5 +46,5 @@ void main() {
     float emissionPower = (texture(materialMap.specular, tex).r == 0.0f) ? 1.0f : 0.0f;
     vec4 emission = texture(materialMap.emission, tex) * emissionPower;
 
-    FragColor = emission + vec4(light.color, 1.0f) * (ambient + lightIntensity * (diffuse + specular));
+    FragColor = emission + vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
 }

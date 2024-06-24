@@ -1,9 +1,17 @@
 
 #include "spot_light.h"
 
-void SpotLight::AssertFOVradian(float FOVradian) const {
-    if (FOVradian <= 0.0f || FOVradian > M_PIf) {
-        std::string errorMessage = "FOV Must Be Between (0, pi]! Given: " + std::to_string(FOVradian);
+void SpotLight::AssertCutOffRadian(float cutOffRadian) const {
+    if (cutOffRadian <= 0.0f || cutOffRadian >= M_PIf) {
+        std::string errorMessage = "Cut-Off Radian Must Be In (0, pi)! Given: " + std::to_string(cutOffRadian);
+        throw Error(errorMessage);
+    }
+}
+
+void SpotLight::AssertInnerLessThanOuter(float innerCutOffRadian, float outerCutOffRadian) const {
+    if (innerCutOffRadian >= outerCutOffRadian) {
+        std::string errorMessage = "Inner Cut-Off Radian Must Be Less Than Outer Cut-Off Radian! Given Values --> Inner: " 
+            + std::to_string(innerCutOffRadian) + ", Outer: " + std::to_string(outerCutOffRadian);
         throw Error(errorMessage);
     }
 }
@@ -15,24 +23,24 @@ void SpotLight::AssertDirection(const glm::vec3& direction) const {
     }
 }
 
-SpotLight::SpotLight(const glm::vec3& position_, float linear_, float quadratic_, 
-    const glm::vec3& direction_, float FOVradian, float red, float green, float blue)
+SpotLight::SpotLight(const glm::vec3& position_, float linear_, float quadratic_, const glm::vec3& direction_, 
+    float innerCutOffRadian, float outerCutOffRadian, float red, float green, float blue)
     : PointLight(position_, linear_, quadratic_, red, green, blue) {
     SetDirection(direction_);
-    SetFOVradian(FOVradian);
+    SetCutOffRadians(innerCutOffRadian, outerCutOffRadian);
 }
 
-SpotLight::SpotLight(const glm::vec3& position_, float linear_, float quadratic_, 
-    const glm::vec3& direction_, float FOVradian, const glm::vec3& color_)
-    : SpotLight(position_, linear_, quadratic_, direction_, FOVradian, color_.r, color_.g, color_.b) {}
+SpotLight::SpotLight(const glm::vec3& position_, float linear_, float quadratic_, const glm::vec3& direction_, 
+    float innerCutOffRadian, float outerCutOffRadian, const glm::vec3& color_)
+    : SpotLight(position_, linear_, quadratic_, direction_, innerCutOffRadian, outerCutOffRadian, color_.r, color_.g, color_.b) {}
 
-SpotLight::SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, 
-    const glm::vec3& direction_, float FOVradian, float red, float green, float blue) 
+SpotLight::SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& direction_, 
+    float innerCutOffRadian, float outerCutOffRadian, float red, float green, float blue) 
     : PointLight(position_, dist1, atten1, dist2, atten2, red, green, blue) {
     SetDirection(direction_);
-    SetFOVradian(FOVradian);
+    SetCutOffRadians(innerCutOffRadian, outerCutOffRadian);
 }
     
-SpotLight::SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, 
-    const glm::vec3& direction_, float FOVradian, const glm::vec3& color_)
-    : SpotLight(position_, dist1, atten1, dist2, atten2, direction_, FOVradian, color_.r, color_.g, color_.b) {}
+SpotLight::SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& direction_, 
+    float innerCutOffRadian, float outerCutOffRadian, const glm::vec3& color_)
+    : SpotLight(position_, dist1, atten1, dist2, atten2, direction_, innerCutOffRadian, outerCutOffRadian, color_.r, color_.g, color_.b) {}

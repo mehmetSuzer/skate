@@ -28,11 +28,24 @@ public:
         direction = direction_;
     }
 
+    float GetIntensity(void) const {
+        return intensity;
+    }
+
     void SetIntensity(float intensity_) {
     #ifdef __COMPILE_ERROR_HANDLERS__
         AssertIntensity(intensity_);
     #endif
         intensity = intensity_;
+    }
+
+    LightCasterInfo GetInfo(void) const override {
+        return LightCasterInfo {
+            .type = DIRECTIONAL_LIGHT,
+            .color = GetColor(),
+            .direction = GetDirection(),
+            .intensity = GetIntensity(),
+        };
     }
 };
 

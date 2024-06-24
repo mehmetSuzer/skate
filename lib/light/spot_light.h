@@ -8,21 +8,23 @@
 class SpotLight : public PointLight {
 private:
     glm::vec3 direction;
-    float cosHalfFOVradian;
+    float cosInnerCutOffRadian;
+    float cosOuterCutOffRadian;
 
-    void AssertFOVradian(float FOVradian) const;
+    void AssertCutOffRadian(float cutOffRadian) const;
+    void AssertInnerLessThanOuter(float innerCutOffRadian, float outerCutOffRadian) const;
     void AssertDirection(const glm::vec3& direction) const;
 
 public:
-    SpotLight(const glm::vec3& position_, float linear_, float quadratic_, 
-        const glm::vec3& direction_, float FOVradian, float red, float green, float blue);
-    SpotLight(const glm::vec3& position_, float linear_, float quadratic_, 
-        const glm::vec3& direction_, float FOVradian, const glm::vec3& color_);
+    SpotLight(const glm::vec3& position_, float linear_, float quadratic_, const glm::vec3& direction_, 
+        float innerCutOffRadian, float outerCutOffRadian, float red, float green, float blue);
+    SpotLight(const glm::vec3& position_, float linear_, float quadratic_, const glm::vec3& direction_, 
+        float innerCutOffRadian, float outerCutOffRadian, const glm::vec3& color_);
 
-    SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, 
-        const glm::vec3& direction_, float FOVradian, float red, float green, float blue);
-    SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, 
-        const glm::vec3& direction_, float FOVradian, const glm::vec3& color_);
+    SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& direction_, 
+        float innerCutOffRadian, float outerCutOffRadian, float red, float green, float blue);
+    SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& direction_, 
+        float innerCutOffRadian, float outerCutOffRadian, const glm::vec3& color_);
 
     const glm::vec3& GetDirection(void) const {
         return direction;
@@ -35,11 +37,27 @@ public:
         direction = direction_;
     }
 
-    void SetFOVradian(float FOVradian) {
+    void SetCutOffRadians(float innerCutOffRadian, float outerCutOffRadian) {
     #ifdef __COMPILE_ERROR_HANDLERS__
-        AssertFOVradian(FOVradian);
+        AssertCutOffRadian(innerCutOffRadian);
+        AssertCutOffRadian(outerCutOffRadian);
+        AssertInnerLessThanOuter(innerCutOffRadian, outerCutOffRadian);
     #endif
-        cosHalfFOVradian = cosf(FOVradian / 2.0f);
+        cosInnerCutOffRadian = glm::cos(innerCutOffRadian);
+        cosOuterCutOffRadian = glm::cos(outerCutOffRadian);
+    }
+
+    LightCasterInfo GetInfo(void) const override {
+        return LightCasterInfo {
+            .type = SPOT_LIGHT,
+            .color = GetColor(),
+            .position = GetPosition(),
+            .direction = GetDirection(),
+            .linear = linear,
+            .quadratic = quadratic,
+            .cosInnerCutOffRadian = cosInnerCutOffRadian,
+            .cosOuterCutOffRadian = cosOuterCutOffRadian,
+        };
     }
 };
 

@@ -29,14 +29,14 @@ void main() {
 
     float a = 0.2f;
     float b = 0.7f;
-    float lightIntensity = 1.0f / ((a * distanceToLight + b) * distanceToLight + 1.0f);
+    float attenuation = 1.0f / ((a * distanceToLight + b) * distanceToLight + 1.0f);
 
-    float ambient = 0.15f;
-    float diffuse = max(dot(normal, directionToLight), 0.0f);
+    float ambientPower = 0.2f;
+    float diffusePower = max(dot(normal, directionToLight), 0.0f);
     
     vec3 directionToCamera = normalize(cameraPosition - position);
     vec3 reflectionDirection = reflect(-directionToLight, normal);
-    float specular = (diffuse > 0.0f) ? 0.5f * pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
+    float specularPower = (diffusePower > 0.0f) ? 0.5f * pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
-    lightingColor = vec4(light.color, 1.0f) * (ambient + lightIntensity * (diffuse + specular));
+    lightingColor = vec4(light.color, 1.0f) * attenuation * (ambientPower + diffusePower + specularPower);
 }

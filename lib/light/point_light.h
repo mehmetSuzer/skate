@@ -35,6 +35,16 @@ public:
         linear = linear_;
         quadratic = quadratic_;
     }
+
+    LightCasterInfo GetInfo(void) const override {
+        return LightCasterInfo {
+            .type = POINT_LIGHT,
+            .color = GetColor(),
+            .position = GetPosition(),
+            .linear = linear,
+            .quadratic = quadratic,
+        };
+    }
 };
 
 #endif // __POINT_LIGHT_H__

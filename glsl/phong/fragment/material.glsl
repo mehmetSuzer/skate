@@ -29,9 +29,9 @@ void main() {
 
     float a = 0.2f;
     float b = 0.7f;
-    float lightIntensity = 1.0f / ((a * distanceToLight + b) * distanceToLight + 1.0f);
+    float attenuation = 1.0f / ((a * distanceToLight + b) * distanceToLight + 1.0f);
 
-    float ambientPower = 0.5f;
+    float ambientPower = 1.0f;
     vec4 ambient = vec4(material.ambient, 1.0f) * ambientPower;
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
     vec4 diffuse = vec4(material.diffuse, 1.0f) * diffusePower;
@@ -41,5 +41,5 @@ void main() {
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), material.shininess) : 0.0f;
     vec4 specular = vec4(material.specular, 1.0f) * specularPower;
 
-    FragColor = vec4(light.color, 1.0f) * (ambient + lightIntensity * (diffuse + specular));
+    FragColor = vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
 }

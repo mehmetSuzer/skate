@@ -5,6 +5,24 @@
 #include <error.h>
 #include <glm.hpp>
 
+enum LightCasterType {
+    DIRECTIONAL_LIGHT,
+    POINT_LIGHT,
+    SPOT_LIGHT,
+};
+
+typedef struct {
+    enum LightCasterType type;
+    glm::vec3 color;            // all
+    glm::vec3 position;         // point and spot
+    glm::vec3 direction;        // directional and spot
+    float intensity;            // directional
+    float linear;               // point and spot
+    float quadratic;            // point and spot
+    float cosInnerCutOffRadian; // spot
+    float cosOuterCutOffRadian; // spot
+ } LightCasterInfo;
+
 class LightCaster {
 private:
     glm::vec3 color;
@@ -44,6 +62,8 @@ public:
     void Deactivate(void) {
         active = false;
     }
+
+    virtual LightCasterInfo GetInfo(void) const = 0;
 };
 
 #endif // __LIGHT_CASTER_H__
