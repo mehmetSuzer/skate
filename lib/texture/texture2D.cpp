@@ -51,10 +51,6 @@ Texture2D::Texture2D(const char* imageFile, GLint wrapS, GLint wrapT, GLint minF
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-GLuint Texture2D::GetID(void) const {
-    return ID;
-}
-
 void Texture2D::Bind(GLuint unit) const {
     glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, ID);

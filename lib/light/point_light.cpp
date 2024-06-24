@@ -1,28 +1,37 @@
 
 #include "point_light.h"
 
-void PointLight::AssertIntensityCoefficients(float a_, float b_) const {
-    if (a_ < 0.0f || b_ < 0.0f) {
-        std::string errorMessage = "Intensity Coefficients Cannot Be Negative. Given: " + std::to_string(a_) + " " + std::to_string(b_);
+static float GetIntensity(float dist, float linear, float quadratic) {
+    return 1.0f / (1.0f + linear * dist + quadratic * dist * dist);
+}
+
+void PointLight::AssertAttenuationCoefficients(float linear_, float quadratic_) const {
+    if (linear_ < 0.0f || quadratic_ < 0.0f) {
+        std::string errorMessage = "Attenuation Coefficients Cannot Be Negative. Given: " + 
+            std::to_string(linear_) + " " + std::to_string(quadratic_);
         throw Error(errorMessage);
     }
 }
 
-PointLight::PointLight(const glm::vec3& position_, float red, float green, float blue, float alpha, float a_, float b_)
-    : Light(red, green, blue, alpha), position(position_)  {
-    SetIntensityCoefficients(a_, b_);
+PointLight::PointLight(const glm::vec3& position_, float linear_, float quadratic_, float red, float green, float blue)
+    : LightCaster(red, green, blue), position(position_) {
+    SetAttenuationCoefficients(linear_, quadratic_);
 }
 
-PointLight::PointLight(const glm::vec3& position_, const glm::vec4& color_, float a_, float b_)
-    : PointLight(position_, color_.r, color_.g, color_.b, color_.a, a_, b_) {}
+PointLight::PointLight(const glm::vec3& position_, float linear_, float quadratic_, const glm::vec3& color_)
+    : PointLight(position_, linear_, quadratic_, color_.r, color_.g, color_.b) {}
 
-LightInfo PointLight::Shine(const glm::vec3& point) const {
-    glm::vec3 pointToPosition = position - point;
-    float distance = glm::length(pointToPosition);
+PointLight::PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, float red, float green, float blue) 
+    : LightCaster(red, green, blue), position(position_) {
+    const float d1_minus_d2 = dist1 - dist2;
+    const float a1_d1 = atten1 * dist1;
+    const float a2_d2 = atten2 * dist2;
+    const float d1_d2 = dist1 * dist2;
 
-    return LightInfo{
-        pointToPosition / distance,
-        distance,
-        GetIntensity(distance),
-    };
+    const float quadratic_ = 1.0f / (a1_d1 * d1_minus_d2) - 1.0f / (a2_d2 * d1_minus_d2) + 1.0f / d1_d2;
+    const float linear_ = (1.0f - atten1 - a1_d1 * dist1 * quadratic_) / a1_d1;
+    SetAttenuationCoefficients(linear_, quadratic_);
 }
+    
+PointLight::PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& color_)
+    : PointLight(position_, dist1, atten1, dist2, atten2, color_.r, color_.g, color_.b) {}

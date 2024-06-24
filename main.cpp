@@ -6,10 +6,7 @@
 #include <input_handler.h>
 #include <shader.h>
 #include <texture2D.h>
-
-#include <point_light.h>
-#include <spot_light.h>
-#include <directional_light.h>
+#include <light.h>
 
 int main(int argc, char **argv) {
     //-------------------------------------- INITIALIZATION --------------------------------------//
@@ -77,7 +74,7 @@ int main(int argc, char **argv) {
 	lightModel = lightModel * glm::mat4_cast(lightRotation);
     lightModel = glm::scale(lightModel, glm::vec3(lightScalar));
     
-    PointLight lightSource = PointLight(lightPosition, glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 0.2f, 0.2f);
+    PointLight lightSource = PointLight(lightPosition, 7.0f, 0.010627f, 1.0f, 0.285714f, glm::vec3(1.0f, 1.0f, 1.0f));
 
     VAO lightVAO = VAO();
     lightVAO.Bind();
@@ -97,7 +94,7 @@ int main(int argc, char **argv) {
 
     lightShader.Use();
     lightShader.SetUniformMat4(lightModel, "model");
-    lightShader.SetUniformVec4(lightSource.GetColor(), "color");
+    lightShader.SetUniformVec3(lightSource.GetColor(), "color");
 
     //-------------------------------------- PYRAMID MODEL --------------------------------------//
 
@@ -158,7 +155,7 @@ int main(int argc, char **argv) {
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, NORMAL_VERTEX).c_str()
     );
 #elif __PYRAMID_VERTEX_TYPE__ == __MATERIAL_VERTEX__
-    const Material& pyramidMaterial = material::cyanPlastic;
+    const Material& pyramidMaterial = material::obsidian;
     Shader pyramidShader = Shader(
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, MATERIAL_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, MATERIAL_VERTEX).c_str()
@@ -169,7 +166,7 @@ int main(int argc, char **argv) {
     pyramidShader.Use();
     pyramidShader.SetUniformMat3(pyramidNormalMatrix, "normalMatrix");
     pyramidShader.SetUniformMat4(pyramidModel, "model");
-    pyramidShader.SetUniformVec4(lightSource.GetColor(), "light.color");
+    pyramidShader.SetUniformVec3(lightSource.GetColor(), "light.color");
     pyramidShader.SetUniformVec3(lightSource.GetPosition(), "light.position");
 
 #if __PYRAMID_VERTEX_TYPE__ == __TEXTURE_VERTEX__
@@ -223,7 +220,7 @@ int main(int argc, char **argv) {
     containerShader.Use();
     containerShader.SetUniformMat3(containerNormalMatrix, "normalMatrix");
     containerShader.SetUniformMat4(containerModel, "model");
-    containerShader.SetUniformVec4(lightSource.GetColor(), "light.color");
+    containerShader.SetUniformVec3(lightSource.GetColor(), "light.color");
     containerShader.SetUniformVec3(lightSource.GetPosition(), "light.position");
     containerShader.SetUniformInt(0, "materialMap.diffuse");
     containerShader.SetUniformInt(1, "materialMap.specular");

@@ -94,7 +94,6 @@ target_link_libraries(${PROJECT_NAME}
     common
     glm
     glad
-    json
     stb
     object_pool
     observer_subject

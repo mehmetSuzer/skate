@@ -14,8 +14,15 @@ private:
     void AssertDirection(const glm::vec3& direction) const;
 
 public:
-    SpotLight(const glm::vec3& position_, float red, float green, float blue, float alpha, float a_, float b_, const glm::vec3& direction_, float FOVradian);
-    SpotLight(const glm::vec3& position_, const glm::vec4& color_, float a_, float b_, const glm::vec3& direction_, float FOVradian);
+    SpotLight(const glm::vec3& position_, float linear_, float quadratic_, 
+        const glm::vec3& direction_, float FOVradian, float red, float green, float blue);
+    SpotLight(const glm::vec3& position_, float linear_, float quadratic_, 
+        const glm::vec3& direction_, float FOVradian, const glm::vec3& color_);
+
+    SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, 
+        const glm::vec3& direction_, float FOVradian, float red, float green, float blue);
+    SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, 
+        const glm::vec3& direction_, float FOVradian, const glm::vec3& color_);
 
     const glm::vec3& GetDirection(void) const {
         return direction;
@@ -34,8 +41,6 @@ public:
     #endif
         cosHalfFOVradian = cosf(FOVradian / 2.0f);
     }
-
-    LightInfo Shine(const glm::vec3& point) const override;
 };
 
 #endif // __SPOT_LIGHT_H__

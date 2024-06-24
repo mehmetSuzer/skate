@@ -9,7 +9,7 @@ struct MaterialMap {
 };
 
 struct Light {
-    vec4 color;
+    vec3 color;
     vec3 position;
 };
 
@@ -46,5 +46,5 @@ void main() {
     float emissionPower = (texture(materialMap.specular, tex).r == 0.0f) ? 1.0f : 0.0f;
     vec4 emission = texture(materialMap.emission, tex) * emissionPower;
 
-    FragColor = emission + light.color * (ambient + lightIntensity * (diffuse + specular));
+    FragColor = emission + vec4(light.color, 1.0f) * (ambient + lightIntensity * (diffuse + specular));
 }

@@ -14,19 +14,12 @@ void DirectionalLight::AssertIntensity(float intensity) const {
     }
 }
 
-DirectionalLight::DirectionalLight(const glm::vec3& direction_, float red, float green, float blue, float alpha, float intensity_) 
-    : Light(red, green, blue, alpha) {
+DirectionalLight::DirectionalLight(const glm::vec3& direction_, float intensity_, float red, float green, float blue) 
+    : LightCaster(red, green, blue) {
     SetDirection(direction_);
     SetIntensity(intensity_);
 }
 
-DirectionalLight::DirectionalLight(const glm::vec3& direction_, const glm::vec4& color_, float intensity_)
-    : DirectionalLight(direction_, color_.r, color_.g, color_.b, color_.a, intensity_) {}
+DirectionalLight::DirectionalLight(const glm::vec3& direction_, float intensity_, const glm::vec3& color_)
+    : DirectionalLight(direction_, intensity_, color_.r, color_.g, color_.b) {}
     
-LightInfo DirectionalLight::Shine(const glm::vec3& point) const {
-    return LightInfo{
-        -direction,
-        INFINITY,
-        GetIntensity(INFINITY),
-    };
-}

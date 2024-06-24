@@ -2,10 +2,10 @@
 #ifndef __DIRECTIONAL_LIGHT_H__
 #define __DIRECTIONAL_LIGHT_H__
 
-#include "light.h"
+#include "light_caster.h"
 #include <gtc/epsilon.hpp>
 
-class DirectionalLight : public Light {
+class DirectionalLight : public LightCaster {
 private:
     glm::vec3 direction;
     float intensity;
@@ -14,8 +14,8 @@ private:
     void AssertIntensity(float intensity) const;
 
 public:
-    DirectionalLight(const glm::vec3& direction_, float red, float green, float blue, float alpha, float intensity_);
-    DirectionalLight(const glm::vec3& direction_, const glm::vec4& color_, float intensity_);
+    DirectionalLight(const glm::vec3& direction_, float intensity_, float red, float green, float blue);
+    DirectionalLight(const glm::vec3& direction_, float intensity_, const glm::vec3& color_);
 
     const glm::vec3& GetDirection(void) const {
         return direction;
@@ -27,10 +27,6 @@ public:
     #endif
         direction = direction_;
     }
-    
-    float GetIntensity(float distance) const override {
-        return intensity;
-    }
 
     void SetIntensity(float intensity_) {
     #ifdef __COMPILE_ERROR_HANDLERS__
@@ -38,8 +34,6 @@ public:
     #endif
         intensity = intensity_;
     }
-    
-    LightInfo Shine(const glm::vec3& point) const override;
 };
 
 #endif // __DIRECTIONAL_LIGHT_H__

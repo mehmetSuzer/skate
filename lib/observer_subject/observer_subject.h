@@ -1,6 +1,6 @@
 
-#ifndef __OBSERVER_H__
-#define __OBSERVER_H__
+#ifndef __OBSERVER_SUBJECT_H__
+#define __OBSERVER_SUBJECT_H__
 
 #include <config.h>
 #include <stddef.h>
@@ -85,4 +85,4 @@ public:
 
 #endif // __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__
 
-#endif // __OBSERVER_H__
+#endif // __OBSERVER_SUBJECT_H__

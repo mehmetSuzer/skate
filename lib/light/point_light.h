@@ -2,20 +2,23 @@
 #ifndef __POINT_LIGHT_H__
 #define __POINT_LIGHT_H__
 
-#include "light.h"
+#include "light_caster.h"
 
-class PointLight : public Light {
+class PointLight : public LightCaster {
 private:
-    void AssertIntensityCoefficients(float a_, float b_) const;
+    void AssertAttenuationCoefficients(float linear_, float quadratic_) const;
 
 protected:
     glm::vec3 position;
-    float a;
-    float b;
+    float linear;
+    float quadratic;
 
 public:
-    PointLight(const glm::vec3& position_, float red, float green, float blue, float alpha, float a_, float b_);
-    PointLight(const glm::vec3& position_, const glm::vec4& color_, float a_, float b_);
+    PointLight(const glm::vec3& position_, float linear_, float quadratic_, float red, float green, float blue);
+    PointLight(const glm::vec3& position_, float linear_, float quadratic_, const glm::vec3& color_);
+
+    PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, float red, float green, float blue);
+    PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& color_);
 
     const glm::vec3& GetPosition(void) const {
         return position;
@@ -25,23 +28,13 @@ public:
         position = position_;
     }
 
-    float GetIntensity(float distance) const override {
-        return 1.0f / ((a * distance + b) * distance + 1.0f);
-    }
-
-    void SetIntensityCoefficients(float a_, float b_) {
+    void SetAttenuationCoefficients(float linear_, float quadratic_) {
     #ifdef __COMPILE_ERROR_HANDLERS__
-        AssertIntensityCoefficients(a_, b_);
+        AssertAttenuationCoefficients(linear_, quadratic_);
     #endif
-        a = a_;
-        b = b_;
+        linear = linear_;
+        quadratic = quadratic_;
     }
-
-    void SetIntensityCoefficients(const glm::vec2& coefs) {
-        SetIntensityCoefficients(coefs.x, coefs.y);
-    }
-
-    LightInfo Shine(const glm::vec3& point) const override;
 };
 
 #endif // __POINT_LIGHT_H__

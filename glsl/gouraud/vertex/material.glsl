@@ -9,7 +9,7 @@ struct Material {
 }; 
 
 struct Light {
-    vec4 color;
+    vec3 color;
     vec3 position;
 };
 
@@ -49,5 +49,5 @@ void main() {
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), material.shininess) : 0.0f;
     vec4 specular = vec4(material.specular, 1.0f) * specularPower;
 
-    color = light.color * (ambient + lightIntensity * (diffuse + specular));
+    color = vec4(light.color, 1.0f) * (ambient + lightIntensity * (diffuse + specular));
 }

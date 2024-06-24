@@ -14,7 +14,9 @@ private:
 public:
     Texture2D(const char* imageFile, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
 
-    GLuint GetID(void) const;
+    GLuint GetID(void) const {
+        return ID;
+    }
 
     void Bind(GLuint unit) const;
     void Unbind(void) const;

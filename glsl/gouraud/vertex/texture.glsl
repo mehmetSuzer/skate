@@ -2,7 +2,7 @@
 #version 330 core
 
 struct Light {
-    vec4 color;
+    vec3 color;
     vec3 position;
 };
 
@@ -40,6 +40,6 @@ void main() {
     vec3 reflectionDirection = reflect(-directionToLight, normal);
     float specular = (diffuse > 0.0f) ? 0.5f * pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
-    lightingColor = light.color * (ambient + lightIntensity * (diffuse + specular));
+    lightingColor = vec4(light.color, 1.0f) * (ambient + lightIntensity * (diffuse + specular));
     tex = aTex;
 }
