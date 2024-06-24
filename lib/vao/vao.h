@@ -11,7 +11,7 @@ private:
 public:
     VAO();
     
-    void LinkAttrib(VBO& VBO, GLuint layout, GLint componentNumber, GLenum type, GLboolean normalized, GLsizei stride, const void* offset) const;
+    void LinkAttribute(VBO& VBO, GLuint layout, GLint componentNumber, GLenum type, GLboolean normalized, GLsizei stride, const void* offset) const;
 
     void Bind(void) const;
     void Unbind(void) const;

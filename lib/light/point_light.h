@@ -20,10 +20,6 @@ public:
     PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, float red, float green, float blue);
     PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& color_);
 
-    const glm::vec3& GetPosition(void) const {
-        return position;
-    }
-
     void SetPosition(const glm::vec3& position_) {
         position = position_;
     }
@@ -40,7 +36,7 @@ public:
         return Light {
             .type = POINT_LIGHT,
             .color = GetColor(),
-            .position = GetPosition(),
+            .position = position,
             .linear = linear,
             .quadratic = quadratic,
         };

@@ -14,14 +14,14 @@ struct Material {
 
 struct Light {
     int type;
-    vec3 color;                 // all
-    vec3 position;              // point and spot
-    vec3 direction;             // directional and spot
-    float intensity;            // directional
-    float linear;               // point and spot
-    float quadratic;            // point and spot
-    float cosInnerCutOffRadian; // spot
-    float cosOuterCutOffRadian; // spot
+    vec3 color;             // all
+    vec3 position;          // point and spot
+    vec3 direction;         // directional and spot
+    float intensity;        // directional
+    float linear;           // point and spot
+    float quadratic;        // point and spot
+    float cosInnerCutOff;   // spot
+    float cosOuterCutOff;   // spot
 };
 
 out vec4 FragColor;
@@ -44,7 +44,7 @@ vec4 directionalLight() {
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), material.shininess) : 0.0f;
     vec4 specular = vec4(material.specular, 1.0f) * specularPower;
 
-    return color * vec4(light.color, 1.0f) * light.intensity * (ambient + diffuse + specular);
+    return vec4(light.color, 1.0f) * light.intensity * (ambient + diffuse + specular);
 }
 
 vec4 pointLight() {
@@ -64,7 +64,7 @@ vec4 pointLight() {
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), material.shininess) : 0.0f;
     vec4 specular = vec4(material.specular, 1.0f) * specularPower;
 
-    return color * vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
+    return vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
 }
 
 vec4 spotLight() {
@@ -83,14 +83,14 @@ vec4 spotLight() {
 
     float cosTheta = dot(-directionToLight, light.direction);
     
-    if (cosTheta < light.cosOuterCutOffRadian) {
+    if (cosTheta < light.cosOuterCutOff) {
         // Out of the outer cone, use only the ambient light
         diffusePower = 0.0f;
         specularPower = 0.0f;
-    } else if (cosTheta < light.cosInnerCutOffRadian) {
+    } else if (cosTheta < light.cosInnerCutOff) {
         // Between the inner cone and the outer cone
-        float epsilon = light.cosInnerCutOffRadian - light.cosOuterCutOffRadian;
-        float intensity = clamp((cosTheta - light.cosOuterCutOffRadian) / epsilon, 0.0f, 1.0f);
+        float epsilon = light.cosInnerCutOff - light.cosOuterCutOff;
+        float intensity = clamp((cosTheta - light.cosOuterCutOff) / epsilon, 0.0f, 1.0f);
         diffusePower *= intensity;
         specularPower *= intensity;
     }
@@ -100,7 +100,7 @@ vec4 spotLight() {
     vec4 diffuse = vec4(material.diffuse, 1.0f) * diffusePower;
     vec4 specular = vec4(material.specular, 1.0f) * specularPower;
 
-    return color * vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
+    return vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
 }
 
 void main() {

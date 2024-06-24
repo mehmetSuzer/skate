@@ -28,7 +28,7 @@ private:
     bool firstMouse = true;
 
     static const uint32_t buttonMapSize = GLFW_KEY_LAST+1;
-    uint8_t buttonMap[buttonMapSize];
+    enum Button buttonMap[buttonMapSize];
 
 public:
     static InputHandler& Instance(void) {
@@ -60,7 +60,7 @@ public:
     }
 
     enum Button GetButton(GLuint key) const {
-        return (enum Button)buttonMap[key];
+        return buttonMap[key];
     }
 
     void SetButton(GLuint key, enum Button button);

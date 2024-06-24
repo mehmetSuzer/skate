@@ -75,8 +75,8 @@ int main(int argc, char **argv) {
     lightModel = glm::scale(lightModel, glm::vec3(lightScalar));
     
     // DirectionalLight lightSource = DirectionalLight(glm::vec3(0.0f, 0.0f, -1.0f), 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-    PointLight lightSource = PointLight(lightPosition, 7.0f, 0.010627f, 1.0f, 0.285714f, glm::vec3(1.0f, 1.0f, 1.0f));
-    // SpotLight lightSource = SpotLight(lightPosition, 7.0f, 0.010627f, 1.0f, 0.285714f, glm::vec3(1.0f, 0.0f, 0.0f), M_PIf/12.0f, M_PIf/6.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+    PointLight lightSource = PointLight(lightPosition, 0.09f, 0.32f, glm::vec3(1.0f, 1.0f, 1.0f));
+    // SpotLight lightSource = SpotLight(lightPosition, 0.09f, 0.32f, glm::vec3(1.0f, 0.0f, 0.0f), M_PIf/12.0f, M_PIf/6.0f, glm::vec3(1.0f, 1.0f, 1.0f));
     const Light light = lightSource.GetLight();
 
     VAO lightVAO = VAO();
@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
     EBO lightEBO = EBO(lightIndices);
     VBO lightVBO = VBO(lightVertices, GL_STATIC_DRAW);
 
-    lightVAO.LinkAttrib(lightVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(BasicVertex), (void*)0); // position
+    lightVAO.LinkAttribute(lightVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(PVertex), (void*)0); // position
 
     lightVAO.Unbind();
     lightVBO.Unbind();
@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
 
     //-------------------------------------- PYRAMID MODEL --------------------------------------//
 
-    glm::vec3 pyramidPosition = glm::vec3(0.0f, -0.0f, -2.0f);
+    glm::vec3 pyramidPosition = glm::vec3(0.0f, -0.0f, -2.5f);
     float pyramidRadian = 0.0f;
     glm::quat pyramidRotation = glm::angleAxis(pyramidRadian, glm::vec3(0.0f, 1.0f, 0.0f));
     float pyramidScalarX = 1.0f;
@@ -118,20 +118,20 @@ int main(int argc, char **argv) {
     pyramidVAO.Bind();
     EBO pyramidEBO = EBO(pyramidIndices);
 
-#if __PYRAMID_VERTEX_TYPE__ == __TEXTURE_VERTEX__
+#if __PYRAMID_VERTEX_TYPE__ == __PNT_VERTEX__
     VBO pyramidVBO = VBO(pyramidTextureVertices, GL_STATIC_DRAW);
-    pyramidVAO.LinkAttrib(pyramidVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)0);                         // position
-    pyramidVAO.LinkAttrib(pyramidVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(sizeof(glm::vec3)));       // normal
-    pyramidVAO.LinkAttrib(pyramidVBO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(2 * sizeof(glm::vec3)));   // texture
-#elif __PYRAMID_VERTEX_TYPE__ == __COLOR_VERTEX__
+    pyramidVAO.LinkAttribute(pyramidVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(PNTVertex), (void*)0);                         // position
+    pyramidVAO.LinkAttribute(pyramidVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(PNTVertex), (void*)(sizeof(glm::vec3)));       // normal
+    pyramidVAO.LinkAttribute(pyramidVBO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(PNTVertex), (void*)(2 * sizeof(glm::vec3)));   // texture
+#elif __PYRAMID_VERTEX_TYPE__ == __PNC_VERTEX__
     VBO pyramidVBO = VBO(pyramidColorVertices, GL_STATIC_DRAW);
-    pyramidVAO.LinkAttrib(pyramidVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)0);                           // position
-    pyramidVAO.LinkAttrib(pyramidVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(sizeof(glm::vec3)));         // normal
-    pyramidVAO.LinkAttrib(pyramidVBO, 2, 4, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(2 * sizeof(glm::vec3)));     // color
-#elif __PYRAMID_VERTEX_TYPE__ == __NORMAL_VERTEX__ || __PYRAMID_VERTEX_TYPE__ == __MATERIAL_VERTEX__
+    pyramidVAO.LinkAttribute(pyramidVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(PNCVertex), (void*)0);                         // position
+    pyramidVAO.LinkAttribute(pyramidVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(PNCVertex), (void*)(sizeof(glm::vec3)));       // normal
+    pyramidVAO.LinkAttribute(pyramidVBO, 2, 4, GL_FLOAT, GL_FALSE, sizeof(PNCVertex), (void*)(2 * sizeof(glm::vec3)));   // color
+#elif __PYRAMID_VERTEX_TYPE__ == __PN_VERTEX__
     VBO pyramidVBO = VBO(pyramidNormalVertices, GL_STATIC_DRAW);
-    pyramidVAO.LinkAttrib(pyramidVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)0);                          // position
-    pyramidVAO.LinkAttrib(pyramidVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(NormalVertex), (void*)(sizeof(glm::vec3)));        // normal
+    pyramidVAO.LinkAttribute(pyramidVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(PNVertex), (void*)0);                          // position
+    pyramidVAO.LinkAttribute(pyramidVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(PNVertex), (void*)(sizeof(glm::vec3)));        // normal
 #else
 #endif
 
@@ -141,24 +141,18 @@ int main(int argc, char **argv) {
 
     Texture2D pyramidTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     
-#if __PYRAMID_VERTEX_TYPE__ == __TEXTURE_VERTEX__
+#if __PYRAMID_VERTEX_TYPE__ == __PNT_VERTEX__
     Shader pyramidShader = Shader(
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, TEXTURE_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, TEXTURE_VERTEX).c_str()
     );
-#elif __PYRAMID_VERTEX_TYPE__ == __COLOR_VERTEX__
+#elif __PYRAMID_VERTEX_TYPE__ == __PNC_VERTEX__
     Shader pyramidShader = Shader(
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, COLOR_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, COLOR_VERTEX).c_str()
     );
-#elif __PYRAMID_VERTEX_TYPE__ == __NORMAL_VERTEX__
-    glm::vec4 pyramidColor = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-    Shader pyramidShader = Shader(
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, NORMAL_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, NORMAL_VERTEX).c_str()
-    );
-#elif __PYRAMID_VERTEX_TYPE__ == __MATERIAL_VERTEX__
-    const Material& pyramidMaterial = material::obsidian;
+#elif __PYRAMID_VERTEX_TYPE__ == __PN_VERTEX__
+    const Material& pyramidMaterial = material::gold;
     Shader pyramidShader = Shader(
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, MATERIAL_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, MATERIAL_VERTEX).c_str()
@@ -177,14 +171,12 @@ int main(int argc, char **argv) {
     pyramidShader.SetUniformFloat(light.intensity, "light.intensity");
     pyramidShader.SetUniformFloat(light.linear, "light.linear");
     pyramidShader.SetUniformFloat(light.quadratic, "light.quadratic");
-    pyramidShader.SetUniformFloat(light.cosInnerCutOffRadian, "light.cosInnerCutOffRadian");
-    pyramidShader.SetUniformFloat(light.cosOuterCutOffRadian, "light.cosOuterCutOffRadian");
+    pyramidShader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
+    pyramidShader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
 
-#if __PYRAMID_VERTEX_TYPE__ == __TEXTURE_VERTEX__
+#if __PYRAMID_VERTEX_TYPE__ == __PNT_VERTEX__
     pyramidShader.SetUniformInt(0, "textureImage");
-#elif __PYRAMID_VERTEX_TYPE__ == __NORMAL_VERTEX__
-    pyramidShader.SetUniformVec4(pyramidColor, "color");
-#elif __PYRAMID_VERTEX_TYPE__ == __MATERIAL_VERTEX__
+#elif __PYRAMID_VERTEX_TYPE__ == __PN_VERTEX__
     pyramidShader.SetUniformVec3(pyramidMaterial.ambient, "material.ambient");
     pyramidShader.SetUniformVec3(pyramidMaterial.diffuse, "material.diffuse");
     pyramidShader.SetUniformVec3(pyramidMaterial.specular, "material.specular");
@@ -194,7 +186,7 @@ int main(int argc, char **argv) {
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
-    glm::vec3 containerPosition = glm::vec3(2.0f, -0.0f, -2.0f);
+    glm::vec3 containerPosition = glm::vec3(2.0f, -0.0f, -2.5f);
     float containerRadian = 0.0f;
     glm::quat containerRotation = glm::angleAxis(containerRadian, glm::vec3(0.0f, 1.0f, 0.0f));
     float containerScalar = 1.0f;
@@ -210,9 +202,9 @@ int main(int argc, char **argv) {
     EBO containerEBO = EBO(containerIndices);
 
     VBO containerVBO = VBO(containerTextureVertices, GL_STATIC_DRAW);
-    containerVAO.LinkAttrib(containerVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)0);                         // position
-    containerVAO.LinkAttrib(containerVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(sizeof(glm::vec3)));       // normal
-    containerVAO.LinkAttrib(containerVBO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(2 * sizeof(glm::vec3)));   // texture
+    containerVAO.LinkAttribute(containerVBO, 0, 3, GL_FLOAT, GL_FALSE, sizeof(PNTVertex), (void*)0);                         // position
+    containerVAO.LinkAttribute(containerVBO, 1, 3, GL_FLOAT, GL_FALSE, sizeof(PNTVertex), (void*)(sizeof(glm::vec3)));       // normal
+    containerVAO.LinkAttribute(containerVBO, 2, 2, GL_FLOAT, GL_FALSE, sizeof(PNTVertex), (void*)(2 * sizeof(glm::vec3)));   // texture
 
     containerVAO.Unbind();
     containerVBO.Unbind();
@@ -239,8 +231,8 @@ int main(int argc, char **argv) {
     containerShader.SetUniformFloat(light.intensity, "light.intensity");
     containerShader.SetUniformFloat(light.linear, "light.linear");
     containerShader.SetUniformFloat(light.quadratic, "light.quadratic");
-    containerShader.SetUniformFloat(light.cosInnerCutOffRadian, "light.cosInnerCutOffRadian");
-    containerShader.SetUniformFloat(light.cosOuterCutOffRadian, "light.cosOuterCutOffRadian");
+    containerShader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
+    containerShader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
 
     containerShader.SetUniformInt(0, "materialMap.diffuse");
     containerShader.SetUniformInt(1, "materialMap.specular");

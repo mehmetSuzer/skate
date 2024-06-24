@@ -13,14 +13,14 @@ enum LightCasterType {
 
 typedef struct {
     enum LightCasterType type;
-    glm::vec3 color;            // all
-    glm::vec3 position;         // point and spot
-    glm::vec3 direction;        // directional and spot
-    float intensity;            // directional
-    float linear;               // point and spot
-    float quadratic;            // point and spot
-    float cosInnerCutOffRadian; // spot
-    float cosOuterCutOffRadian; // spot
+    glm::vec3 color;        // all
+    glm::vec3 position;     // point and spot
+    glm::vec3 direction;    // directional and spot
+    float intensity;        // directional
+    float linear;           // point and spot
+    float quadratic;        // point and spot
+    float cosInnerCutOff;   // spot
+    float cosOuterCutOff;   // spot
  } Light;
 
 class LightCaster {

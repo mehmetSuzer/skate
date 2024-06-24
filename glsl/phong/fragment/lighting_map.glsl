@@ -14,14 +14,14 @@ struct MaterialMap {
 
 struct Light {
     int type;
-    vec3 color;                 // all
-    vec3 position;              // point and spot
-    vec3 direction;             // directional and spot
-    float intensity;            // directional
-    float linear;               // point and spot
-    float quadratic;            // point and spot
-    float cosInnerCutOffRadian; // spot
-    float cosOuterCutOffRadian; // spot
+    vec3 color;             // all
+    vec3 position;          // point and spot
+    vec3 direction;         // directional and spot
+    float intensity;        // directional
+    float linear;           // point and spot
+    float quadratic;        // point and spot
+    float cosInnerCutOff;   // spot
+    float cosOuterCutOff;   // spot
 };
 
 out vec4 FragColor;
@@ -92,14 +92,14 @@ vec4 spotLight() {
 
     float cosTheta = dot(-directionToLight, light.direction);
     
-    if (cosTheta < light.cosOuterCutOffRadian) {
+    if (cosTheta < light.cosOuterCutOff) {
         // Out of the outer cone, use only the ambient light
         diffusePower = 0.0f;
         specularPower = 0.0f;
-    } else if (cosTheta < light.cosInnerCutOffRadian) {
+    } else if (cosTheta < light.cosInnerCutOff) {
         // Between the inner cone and the outer cone
-        float epsilon = light.cosInnerCutOffRadian - light.cosOuterCutOffRadian;
-        float intensity = clamp((cosTheta - light.cosOuterCutOffRadian) / epsilon, 0.0f, 1.0f);
+        float epsilon = light.cosInnerCutOff - light.cosOuterCutOff;
+        float intensity = clamp((cosTheta - light.cosOuterCutOff) / epsilon, 0.0f, 1.0f);
         diffusePower *= intensity;
         specularPower *= intensity;
     }

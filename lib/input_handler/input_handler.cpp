@@ -103,8 +103,8 @@ void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
     }
   
     // Update the last positions
-    float xOffset = static_cast<float>(xPos - lastX) * InputHandler::Instance().GetCursorPosSensitivity();
-    float yOffset = static_cast<float>(lastY - yPos) * InputHandler::Instance().GetCursorPosSensitivity(); 
+    const float xOffset = static_cast<float>(xPos - lastX) * InputHandler::Instance().GetCursorPosSensitivity();
+    const float yOffset = static_cast<float>(lastY - yPos) * InputHandler::Instance().GetCursorPosSensitivity(); 
     lastX = xPos;
     lastY = yPos;
 
@@ -112,7 +112,7 @@ void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
 }
 
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
-    float deltaFOVradian = yOffset * InputHandler::Instance().GetScrollSensitivity();
+    const float deltaFOVradian = yOffset * InputHandler::Instance().GetScrollSensitivity();
     Camera::Instance().UpdateFOVradian(deltaFOVradian);
 }
 

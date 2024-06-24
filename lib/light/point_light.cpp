@@ -1,13 +1,9 @@
 
 #include "point_light.h"
 
-static float GetIntensity(float dist, float linear, float quadratic) {
-    return 1.0f / (1.0f + linear * dist + quadratic * dist * dist);
-}
-
 void PointLight::AssertAttenuationCoefficients(float linear_, float quadratic_) const {
     if (linear_ < 0.0f || quadratic_ < 0.0f) {
-        std::string errorMessage = "Attenuation Coefficients Cannot Be Negative. Given: " + 
+        const std::string errorMessage = "Attenuation Coefficients Cannot Be Negative. Given: " + 
             std::to_string(linear_) + " " + std::to_string(quadratic_);
         throw Error(errorMessage);
     }

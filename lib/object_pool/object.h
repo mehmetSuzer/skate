@@ -15,7 +15,7 @@ public:
         next = next_;
     }
 
-    virtual ~Object();
+    virtual ~Object() {}
     virtual void Initialize(void) = 0;
 };
 

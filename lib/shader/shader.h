@@ -2,7 +2,6 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-#include <fstream>
 #include <error.h>
 #include <common.h>
 
@@ -25,7 +24,7 @@ public:
     }
 
     void Use(void) const {
-    glUseProgram(ID);
+        glUseProgram(ID);
     }
 
     void Delete(void) const {

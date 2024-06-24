@@ -2,7 +2,7 @@
 #include "directional_light.h"
 
 void DirectionalLight::AssertDirection(const glm::vec3& direction) const {
-    float length = glm::length(direction);
+    const float length = glm::length(direction);
     if (glm::epsilonNotEqual(length, 1.0f, 1E-6f)) {
         throw Error("Direction Vector Is Not a Unit Vector!");
     }

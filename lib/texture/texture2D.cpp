@@ -3,14 +3,14 @@
 
 float Texture2D::borderColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-Texture2D::Texture2D(const char* imageFile, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter) {
+Texture2D::Texture2D(const char* imagePath, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter) {
     int imageWidth, imageHeight, colorChannelNumber;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char* bytes = stbi_load(imageFile, &imageWidth, &imageHeight, &colorChannelNumber, 0);
+    unsigned char* bytes = stbi_load(imagePath, &imageWidth, &imageHeight, &colorChannelNumber, 0);
 
 #ifdef __COMPILE_ERROR_HANDLERS__
     if (bytes == NULL) {
-        std::string errorMessage = "Failed to read " + std::string(imageFile);
+        std::string errorMessage = "Failed to read " + std::string(imagePath);
         throw Error(errorMessage);
     }
     if (colorChannelNumber != 1 && colorChannelNumber != 3 && colorChannelNumber != 4) {

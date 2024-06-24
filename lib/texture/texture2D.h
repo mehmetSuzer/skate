@@ -12,7 +12,7 @@ private:
     GLuint ID;
 
 public:
-    Texture2D(const char* imageFile, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
+    Texture2D(const char* imagePath, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
 
     GLuint GetID(void) const {
         return ID;

@@ -2,7 +2,10 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
+#include <config.h>
+#include <error.h>
 #include <string>
+#include <fstream>
 #include <glad.h>
 #include <glm.hpp>
 #include <gtc/type_ptr.hpp>
@@ -21,7 +24,6 @@ enum ShaderType {
 enum VertexType {
     BASIC_VERTEX = 0,
     COLOR_VERTEX,
-    NORMAL_VERTEX,
     TEXTURE_VERTEX,
     MATERIAL_VERTEX,
     LIGHTING_MAP_VERTEX,
@@ -42,7 +44,6 @@ private:
     const std::string glslFileExtension = ".glsl";
     const std::string basicVertexGLSL = "basic" + glslFileExtension;
     const std::string colorVertexGLSL = "color" + glslFileExtension;
-    const std::string normalVertexGLSL = "normal" + glslFileExtension;
     const std::string textureVertexGLSL = "texture" + glslFileExtension;
     const std::string materialVertexGLSL = "material" + glslFileExtension;
     const std::string lightingMapVertexGLSL = "lighting_map" + glslFileExtension;
@@ -104,6 +105,7 @@ public:
         return 0.299f * red + 0.587f * green + 0.114f * blue;
     }
 
+    std::string ReadFile(const char* filePath) const;
     const std::string GetShaderProgramPath(enum ShadingType shading, enum ShaderType shader, enum VertexType vertex) const;
 };
 

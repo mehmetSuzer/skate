@@ -8,8 +8,8 @@
 class SpotLight : public PointLight {
 private:
     glm::vec3 direction;
-    float cosInnerCutOffRadian;
-    float cosOuterCutOffRadian;
+    float cosInnerCutOff;
+    float cosOuterCutOff;
 
     void AssertCutOffRadian(float cutOffRadian) const;
     void AssertInnerLessThanOuter(float innerCutOffRadian, float outerCutOffRadian) const;
@@ -26,10 +26,6 @@ public:
     SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& direction_, 
         float innerCutOffRadian, float outerCutOffRadian, const glm::vec3& color_);
 
-    const glm::vec3& GetDirection(void) const {
-        return direction;
-    }
-
     void SetDirection(const glm::vec3& direction_) {
     #ifdef __COMPILE_ERROR_HANDLERS__
         AssertDirection(direction_);
@@ -43,20 +39,20 @@ public:
         AssertCutOffRadian(outerCutOffRadian);
         AssertInnerLessThanOuter(innerCutOffRadian, outerCutOffRadian);
     #endif
-        cosInnerCutOffRadian = glm::cos(innerCutOffRadian);
-        cosOuterCutOffRadian = glm::cos(outerCutOffRadian);
+        cosInnerCutOff = glm::cos(innerCutOffRadian);
+        cosOuterCutOff = glm::cos(outerCutOffRadian);
     }
 
     Light GetLight(void) const override {
         return Light {
             .type = SPOT_LIGHT,
             .color = GetColor(),
-            .position = GetPosition(),
-            .direction = GetDirection(),
+            .position = position,
+            .direction = direction,
             .linear = linear,
             .quadratic = quadratic,
-            .cosInnerCutOffRadian = cosInnerCutOffRadian,
-            .cosOuterCutOffRadian = cosOuterCutOffRadian,
+            .cosInnerCutOff = cosInnerCutOff,
+            .cosOuterCutOff = cosOuterCutOff,
         };
     }
 };
