@@ -5,7 +5,7 @@
 #include <common.h>
 
 enum AxisDirection {
-    AXIS_NONE,
+    AXIS_NONE = 0,
     AXIS_POSITIVE,
     AXIS_NEGATIVE,
 };

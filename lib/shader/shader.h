@@ -7,7 +7,7 @@
 #include <common.h>
 
 enum ShaderError {
-    VERTEX_SHADER_COMPILE_ERROR,
+    VERTEX_SHADER_COMPILE_ERROR = 0,
     FRAGMENT_SHADER_COMPILE_ERROR,
     SHADER_PROGRAM_LINKING_ERROR,
 };
@@ -56,7 +56,7 @@ public:
         glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-    void CheckShaderError(GLuint shader, enum ShaderError type) const;
+    void CheckShaderError(GLuint shader, enum ShaderError type, const char* filePath) const;
 };
 
 #endif // __SHADER_H__

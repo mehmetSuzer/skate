@@ -47,8 +47,8 @@ public:
         cosOuterCutOffRadian = glm::cos(outerCutOffRadian);
     }
 
-    LightCasterInfo GetInfo(void) const override {
-        return LightCasterInfo {
+    Light GetLight(void) const override {
+        return Light {
             .type = SPOT_LIGHT,
             .color = GetColor(),
             .position = GetPosition(),

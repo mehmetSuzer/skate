@@ -36,8 +36,8 @@ public:
         quadratic = quadratic_;
     }
 
-    LightCasterInfo GetInfo(void) const override {
-        return LightCasterInfo {
+    Light GetLight(void) const override {
+        return Light {
             .type = POINT_LIGHT,
             .color = GetColor(),
             .position = GetPosition(),

@@ -28,10 +28,8 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glCompileShader(vertexShader);
 
 #ifdef __COMPILE_ERROR_HANDLERS__
-    CheckShaderError(vertexShader, VERTEX_SHADER_COMPILE_ERROR);
+    CheckShaderError(vertexShader, VERTEX_SHADER_COMPILE_ERROR, vertexShaderPath);
 #endif
-
-    /* ----------------------------------------------------------------- */
 
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     std::string fragmentShaderCode = readFile(fragmentShaderPath);
@@ -40,10 +38,8 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glCompileShader(fragmentShader);
 
 #ifdef __COMPILE_ERROR_HANDLERS__
-    CheckShaderError(fragmentShader, FRAGMENT_SHADER_COMPILE_ERROR);
+    CheckShaderError(fragmentShader, FRAGMENT_SHADER_COMPILE_ERROR, fragmentShaderPath);
 #endif 
-
-    /* ----------------------------------------------------------------- */
 
     ID = glCreateProgram();
     glAttachShader(ID, vertexShader);
@@ -51,14 +47,14 @@ Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
     glLinkProgram(ID);
 
 #ifdef __COMPILE_ERROR_HANDLERS__
-    CheckShaderError(ID, SHADER_PROGRAM_LINKING_ERROR);
+    CheckShaderError(ID, SHADER_PROGRAM_LINKING_ERROR, NULL);
 #endif
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
 
-void Shader::CheckShaderError(GLuint shader, enum ShaderError type) const {
+void Shader::CheckShaderError(GLuint shader, enum ShaderError type, const char* filePath) const {
     GLint success;
     GLchar shaderInfoLog[shaderInfoLogSize];
 
@@ -67,14 +63,16 @@ void Shader::CheckShaderError(GLuint shader, enum ShaderError type) const {
         if (!success) {
             glGetShaderInfoLog(shader, shaderInfoLogSize, NULL, shaderInfoLog);
             std::string shaderType = (type == VERTEX_SHADER_COMPILE_ERROR) ? "VERTEX" : "FRAGMENT";
-            std::string errorMessage = "ERROR::SHADER::" + shaderType + "::COMPILATION_FAILED\n" + std::string(shaderInfoLog);
+            std::string errorMessage = "ERROR::SHADER::" + shaderType + "::COMPILATION_FAILED\nFile Path: " + 
+                std::string(filePath) + "\n" + std::string(shaderInfoLog);
             throw Error(errorMessage);
         }
     } else if (type == SHADER_PROGRAM_LINKING_ERROR) {
         glGetProgramiv(shader, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(shader, shaderInfoLogSize, NULL, shaderInfoLog);
-            std::string errorMessage = "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" + std::string(shaderInfoLog);
+            std::string errorMessage = "ERROR::SHADER::PROGRAM::LINKING_FAILED\nFile Path: " + 
+                std::string(filePath) + "\n" + std::string(shaderInfoLog);
             throw Error(errorMessage);
         }
     } else {

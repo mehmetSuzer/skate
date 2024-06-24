@@ -8,18 +8,18 @@
 #include <gtc/type_ptr.hpp>
 
 enum ShadingType {
-    FLAT_SHADING,
+    FLAT_SHADING = 0,
     GOURAUD_SHADING,
     PHONG_SHADING,
 };
 
 enum ShaderType {
-    VERTEX_SHADER,
+    VERTEX_SHADER = 0,
     FRAGMENT_SHADER,
 };
 
 enum VertexType {
-    BASIC_VERTEX,
+    BASIC_VERTEX = 0,
     COLOR_VERTEX,
     NORMAL_VERTEX,
     TEXTURE_VERTEX,

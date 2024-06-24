@@ -39,8 +39,8 @@ public:
         intensity = intensity_;
     }
 
-    LightCasterInfo GetInfo(void) const override {
-        return LightCasterInfo {
+    Light GetLight(void) const override {
+        return Light {
             .type = DIRECTIONAL_LIGHT,
             .color = GetColor(),
             .direction = GetDirection(),

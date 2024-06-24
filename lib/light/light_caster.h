@@ -6,7 +6,7 @@
 #include <glm.hpp>
 
 enum LightCasterType {
-    DIRECTIONAL_LIGHT,
+    DIRECTIONAL_LIGHT = 0,
     POINT_LIGHT,
     SPOT_LIGHT,
 };
@@ -21,7 +21,7 @@ typedef struct {
     float quadratic;            // point and spot
     float cosInnerCutOffRadian; // spot
     float cosOuterCutOffRadian; // spot
- } LightCasterInfo;
+ } Light;
 
 class LightCaster {
 private:
@@ -63,7 +63,7 @@ public:
         active = false;
     }
 
-    virtual LightCasterInfo GetInfo(void) const = 0;
+    virtual Light GetLight(void) const = 0;
 };
 
 #endif // __LIGHT_CASTER_H__
