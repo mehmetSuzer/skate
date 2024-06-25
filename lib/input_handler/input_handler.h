@@ -16,6 +16,7 @@ enum Button {
     UP_BUTTON,
     DOWN_BUTTON,
     SPEED_UP_BUTTON,
+    TURN_ON_OFF_FLASHLIGHT_BUTTON,
 };
 
 class InputHandler {

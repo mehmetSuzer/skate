@@ -17,6 +17,11 @@ void Camera::UpdateVectors(void) {
     right = glm::normalize(glm::cross(forward, up));
 }
 
+void Camera::UpdateFlashLight(void) {
+    flashLight.SetPosition(position);
+    flashLight.SetDirection(forward);
+}
+
 void Camera::Initialize(void) {
     if (initialized) {
         return;
@@ -24,6 +29,7 @@ void Camera::Initialize(void) {
     initialized = true;
 
     UpdateVectors();
+    UpdateFlashLight();
     UpdateView();
     UpdateProjection();
 }
@@ -62,6 +68,7 @@ void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {
     float length = glm::length(velocityDirection);
     if (glm::epsilonNotEqual(length, 0.0f, 1E-6f)) {
         position += velocityDirection * (elapsedTimeSinceLastFrame * speed / length);
+        UpdateFlashLight();
         UpdateView();
     }
 }
@@ -78,5 +85,6 @@ void Camera::UpdateOrientation(float xOffset, float yOffset) {
 	}
 
 	UpdateVectors();
+    UpdateFlashLight();
     UpdateView();
 }

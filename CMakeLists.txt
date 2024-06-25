@@ -44,6 +44,9 @@ include_directories(${LIB_DIR}/glad)
 add_subdirectory(${LIB_DIR}/glm)
 include_directories(${LIB_DIR}/glm)
 
+add_subdirectory(${LIB_DIR}/light)
+include_directories(${LIB_DIR}/light)
+
 add_subdirectory(${LIB_DIR}/material)
 include_directories(${LIB_DIR}/material)
 
@@ -55,9 +58,6 @@ include_directories(${LIB_DIR}/camera)
 
 add_subdirectory(${LIB_DIR}/input_handler)
 include_directories(${LIB_DIR}/input_handler)
-
-add_subdirectory(${LIB_DIR}/light)
-include_directories(${LIB_DIR}/light)
 
 add_subdirectory(${LIB_DIR}/vbo)
 include_directories(${LIB_DIR}/vbo)
@@ -88,10 +88,10 @@ target_link_libraries(${PROJECT_NAME}
     vao
     ebo
     vbo
-    light
     input_handler
     camera
     common
+    light
     glm
     glad
     stb

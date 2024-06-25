@@ -3,6 +3,7 @@
 #define __CAMERA_H__
 
 #include <common.h>
+#include <spot_light.h>
 
 enum AxisDirection {
     AXIS_NONE = 0,
@@ -44,6 +45,8 @@ private:
 
     glm::mat4 view;
     glm::mat4 projection;
+
+    SpotLight flashLight = SpotLight(position, 0.07f, 0.017f, glm::vec3(0.0f, 0.0f, -1.0f), M_PIf/12.0f, M_PIf/6.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
     Camera() {}
 
@@ -92,7 +95,16 @@ public:
         projection = glm::perspective(FOVradian, Common::Instance().GetAspectRatio(), near, far);
     }
 
+    const SpotLight& GetFlashLight(void) const {
+        return flashLight;
+    }
+
+    void ToggleFlashLight(void) {
+        flashLight.Toggle();
+    }
+
     void UpdateVectors(void);
+    void UpdateFlashLight(void);
     void Initialize(void);
     void UpdateFOVradian(float deltaFOVradian);
     void UpdatePosition(float elapsedTimeSinceLastFrame);

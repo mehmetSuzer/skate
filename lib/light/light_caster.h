@@ -5,6 +5,21 @@
 #include <error.h>
 #include <glm.hpp>
 
+namespace color {
+    const glm::vec3 red =       glm::vec3(1.0f,  0.0f,  0.0f);
+    const glm::vec3 green =     glm::vec3(0.0f,  1.0f,  0.0f);
+    const glm::vec3 blue =      glm::vec3(0.0f,  0.0f,  1.0f);
+    const glm::vec3 yellow =    glm::vec3(1.0f,  1.0f,  0.0f);
+    const glm::vec3 magenta =   glm::vec3(1.0f,  0.0f,  1.0f);
+    const glm::vec3 cyan =      glm::vec3(0.0f,  1.0f,  1.0f);
+
+    const glm::vec3 black =     glm::vec3(0.0f,  0.0f,  0.0f);
+    const glm::vec3 darkGray =  glm::vec3(0.25f, 0.25f, 0.25f);
+    const glm::vec3 gray =      glm::vec3(0.5f,  0.5f,  0.5f);
+    const glm::vec3 lightGray = glm::vec3(0.75f, 0.75f, 0.75f);
+    const glm::vec3 white =     glm::vec3(1.0f,  1.0f,  1.0f);
+}
+
 enum LightCasterType {
     DIRECTIONAL_LIGHT = 0,
     POINT_LIGHT,
@@ -26,7 +41,7 @@ typedef struct {
 class LightCaster {
 private:
     glm::vec3 color;
-    bool active;
+    bool active = true;;
 
     void AssertColorValidity(float red, float green, float blue) const;
 
@@ -37,7 +52,7 @@ public:
     virtual ~LightCaster() {}
 
     const glm::vec3& GetColor(void) const {
-        return color;
+        return (active) ? color : color::black;
     }
 
     void SetColor(float red, float green, float blue) {
@@ -61,6 +76,10 @@ public:
 
     void Deactivate(void) {
         active = false;
+    }
+
+    void Toggle(void) {
+        active = !active;
     }
 
     virtual Light GetLight(void) const = 0;

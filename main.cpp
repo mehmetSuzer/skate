@@ -74,10 +74,11 @@ int main(int argc, char **argv) {
 	lightModel = lightModel * glm::mat4_cast(lightRotation);
     lightModel = glm::scale(lightModel, glm::vec3(lightScalar));
     
-    // DirectionalLight lightSource = DirectionalLight(glm::vec3(0.0f, 0.0f, -1.0f), 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-    PointLight lightSource = PointLight(lightPosition, 0.09f, 0.32f, glm::vec3(1.0f, 1.0f, 1.0f));
-    // SpotLight lightSource = SpotLight(lightPosition, 0.09f, 0.32f, glm::vec3(1.0f, 0.0f, 0.0f), M_PIf/12.0f, M_PIf/6.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-    const Light light = lightSource.GetLight();
+    const glm::vec3& lightColor = color::white; 
+    // DirectionalLight lightSource = DirectionalLight(glm::vec3(-1.0f, 0.0f, 0.0f), 1.0f, lightColor);
+    // PointLight lightSource = PointLight(lightPosition, 0.09f, 0.32f, lightColor);
+    // SpotLight lightSource = SpotLight(lightPosition, 0.09f, 0.32f, glm::vec3(-1.0f, 0.0f, 0.0f), M_PIf/12.0f, M_PIf/6.0f, lightColor);
+    // const Light light = lightSource.GetLight();
 
     VAO lightVAO = VAO();
     lightVAO.Bind();
@@ -97,7 +98,7 @@ int main(int argc, char **argv) {
 
     lightShader.Use();
     lightShader.SetUniformMat4(lightModel, "model");
-    lightShader.SetUniformVec3(lightSource.GetColor(), "color");
+    lightShader.SetUniformVec3(lightColor, "color");
 
     //-------------------------------------- PYRAMID MODEL --------------------------------------//
 
@@ -164,16 +165,6 @@ int main(int argc, char **argv) {
     pyramidShader.SetUniformMat3(pyramidNormalMatrix, "normalMatrix");
     pyramidShader.SetUniformMat4(pyramidModel, "model");
 
-    pyramidShader.SetUniformInt(light.type, "light.type");
-    pyramidShader.SetUniformVec3(light.color, "light.color");
-    pyramidShader.SetUniformVec3(light.position, "light.position");
-    pyramidShader.SetUniformVec3(light.direction, "light.direction");
-    pyramidShader.SetUniformFloat(light.intensity, "light.intensity");
-    pyramidShader.SetUniformFloat(light.linear, "light.linear");
-    pyramidShader.SetUniformFloat(light.quadratic, "light.quadratic");
-    pyramidShader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
-    pyramidShader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
-
 #if __PYRAMID_VERTEX_TYPE__ == __PNT_VERTEX__
     pyramidShader.SetUniformInt(0, "textureImage");
 #elif __PYRAMID_VERTEX_TYPE__ == __PN_VERTEX__
@@ -224,16 +215,6 @@ int main(int argc, char **argv) {
     containerShader.SetUniformMat3(containerNormalMatrix, "normalMatrix");
     containerShader.SetUniformMat4(containerModel, "model");
 
-    containerShader.SetUniformInt(light.type, "light.type");
-    containerShader.SetUniformVec3(light.color, "light.color");
-    containerShader.SetUniformVec3(light.position, "light.position");
-    containerShader.SetUniformVec3(light.direction, "light.direction");
-    containerShader.SetUniformFloat(light.intensity, "light.intensity");
-    containerShader.SetUniformFloat(light.linear, "light.linear");
-    containerShader.SetUniformFloat(light.quadratic, "light.quadratic");
-    containerShader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
-    containerShader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
-
     containerShader.SetUniformInt(0, "materialMap.diffuse");
     containerShader.SetUniformInt(1, "materialMap.specular");
     containerShader.SetUniformInt(2, "materialMap.emission");
@@ -253,6 +234,7 @@ int main(int argc, char **argv) {
         Camera::Instance().UpdatePosition(elapsedTimeSinceLastFrame);
         glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
         const glm::vec3& cameraPosition = Camera::Instance().GetPosition();
+        const Light light = Camera::Instance().GetFlashLight().GetLight();
 
         const glm::vec4& backgroundColor = Common::Instance().GetBackgroundColor();
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
@@ -263,6 +245,17 @@ int main(int argc, char **argv) {
         pyramidShader.Use();
         pyramidShader.SetUniformMat4(projectionView, "projectionView");
         pyramidShader.SetUniformVec3(cameraPosition, "cameraPosition");
+
+        pyramidShader.SetUniformInt(light.type, "light.type");
+        pyramidShader.SetUniformVec3(light.color, "light.color");
+        pyramidShader.SetUniformVec3(light.position, "light.position");
+        pyramidShader.SetUniformVec3(light.direction, "light.direction");
+        pyramidShader.SetUniformFloat(light.intensity, "light.intensity");
+        pyramidShader.SetUniformFloat(light.linear, "light.linear");
+        pyramidShader.SetUniformFloat(light.quadratic, "light.quadratic");
+        pyramidShader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
+        pyramidShader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
+
         pyramidTexture.Bind(0);
         pyramidVAO.Bind();
         glDrawElements(GL_TRIANGLES, pyramidIndices.size(), GL_UNSIGNED_INT, (void*)0);
@@ -274,6 +267,17 @@ int main(int argc, char **argv) {
         containerShader.Use();
         containerShader.SetUniformMat4(projectionView, "projectionView");
         containerShader.SetUniformVec3(cameraPosition, "cameraPosition");
+
+        containerShader.SetUniformInt(light.type, "light.type");
+        containerShader.SetUniformVec3(light.color, "light.color");
+        containerShader.SetUniformVec3(light.position, "light.position");
+        containerShader.SetUniformVec3(light.direction, "light.direction");
+        containerShader.SetUniformFloat(light.intensity, "light.intensity");
+        containerShader.SetUniformFloat(light.linear, "light.linear");
+        containerShader.SetUniformFloat(light.quadratic, "light.quadratic");
+        containerShader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
+        containerShader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
+
         containerDiffuseMap.Bind(0);
         containerSpecularMap.Bind(1);
         containerEmissionMap.Bind(2);
