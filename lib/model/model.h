@@ -6,7 +6,7 @@
 
 class Model {
 private:
-    std::vector<Mesh> meshes;
+    const std::vector<Mesh>& meshes;
     glm::vec3 position;
     glm::quat rotation;
     glm::vec3 scalar;

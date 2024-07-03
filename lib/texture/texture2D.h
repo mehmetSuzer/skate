@@ -10,24 +10,12 @@ class Texture2D {
 private:
     static float borderColor[4];
     GLuint ID;
-    std::string type;
 
 public:
-    Texture2D(
-        const char* imagePath, 
-        const char* type_,
-        GLint wrapS, 
-        GLint wrapT, 
-        GLint minFilter, 
-        GLint magFilter
-    );
+    Texture2D(const char* imagePath, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
 
     GLuint GetID(void) const {
         return ID;
-    }
-
-    const std::string& GetType(void) const {
-        return type;
     }
 
     void Bind(GLuint unit) const;

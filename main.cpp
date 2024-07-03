@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include "material.h"
 #include "input_handler.h"
 #include "shader.h"
@@ -59,20 +60,13 @@ int main(int argc, char **argv) {
     // Enable the depth buffer
 	glEnable(GL_DEPTH_TEST);
 
-    const Texture2D brickTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), "diffuse", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerDiffuseMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2.png").c_str(), "diffuse", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerSpecularMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2_specular.png").c_str(), "specular", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D matrixEmissionMap = Texture2D((Common::Instance().GetTexturesPath() + "matrix.jpg").c_str(), "emission", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);    
-
-    const std::vector<Texture2D> containerTextures = 
-    {
-        woodContainerDiffuseMap,
-        woodContainerSpecularMap,
-        matrixEmissionMap,
-    };
+    const Texture2D brickTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D woodContainerDiffuseMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D woodContainerSpecularMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2_specular.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D matrixEmissionMap = Texture2D((Common::Instance().GetTexturesPath() + "matrix.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);    
 
     const std::vector<Mesh> containerMeshes = {
-        Mesh(containerTextureVertices, containerIndices, containerTextures, GL_STATIC_DRAW),
+        Mesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap, matrixEmissionMap, GL_STATIC_DRAW),
     };
 
     const glm::vec3 containerPosition = glm::vec3(2.0f, -0.0f, -2.5f);
@@ -112,7 +106,7 @@ int main(int argc, char **argv) {
 #else
 #endif
 
-    Shader shader = Shader(
+    const Shader shader = Shader(
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, LIGHTING_MAP_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, LIGHTING_MAP_VERTEX).c_str()
     );
@@ -120,23 +114,38 @@ int main(int argc, char **argv) {
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
     float currentTime;
-    float lastTime = glfwGetTime();
+    float lastFrameTime = glfwGetTime();
     float elapsedTimeSinceLastFrame;
+
+#ifdef __FPS__
+    float fpsDeltaTime = 0.0f;
+    uint32_t frameCount = 0;
+	glfwSwapInterval(0);
+#endif
 
     while (!glfwWindowShouldClose(window)) {
         currentTime = glfwGetTime();
-        elapsedTimeSinceLastFrame = currentTime - lastTime;
-        lastTime = currentTime;
+        elapsedTimeSinceLastFrame = currentTime - lastFrameTime;
+        lastFrameTime = currentTime;
 
+    #ifdef __FPS__
+        frameCount++;
+        fpsDeltaTime += elapsedTimeSinceLastFrame;
+        if (fpsDeltaTime > 1.0f) {
+            std::cout << "FPS: " << frameCount / fpsDeltaTime << std::endl;
+            frameCount = 0;
+            fpsDeltaTime = 0.0f;
+        }
+    #endif 
+        
         Camera::Instance().UpdatePosition(elapsedTimeSinceLastFrame);
-        glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
+        const glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
         const glm::vec3& cameraPosition = Camera::Instance().GetPosition();
         const Light light = Camera::Instance().GetFlashLight().GetLight();
 
         const glm::vec4& backgroundColor = Common::Instance().GetBackgroundColor();
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         container.Draw(shader, projectionView, cameraPosition, light);
 
@@ -147,9 +156,10 @@ int main(int argc, char **argv) {
     container.Delete();
     shader.Delete();
 
-    for (uint32_t i = 0; i < containerTextures.size(); i++) {
-        containerTextures[i].Delete();
-    }
+    brickTexture.Delete();
+    woodContainerDiffuseMap.Delete();
+    woodContainerSpecularMap.Delete();
+    matrixEmissionMap.Delete();
 
     glfwTerminate();
     return 0;

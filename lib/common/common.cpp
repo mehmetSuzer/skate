@@ -21,8 +21,7 @@ std::string Common::ReadFile(const char* filename) const {
 }
 
 const std::string Common::GetShaderProgramPath(enum ShadingType shading, enum ShaderType shader, enum VertexType vertex) const {
-    const std::string& shadingPath = (shading == FLAT_SHADING)    ? flatShadingPath : 
-                                     (shading == GOURAUD_SHADING) ? gouraudShadingPath : 
+    const std::string& shadingPath = (shading == GOURAUD_SHADING) ? gouraudShadingPath : 
                                                                     phongShadingPath;
 
     const std::string& shaderPath = (shader == VERTEX_SHADER) ? vertexShaderPath : 

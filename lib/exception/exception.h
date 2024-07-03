@@ -8,7 +8,7 @@
 
 class Exception : public std::exception {
 private:
-    std::string message;
+    const std::string message;
 
 public:
     explicit Exception(const char* message_);

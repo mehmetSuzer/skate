@@ -13,13 +13,15 @@ private:
     GLuint VBO;
     GLuint EBO;
 
-    std::vector<PNTVertex> vertices;
-    std::vector<GLuint> indices;
-    std::vector<Texture2D> textures;
+    const std::vector<PNTVertex>& vertices;
+    const std::vector<GLuint>& indices;
+    const Texture2D& diffuse;
+    const Texture2D& specular;
+    const Texture2D& emission;
 
 public:
     Mesh(const std::vector<PNTVertex>& vertices_, const std::vector<GLuint>& indices_, 
-        const std::vector<Texture2D>& textures_, GLenum usage);
+        const Texture2D& diffuse_, const Texture2D& specular_, const Texture2D& emission_, GLenum usage);
 
     void Draw(const Shader& shader) const;
 

@@ -2,15 +2,15 @@
 #include "shader.h"
 
 Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath) {
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    std::string vertexShaderCode = Common::Instance().ReadFile(vertexShaderPath);
+    const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const std::string vertexShaderCode = Common::Instance().ReadFile(vertexShaderPath);
     const char* vertexShaderSource = vertexShaderCode.c_str();
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
     CheckShaderError(vertexShader, VERTEX_SHADER_COMPILE_ERROR, vertexShaderPath);
 
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    std::string fragmentShaderCode = Common::Instance().ReadFile(fragmentShaderPath);
+    const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const std::string fragmentShaderCode = Common::Instance().ReadFile(fragmentShaderPath);
     const char* fragmentShaderSource = fragmentShaderCode.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);

@@ -2,8 +2,8 @@
 #include "mesh.h"
 
 Mesh::Mesh(const std::vector<PNTVertex>& vertices_, const std::vector<GLuint>& indices_, 
-    const std::vector<Texture2D>& textures_, GLenum usage) : 
-    vertices(vertices_), indices(indices_), textures(textures_) {
+    const Texture2D& diffuse_, const Texture2D& specular_, const Texture2D& emission_, GLenum usage) : 
+    vertices(vertices_), indices(indices_), diffuse(diffuse_), specular(specular_), emission(emission_) {
         
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -24,27 +24,17 @@ Mesh::Mesh(const std::vector<PNTVertex>& vertices_, const std::vector<GLuint>& i
 void Mesh::Draw(const Shader& shader) const {
     shader.Use();
 
-    GLuint diffuseIndex = 0;
-    GLuint specularIndex = 0;
-    GLuint emissionIndex = 0;
+    glActiveTexture(GL_TEXTURE0);
+    shader.SetUniformInt(0, "materialMap.diffuse");
+    glBindTexture(GL_TEXTURE_2D, diffuse.GetID());
 
-    for (uint32_t unit = 0; unit < textures.size(); unit++) {
-        glActiveTexture(GL_TEXTURE0 + unit);
-        std::string number;
-        const std::string& type = textures[unit].GetType();
+    glActiveTexture(GL_TEXTURE1);
+    shader.SetUniformInt(1, "materialMap.specular");
+    glBindTexture(GL_TEXTURE_2D, specular.GetID());
 
-        if (type == "diffuse") {
-            number = std::to_string(diffuseIndex++);
-        } else if (type == "specular") {
-            number = std::to_string(specularIndex++);
-        } else if (type == "emission") {
-            number = std::to_string(emissionIndex++);
-        } else {
-            continue;
-        }
-        shader.SetUniformInt(unit, ("materialMap[" + number + "]." + type).c_str());
-        glBindTexture(GL_TEXTURE_2D, textures[unit].GetID());
-    }
+    glActiveTexture(GL_TEXTURE2);
+    shader.SetUniformInt(2, "materialMap.emission");
+    glBindTexture(GL_TEXTURE_2D, emission.GetID());
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);

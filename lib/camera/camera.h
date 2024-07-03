@@ -48,6 +48,9 @@ private:
 
     SpotLight flashLight = SpotLight(position, 0.07f, 0.017f, glm::vec3(0.0f, 0.0f, -1.0f), M_PIf/12.0f, M_PIf/6.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
+    bool updateViewFlag;
+    bool updateProjectionFlag;
+
     Camera() {}
 
 public:
@@ -106,8 +109,14 @@ public:
     void UpdateVectors(void);
     void UpdateFlashLight(void);
     void Initialize(void);
+
+    // Use this function in mouse scroll callback
     void UpdateFOVradian(float deltaFOVradian);
+
+    // use this function in main loop
     void UpdatePosition(float elapsedTimeSinceLastFrame);
+    
+    // Use this function in cursor position callback
     void UpdateOrientation(float xOffset, float yOffset);
 };
 

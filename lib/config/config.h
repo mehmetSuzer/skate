@@ -12,6 +12,9 @@
 // It should be defined if you use MacOS.
 // #define __APPLE__
 
+// Disables VSYNC and prints FPS
+#define __FPS__
+
 #define __PNT_VERTEX__  0
 #define __PNC_VERTEX__  1
 #define __PN_VERTEX__   2

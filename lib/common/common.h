@@ -10,8 +10,7 @@
 #include "gtc/type_ptr.hpp"
 
 enum ShadingType {
-    FLAT_SHADING = 0,
-    GOURAUD_SHADING,
+    GOURAUD_SHADING = 0,
     PHONG_SHADING,
 };
 
@@ -33,7 +32,6 @@ private:
     static Common instance;
 
     const std::string glslPath = "glsl/";
-    const std::string flatShadingPath = glslPath + "flat/";
     const std::string gouraudShadingPath = glslPath + "gouraud/";
     const std::string phongShadingPath = glslPath + "phong/";
 

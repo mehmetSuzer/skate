@@ -41,7 +41,7 @@ typedef struct {
 class LightCaster {
 private:
     glm::vec3 color;
-    bool active = true;;
+    bool active = true;
 
     void AssertColorValidity(float red, float green, float blue) const;
 

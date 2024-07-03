@@ -29,9 +29,9 @@ void Camera::Initialize(void) {
     initialized = true;
 
     UpdateVectors();
-    UpdateFlashLight();
     UpdateView();
     UpdateProjection();
+    UpdateFlashLight();
 }
 
 void Camera::UpdateFOVradian(float deltaFOVradian) {
@@ -68,8 +68,8 @@ void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {
     float length = glm::length(velocityDirection);
     if (glm::epsilonNotEqual(length, 0.0f, 1E-6f)) {
         position += velocityDirection * (elapsedTimeSinceLastFrame * speed / length);
-        UpdateFlashLight();
         UpdateView();
+        UpdateFlashLight();
     }
 }
 
@@ -85,6 +85,6 @@ void Camera::UpdateOrientation(float xOffset, float yOffset) {
 	}
 
 	UpdateVectors();
-    UpdateFlashLight();
     UpdateView();
+    UpdateFlashLight();
 }

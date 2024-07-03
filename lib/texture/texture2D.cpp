@@ -3,20 +3,7 @@
 
 float Texture2D::borderColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-Texture2D::Texture2D(
-    const char* imagePath, 
-    const char* type_,
-    GLint wrapS, 
-    GLint wrapT, 
-    GLint minFilter, 
-    GLint magFilter) :
-
-    type(type_) {   
-
-    if (type != "diffuse" && type != "specular" && type != "emission") {
-        throw Exception("Texture type must be either diffuse, specular, or emission! Given: " + type);
-    } 
-
+Texture2D::Texture2D(const char* imagePath, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter) {   
     int imageWidth, imageHeight, colorChannelNumber;
     stbi_set_flip_vertically_on_load(true);
     unsigned char* bytes = stbi_load(imagePath, &imageWidth, &imageHeight, &colorChannelNumber, 0);
