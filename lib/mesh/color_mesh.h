@@ -4,11 +4,12 @@
 
 #include "mesh.h"
 
-class ColorMesh : Mesh<PNCVertex> {
+class ColorMesh : Mesh<ColorVertex> {
 public:
-    ColorMesh(const std::vector<PNCVertex>& vertices_, const std::vector<GLuint>& indices_, GLenum usage);
+    ColorMesh(const std::vector<ColorVertex>& vertices_, const std::vector<GLuint>& indices_, GLenum usage);
 
     void Draw(const Shader& shader) const override;
+    void Delete(void) const override;
 };
 
 #endif // __COLOR_MESH_H__

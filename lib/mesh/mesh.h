@@ -8,7 +8,7 @@
 
 template<typename Vertex>
 class Mesh {
-    static_assert(isAValidVertex<Vertex>::value, "Vertex must be one of PNVertex, PNTVertex, and PNCVertex!");
+    static_assert(isAValidVertex<Vertex>::value, "Vertex must be one of ColorVertex, MaterialVertex, and TextureVertex!");
 
 protected:
     GLuint VAO;
@@ -37,13 +37,8 @@ public:
         glBindVertexArray(0);
     }
 
-    void Delete(void) const {
-        glDeleteBuffers(1, &EBO);
-        glDeleteBuffers(1, &VBO);
-        glDeleteVertexArrays(1, &VAO);
-    }
-
     virtual void Draw(const Shader& shader) const = 0;
+    virtual void Delete(void) const = 0;
 };
 
 #endif // __MESH_H__

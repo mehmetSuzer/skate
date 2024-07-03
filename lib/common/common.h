@@ -20,11 +20,9 @@ enum ShaderType {
 };
 
 enum VertexType {
-    BASIC_VERTEX = 0,
-    COLOR_VERTEX,
-    TEXTURE_VERTEX,
+    COLOR_VERTEX = 0,
     MATERIAL_VERTEX,
-    LIGHTING_MAP_VERTEX,
+    TEXTURE_VERTEX,
 };
 
 class Common {
@@ -39,11 +37,9 @@ private:
     const std::string fragmentShaderPath = "fragment/";
 
     const std::string glslFileExtension = ".glsl";
-    const std::string basicVertexGLSL = "basic" + glslFileExtension;
     const std::string colorVertexGLSL = "color" + glslFileExtension;
-    const std::string textureVertexGLSL = "texture" + glslFileExtension;
     const std::string materialVertexGLSL = "material" + glslFileExtension;
-    const std::string lightingMapVertexGLSL = "lighting_map" + glslFileExtension;
+    const std::string textureVertexGLSL = "texture" + glslFileExtension;
 
     const std::string dataPath = "data/";
     const std::string modelsPath = dataPath + "models/";

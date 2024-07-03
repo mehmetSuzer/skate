@@ -62,15 +62,6 @@ include_directories(${LIB_DIR}/input_handler)
 add_subdirectory(${LIB_DIR}/vertex)
 include_directories(${LIB_DIR}/vertex)
 
-add_subdirectory(${LIB_DIR}/vbo)
-include_directories(${LIB_DIR}/vbo)
-
-add_subdirectory(${LIB_DIR}/ebo)
-include_directories(${LIB_DIR}/ebo)
-
-add_subdirectory(${LIB_DIR}/vao)
-include_directories(${LIB_DIR}/vao)
-
 add_subdirectory(${LIB_DIR}/texture)
 include_directories(${LIB_DIR}/texture)
 
@@ -94,9 +85,6 @@ target_link_libraries(${PROJECT_NAME}
     mesh
     shader
     texture
-    vao
-    ebo
-    vbo
     input_handler
     camera
     common
