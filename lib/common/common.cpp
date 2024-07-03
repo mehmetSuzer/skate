@@ -3,11 +3,11 @@
 
 Common Common::instance;
 
-std::string Common::ReadFile(const char* filename) const {
-    std::ifstream in(filename, std::ios::binary);
+std::string Common::ReadFile(const std::string& filename) const {
+    std::ifstream in = std::ifstream(filename, std::ios::binary);
 
     if (!in) {
-        std::string message = "File " + std::string(filename) + " couldn't be found!";
+        std::string message = "File " + filename + " couldn't be found!";
         throw Exception(message);
     }
     

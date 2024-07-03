@@ -58,11 +58,17 @@ int main(int argc, char **argv) {
     // Enable the depth buffer
 	glEnable(GL_DEPTH_TEST);
 
+    //------------------------------------ TEXTURES AND SHADERS ------------------------------------//
+
     const Texture2D brickTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D blackTexture = Texture2D((Common::Instance().GetTexturesPath() + "black.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
     const Texture2D woodContainerDiffuseMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D woodContainerSpecularMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2_specular.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D matrixEmissionMap = Texture2D((Common::Instance().GetTexturesPath() + "matrix.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);    
+
+    const Shader colorShader = Shader(PHONG_SHADING, COLOR_VERTEX);
+    const Shader materialShader = Shader(PHONG_SHADING, MATERIAL_VERTEX);
+    const Shader textureShader = Shader(PHONG_SHADING, TEXTURE_VERTEX);
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
@@ -111,22 +117,6 @@ int main(int argc, char **argv) {
     const glm::vec3 texturePyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
     const Model texturePyramid = Model(texturePyramidMeshes, texturePyramidPosition, texturePyramidRotation, texturePyramidScalar);
-
-    //--------------------------------------- SHADERS -----------------------------------------//
-
-    const Shader textureShader = Shader(
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, TEXTURE_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, TEXTURE_VERTEX).c_str()
-    );
-
-    const Shader colorShader = Shader(
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, COLOR_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, COLOR_VERTEX).c_str()
-    );
-    const Shader materialShader = Shader(
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, MATERIAL_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, MATERIAL_VERTEX).c_str()
-    );
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 

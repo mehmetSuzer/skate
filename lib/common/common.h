@@ -98,7 +98,7 @@ public:
         return 0.299f * red + 0.587f * green + 0.114f * blue;
     }
 
-    std::string ReadFile(const char* filePath) const;
+    std::string ReadFile(const std::string& filePath) const;
     const std::string GetShaderProgramPath(enum ShadingType shading, enum ShaderType shader, enum VertexType vertex) const;
 };
 

@@ -16,8 +16,10 @@ private:
     static const GLsizei shaderInfoLogSize = 1024;
     GLuint ID;
 
+    void CheckShaderError(GLuint shader, enum ShaderError type, const char* filePath) const;
+    
 public:
-    Shader(const char* vertexShaderPath, const char* fragmentShaderPath);
+    Shader(ShadingType shading, VertexType vertex);
 
     GLuint GetID(void) const {
         return ID;
@@ -54,8 +56,6 @@ public:
     void SetUniformMat4(const glm::mat4& matrix, const char* uniform) const {
         glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
     }
-
-    void CheckShaderError(GLuint shader, enum ShaderError type, const char* filePath) const;
 };
 
 #endif // __SHADER_H__

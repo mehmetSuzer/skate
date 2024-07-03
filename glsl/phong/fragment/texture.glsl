@@ -34,7 +34,7 @@ uniform vec3 cameraPosition;
 uniform Light light;
 uniform MaterialMap materialMap;
 
-void directionalLight() {
+vec4 directionalLight() {
     float ambientPower = 0.2f;
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
     vec4 ambientAndDiffuse = (ambientPower + diffusePower) + texture(materialMap.diffuse, tex);
@@ -48,10 +48,10 @@ void directionalLight() {
     float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
 
-    FragColor = emission + vec4(light.intensity * light.color, 1.0f) * (ambientAndDiffuse + specular);
+    return emission + vec4(light.intensity * light.color, 1.0f) * (ambientAndDiffuse + specular);
 }
 
-void pointLight() {
+vec4 pointLight() {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
@@ -71,10 +71,10 @@ void pointLight() {
     float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
     
-    FragColor = emission + vec4(attenuation * light.color, 1.0f) * (ambientAndDiffuse + specular);
+    return emission + vec4(attenuation * light.color, 1.0f) * (ambientAndDiffuse + specular);
 }
 
-void spotLight() {
+vec4 spotLight() {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
@@ -92,8 +92,7 @@ void spotLight() {
 
     // If out of the outer cone, use only ambient and emission
     if (cosTheta < light.cosOuterCutOff) {
-        FragColor = emission + vec4(attenuation * light.color, 1.0f) * ambient;
-        return;
+        return emission + vec4(attenuation * light.color, 1.0f) * ambient;
     }
 
     vec3 directionToCamera = normalize(cameraPosition - position);
@@ -111,16 +110,16 @@ void spotLight() {
     vec4 diffuse = diffusePower * texture(materialMap.diffuse, tex);
     vec4 specular = specularPower * vec4(texture(materialMap.specular, tex).rrr, 1.0f);
 
-    FragColor = emission + vec4(attenuation * light.color, 1.0f) * (ambient + diffuse + specular);
+    return emission + vec4(attenuation * light.color, 1.0f) * (ambient + diffuse + specular);
 }
 
 void main() {
     if (light.type == DIRECTIONAL_LIGHT) {
-        directionalLight();
+        FragColor = directionalLight();
     } else if (light.type == POINT_LIGHT) {
-        pointLight();
+        FragColor = pointLight();
     } else if (light.type == SPOT_LIGHT) {
-        spotLight();
+        FragColor = spotLight();
     } else {
         FragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     }
