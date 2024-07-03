@@ -1,7 +1,7 @@
 
 #include "input_handler.h"
 
-InputHandler InputHandler::instance;
+// ------------------------------------------ CALLBACKS ------------------------------------------ //
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -118,6 +118,10 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
     const float deltaFOVradian = yOffset * InputHandler::Instance().GetScrollSensitivity();
     Camera::Instance().UpdateFOVradian(deltaFOVradian);
 }
+
+// ---------------------------------------------------------------------------------------------- //
+
+InputHandler InputHandler::instance;
 
 void InputHandler::SetButton(GLuint key, enum Button button) {
     for (uint32_t i = 0; i < buttonMapSize; i++) {

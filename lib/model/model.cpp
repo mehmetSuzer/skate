@@ -2,15 +2,9 @@
 #include "model.h"
 
 Model::Model(
-    const std::vector<Mesh>& meshes_, 
-    const glm::vec3& position_, 
-    const glm::quat& rotation_, 
-    const glm::vec3& scalar_) :
-    
-    meshes(meshes_),
-    position(position_),
-    rotation(rotation_),
-    scalar(scalar_) {
+    const std::vector<Mesh>& meshes_, const glm::vec3& position_, 
+    const glm::quat& rotation_, const glm::vec3& scalar_) :
+    meshes(meshes_), position(position_), rotation(rotation_), scalar(scalar_) {
 
     UpdateMatrices();
 }

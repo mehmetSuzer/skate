@@ -18,12 +18,8 @@ private:
     std::vector<Texture2D> textures;
 
 public:
-    Mesh(
-        const std::vector<PNTVertex>& vertices_, 
-        const std::vector<GLuint>& indices_, 
-        const std::vector<Texture2D>& textures_, 
-        GLenum usage
-    );
+    Mesh(const std::vector<PNTVertex>& vertices_, const std::vector<GLuint>& indices_, 
+        const std::vector<Texture2D>& textures_, GLenum usage);
 
     void Draw(const Shader& shader) const;
     void Delete(void) const;

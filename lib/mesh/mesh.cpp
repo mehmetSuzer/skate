@@ -1,16 +1,10 @@
 
 #include "mesh.h"
 
-Mesh::Mesh(
-    const std::vector<PNTVertex>& vertices_, 
-    const std::vector<GLuint>& indices_, 
-    const std::vector<Texture2D>& textures_, 
-    GLenum usage) :
-
-    vertices(vertices_),
-    indices(indices_),
-    textures(textures_) {
-
+Mesh::Mesh(const std::vector<PNTVertex>& vertices_, const std::vector<GLuint>& indices_, 
+    const std::vector<Texture2D>& textures_, GLenum usage) : 
+    vertices(vertices_), indices(indices_), textures(textures_) {
+        
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);

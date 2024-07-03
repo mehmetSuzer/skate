@@ -15,12 +15,8 @@ private:
     glm::mat4 normalMatrix;
 
 public:
-    Model(
-        const std::vector<Mesh>& meshes_, 
-        const glm::vec3& position_, 
-        const glm::quat& rotation_, 
-        const glm::vec3& scalar_
-    );
+    Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, 
+        const glm::quat& rotation_, const glm::vec3& scalar_);
 
     void UpdateMatrices(void);
     void UpdatePosition(const glm::vec3& position_);
