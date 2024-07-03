@@ -1,16 +1,17 @@
 
 #version 330 core
 
+#define DIRECTIONAL_LIGHT   0
+#define POINT_LIGHT         1
+#define SPOT_LIGHT          2
+
+#define MAX_TEXTURE_NUMBER  4
+
 struct MaterialMap {
     sampler2D diffuse;
     sampler2D specular;
     sampler2D emission;
-    float shininess;
 };
-
-#define DIRECTIONAL_LIGHT   0
-#define POINT_LIGHT         1
-#define SPOT_LIGHT          2
 
 struct Light {
     int type;
@@ -32,22 +33,36 @@ in vec2 tex;
 
 uniform vec3 cameraPosition;
 uniform Light light;
-uniform MaterialMap materialMap;
+uniform MaterialMap materialMap[MAX_TEXTURE_NUMBER];
 
 vec4 directionalLight() {
+    vec4 ambient = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 diffuse = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 emission = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
     float ambientPower = 0.2f;
-    vec4 ambient = texture(materialMap.diffuse, tex) * ambientPower;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        ambient += texture(materialMap[i].diffuse, tex) * ambientPower;
+    }
+
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
-    vec4 diffuse = texture(materialMap.diffuse, tex) * diffusePower;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        diffuse += texture(materialMap[i].diffuse, tex) * diffusePower;
+    }
     
     vec3 directionToCamera = normalize(cameraPosition - position);
     vec3 reflectionDirection = reflect(-light.direction, normal);
-    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), materialMap.shininess) : 0.0f;
-    vec4 specular = vec4(texture(materialMap.specular, tex).rrr, 1.0f) * specularPower;
+    
+    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        specular += vec4(texture(materialMap[i].specular, tex).rrr, 1.0f) * specularPower;
+    }
 
-    // emissionPower is calculated in this way just to remove all emission on the steel part of the container.
-    float emissionPower = (texture(materialMap.specular, tex).r == 0.0f) ? 1.0f : 0.0f;
-    vec4 emission = texture(materialMap.emission, tex) * emissionPower;
+    float emissionPower = 1.0f;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        emission += texture(materialMap[i].emission, tex) * emissionPower;
+    }
 
     return emission + vec4(light.color, 1.0f) * light.intensity * (ambient + diffuse + specular);
 }
@@ -59,19 +74,33 @@ vec4 pointLight() {
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
+    vec4 ambient = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 diffuse = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 emission = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
     float ambientPower = 0.2f;
-    vec4 ambient = texture(materialMap.diffuse, tex) * ambientPower;
-    float diffusePower = max(dot(normal, directionToLight), 0.0f);
-    vec4 diffuse = texture(materialMap.diffuse, tex) * diffusePower;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        ambient += texture(materialMap[i].diffuse, tex) * ambientPower;
+    }
+
+    float diffusePower = max(dot(normal, -light.direction), 0.0f);
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        diffuse += texture(materialMap[i].diffuse, tex) * diffusePower;
+    }
     
     vec3 directionToCamera = normalize(cameraPosition - position);
     vec3 reflectionDirection = reflect(-directionToLight, normal);
-    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), materialMap.shininess) : 0.0f;
-    vec4 specular = vec4(texture(materialMap.specular, tex).rrr, 1.0f) * specularPower;
+    
+    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        specular += vec4(texture(materialMap[i].specular, tex).rrr, 1.0f) * specularPower;
+    }
 
-    // emissionPower is calculated in this way just to remove all emission on the steel part of the container.
-    float emissionPower = (texture(materialMap.specular, tex).r == 0.0f) ? 1.0f : 0.0f;
-    vec4 emission = texture(materialMap.emission, tex) * emissionPower;
+    float emissionPower = 1.0f;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        emission += texture(materialMap[i].emission, tex) * emissionPower;
+    }
 
     return emission + vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
 }
@@ -82,6 +111,11 @@ vec4 spotLight() {
     vec3 directionToLight = positionToLightPosition / distanceToLight;
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
+
+    vec4 ambient = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 diffuse = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 specular = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    vec4 emission = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
     float ambientPower = 0.2f;
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
@@ -105,13 +139,22 @@ vec4 spotLight() {
     }
     // else: Inside the inner cone
 
-    vec4 ambient = texture(materialMap.diffuse, tex) * ambientPower;
-    vec4 diffuse = texture(materialMap.diffuse, tex) * diffusePower;
-    vec4 specular = vec4(texture(materialMap.specular, tex).rrr, 1.0f) * specularPower;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        ambient += texture(materialMap[i].diffuse, tex) * ambientPower;
+    }
 
-    // emissionPower is calculated in this way just to remove all emission on the steel part of the container.
-    float emissionPower = (texture(materialMap.specular, tex).r == 0.0f) ? 1.0f : 0.0f;
-    vec4 emission = texture(materialMap.emission, tex) * emissionPower;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        diffuse += texture(materialMap[i].diffuse, tex) * diffusePower;
+    }
+
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        specular += vec4(texture(materialMap[i].specular, tex).rrr, 1.0f) * specularPower;
+    }
+
+    float emissionPower = 1.0f;
+    for (int i = 0; i < MAX_TEXTURE_NUMBER; i++) {
+        emission += texture(materialMap[i].emission, tex) * emissionPower;
+    }
 
     return emission + vec4(light.color, 1.0f) * attenuation * (ambient + diffuse + specular);
 }

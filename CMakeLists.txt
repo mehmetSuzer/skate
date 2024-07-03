@@ -59,6 +59,9 @@ include_directories(${LIB_DIR}/camera)
 add_subdirectory(${LIB_DIR}/input_handler)
 include_directories(${LIB_DIR}/input_handler)
 
+add_subdirectory(${LIB_DIR}/vertex)
+include_directories(${LIB_DIR}/vertex)
+
 add_subdirectory(${LIB_DIR}/vbo)
 include_directories(${LIB_DIR}/vbo)
 
@@ -68,21 +71,28 @@ include_directories(${LIB_DIR}/ebo)
 add_subdirectory(${LIB_DIR}/vao)
 include_directories(${LIB_DIR}/vao)
 
-add_subdirectory(${LIB_DIR}/scene)
-include_directories(${LIB_DIR}/scene)
-
 add_subdirectory(${LIB_DIR}/texture)
 include_directories(${LIB_DIR}/texture)
 
 add_subdirectory(${LIB_DIR}/shader)
 include_directories(${LIB_DIR}/shader)
 
+add_subdirectory(${LIB_DIR}/mesh)
+include_directories(${LIB_DIR}/mesh)
+
+add_subdirectory(${LIB_DIR}/model)
+include_directories(${LIB_DIR}/model)
+
+add_subdirectory(${LIB_DIR}/scene)
+include_directories(${LIB_DIR}/scene)
 
 add_executable(${PROJECT_NAME}
     main.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} 
+    model
+    mesh
     shader
     texture
     vao

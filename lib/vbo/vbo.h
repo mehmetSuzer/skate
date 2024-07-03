@@ -6,52 +6,27 @@
 #include <vector>
 #include <glad.h>
 #include <glm.hpp>
+#include <vertex.h>
 
-// Just Position
-typedef struct {
-    glm::vec3 position;
-} PVertex;
-
-// Position + Normal
-typedef struct {
-    glm::vec3 position;
-    glm::vec3 normal;
-} PNVertex;
-
-// Position + Normal + Texture
-typedef struct {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec2 texture;
-} PNTVertex;
-
-// Position + Normal + Color
-typedef struct {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec4 color;
-} PNCVertex;
-
-template<typename T>
+template<typename Vertex>
 struct isAValidVertex {
-    static constexpr bool value = std::is_same<T, PVertex>::value   ||
-                                  std::is_same<T, PNVertex>::value  ||
-                                  std::is_same<T, PNTVertex>::value ||
-                                  std::is_same<T, PNCVertex>::value;
+    static constexpr bool value = std::is_same<Vertex, PVertex>::value   ||
+                                  std::is_same<Vertex, PNVertex>::value  ||
+                                  std::is_same<Vertex, PNTVertex>::value ||
+                                  std::is_same<Vertex, PNCVertex>::value;
 };
-
 
 class VBO {
 private:
     GLuint ID;
 
 public:
-    template<typename T>
-    VBO(const std::vector<T>& vertices, GLenum usage) {
-        static_assert(isAValidVertex<T>::value, "T must be one of PVertex, PNVertex, PNTVertex, and PNCVertex!");
+    template<typename Vertex>
+    VBO(const std::vector<Vertex>& vertices, GLenum usage) {
+        static_assert(isAValidVertex<Vertex>::value, "Vertex must be one of PVertex, PNVertex, PNTVertex, and PNCVertex!");
         glGenBuffers(1, &ID);
         glBindBuffer(GL_ARRAY_BUFFER, ID);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(T), vertices.data(), usage);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), usage);
     }
 
     void Bind(void) const;

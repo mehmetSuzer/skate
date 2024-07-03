@@ -19,6 +19,6 @@
 #define __PNT_VERTEX__  0
 #define __PNC_VERTEX__  1
 #define __PN_VERTEX__   2
-#define __PYRAMID_VERTEX_TYPE__     __PN_VERTEX__
+#define __PYRAMID_VERTEX_TYPE__     3
 
 #endif // __CONFIG_H__
