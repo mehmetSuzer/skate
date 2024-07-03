@@ -2,7 +2,7 @@
 #ifndef __MATERIAL_H__
 #define __MATERIAL_H__
 
-#include <glm.hpp>
+#include "glm.hpp"
 
 typedef struct {
     glm::vec3 ambient;

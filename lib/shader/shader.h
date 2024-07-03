@@ -2,8 +2,8 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
-#include <error.h>
-#include <common.h>
+#include "exception.h"
+#include "common.h"
 
 enum ShaderError {
     VERTEX_SHADER_COMPILE_ERROR = 0,

@@ -3,23 +3,23 @@
 
 void SpotLight::AssertCutOffRadian(float cutOffRadian) const {
     if (cutOffRadian <= 0.0f || cutOffRadian >= M_PIf) {
-        const std::string errorMessage = "Cut-Off Radian Must Be In (0, pi)! Given: " + std::to_string(cutOffRadian);
-        throw Error(errorMessage);
+        const std::string message = "Cut-Off Radian Must Be In (0, pi)! Given: " + std::to_string(cutOffRadian);
+        throw Exception(message);
     }
 }
 
 void SpotLight::AssertInnerLessThanOuter(float innerCutOffRadian, float outerCutOffRadian) const {
     if (innerCutOffRadian >= outerCutOffRadian) {
-        const std::string errorMessage = "Inner Cut-Off Radian Must Be Less Than Outer Cut-Off Radian! Given Values --> Inner: " 
+        const std::string message = "Inner Cut-Off Radian Must Be Less Than Outer Cut-Off Radian! Given Values --> Inner: " 
             + std::to_string(innerCutOffRadian) + ", Outer: " + std::to_string(outerCutOffRadian);
-        throw Error(errorMessage);
+        throw Exception(message);
     }
 }
 
 void SpotLight::AssertDirection(const glm::vec3& direction) const {
     const float length = glm::length(direction);
     if (glm::epsilonNotEqual(length, 1.0f, 1E-6f)) {
-        throw Error("Direction Vector Is Not a Unit Vector!");
+        throw Exception("Direction Vector Is Not a Unit Vector!");
     }
 }
 

@@ -23,8 +23,8 @@ file(COPY ${CMAKE_SOURCE_DIR}/${DATA_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 add_subdirectory(${LIB_DIR}/config)
 include_directories(${LIB_DIR}/config)
 
-add_subdirectory(${LIB_DIR}/error)
-include_directories(${LIB_DIR}/error)
+add_subdirectory(${LIB_DIR}/exception)
+include_directories(${LIB_DIR}/exception)
 
 add_subdirectory(${LIB_DIR}/observer_subject)
 include_directories(${LIB_DIR}/observer_subject)
@@ -107,7 +107,7 @@ target_link_libraries(${PROJECT_NAME}
     stb
     object_pool
     observer_subject
-    error
+    exception
     glfw
     OpenGL::GL
 )

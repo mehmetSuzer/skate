@@ -2,10 +2,6 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-// In order to speed up the program and to reduce the size of the executable, you may disable error handlers by commenting out.
-// Disable them, only if you are sure that the code is error-free.
-#define __COMPILE_ERROR_HANDLERS__
-
 // If you want to use the array implementation of Observer-Subject Design Pattern, keep this defined. 
 // If you prefer the linked list implementation, comment out.
 #define __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__

@@ -13,26 +13,22 @@ Texture2D::Texture2D(
 
     type(type_) {   
 
-#ifdef __COMPILE_ERROR_HANDLERS__
     if (type != "diffuse" && type != "specular" && type != "emission") {
-        throw Error("Texture type must be either diffuse, specular, or emission! Given: " + type);
-    }
-#endif 
+        throw Exception("Texture type must be either diffuse, specular, or emission! Given: " + type);
+    } 
 
     int imageWidth, imageHeight, colorChannelNumber;
     stbi_set_flip_vertically_on_load(true);
     unsigned char* bytes = stbi_load(imagePath, &imageWidth, &imageHeight, &colorChannelNumber, 0);
 
-#ifdef __COMPILE_ERROR_HANDLERS__
     if (bytes == NULL) {
-        std::string errorMessage = "Failed to read " + std::string(imagePath);
-        throw Error(errorMessage);
+        std::string message = "Failed to read " + std::string(imagePath);
+        throw Exception(message);
     }
     if (colorChannelNumber != 1 && colorChannelNumber != 3 && colorChannelNumber != 4) {
-        std::string errorMessage = "Invalid Color Channel: " + std::to_string(colorChannelNumber);
-        throw Error(errorMessage);
+        std::string message = "Invalid Color Channel: " + std::to_string(colorChannelNumber);
+        throw Exception(message);
     }
-#endif
 
     glGenTextures(1, &ID);
     glBindTexture(GL_TEXTURE_2D, ID);

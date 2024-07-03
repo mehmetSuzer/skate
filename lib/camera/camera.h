@@ -2,8 +2,8 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
-#include <common.h>
-#include <spot_light.h>
+#include "common.h"
+#include "spot_light.h"
 
 enum AxisDirection {
     AXIS_NONE = 0,

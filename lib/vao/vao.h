@@ -2,7 +2,7 @@
 #ifndef __VAO_H__
 #define __VAO_H__
 
-#include <vbo.h>
+#include "vbo.h"
 
 class VAO {
 private:

@@ -3,7 +3,7 @@
 #define __SPOT_LIGHT_H__
 
 #include "point_light.h"
-#include <gtc/epsilon.hpp>
+#include "gtc/epsilon.hpp"
 
 class SpotLight : public PointLight {
 private:
@@ -27,18 +27,14 @@ public:
         float innerCutOffRadian, float outerCutOffRadian, const glm::vec3& color_);
 
     void SetDirection(const glm::vec3& direction_) {
-    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertDirection(direction_);
-    #endif
         direction = direction_;
     }
 
     void SetCutOffRadians(float innerCutOffRadian, float outerCutOffRadian) {
-    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertCutOffRadian(innerCutOffRadian);
         AssertCutOffRadian(outerCutOffRadian);
         AssertInnerLessThanOuter(innerCutOffRadian, outerCutOffRadian);
-    #endif
         cosInnerCutOff = glm::cos(innerCutOffRadian);
         cosOuterCutOff = glm::cos(outerCutOffRadian);
     }

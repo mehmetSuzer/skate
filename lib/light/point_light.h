@@ -25,9 +25,7 @@ public:
     }
 
     void SetAttenuationCoefficients(float linear_, float quadratic_) {
-    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertAttenuationCoefficients(linear_, quadratic_);
-    #endif
         linear = linear_;
         quadratic = quadratic_;
     }

@@ -14,7 +14,7 @@ template<typename T>
 template<typename T>
 T* ObjectPool<T>::Get(void) {
     if (firstAvailable == NULL) {
-        throw Error("Object Pool is Full!");
+        throw Exception("Object Pool is Full!");
     }
 
     T* t = firstAvailable;

@@ -6,12 +6,10 @@ Common Common::instance;
 std::string Common::ReadFile(const char* filename) const {
     std::ifstream in(filename, std::ios::binary);
 
-    #ifdef __COMPILE_ERROR_HANDLERS__
     if (!in) {
-        std::string errorMessage = "File " + std::string(filename) + " couldn't be found!";
-        throw Error(errorMessage);
+        std::string message = "File " + std::string(filename) + " couldn't be found!";
+        throw Exception(message);
     }
-    #endif 
     
     std::string contents;
     in.seekg(0, std::ios::end);

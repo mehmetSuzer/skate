@@ -2,9 +2,9 @@
 #ifndef __SCENE_H__
 #define __SCENE_H__
 
-#include <common.h>
-#include <light.h>
-#include <model.h>
+#include "common.h"
+#include "light.h"
+#include "model.h"
 
 const std::vector<PNCVertex> pyramidColorVertices =
 {  			 //         positions         /            normals            /              colors              //

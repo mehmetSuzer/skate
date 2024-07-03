@@ -2,9 +2,9 @@
 #ifndef __OBSERVER_SUBJECT_H__
 #define __OBSERVER_SUBJECT_H__
 
-#include <config.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "config.h"
 
 enum Event {
     EVENT0 = 0,

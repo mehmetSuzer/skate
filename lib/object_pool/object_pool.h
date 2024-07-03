@@ -5,7 +5,7 @@
 #include <type_traits>
 #include <stddef.h>
 #include <stdint.h>
-#include <error.h>
+#include "exception.h"
 #include "object.h"
 
 template<typename T>

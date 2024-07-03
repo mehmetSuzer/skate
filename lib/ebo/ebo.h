@@ -3,7 +3,7 @@
 #define __EBO_H__
 
 #include <vector>
-#include <glad.h>
+#include "glad.h"
 
 class EBO {
 private:

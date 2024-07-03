@@ -2,13 +2,12 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#include <config.h>
-#include <error.h>
-#include <string>
 #include <fstream>
-#include <glad.h>
-#include <glm.hpp>
-#include <gtc/type_ptr.hpp>
+#include "config.h"
+#include "exception.h"
+#include "glad.h"
+#include "glm.hpp"
+#include "gtc/type_ptr.hpp"
 
 enum ShadingType {
     FLAT_SHADING = 0,

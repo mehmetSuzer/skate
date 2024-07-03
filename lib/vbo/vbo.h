@@ -2,19 +2,10 @@
 #ifndef __VBO_H__
 #define __VBO_H__
 
-#include <type_traits>
 #include <vector>
-#include <glad.h>
-#include <glm.hpp>
-#include <vertex.h>
-
-template<typename Vertex>
-struct isAValidVertex {
-    static constexpr bool value = std::is_same<Vertex, PVertex>::value   ||
-                                  std::is_same<Vertex, PNVertex>::value  ||
-                                  std::is_same<Vertex, PNTVertex>::value ||
-                                  std::is_same<Vertex, PNCVertex>::value;
-};
+#include "glad.h"
+#include "glm.hpp"
+#include "vertex.h"
 
 class VBO {
 private:

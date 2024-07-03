@@ -2,9 +2,9 @@
 #ifndef __TEXTURE2D_H__
 #define __TEXTURE2D_H__
 
-#include <stb_image.h>
-#include <error.h>
-#include <glad.h>
+#include "stb_image.h"
+#include "exception.h"
+#include "glad.h"
 
 class Texture2D {
 private:

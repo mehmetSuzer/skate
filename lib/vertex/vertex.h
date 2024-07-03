@@ -2,8 +2,9 @@
 #ifndef __VERTEX_H__
 #define __VERTEX_H__
 
-#include <glad.h>
-#include <glm.hpp>
+#include <type_traits>
+#include "glad.h"
+#include "glm.hpp"
 
 // Just Position
 struct PVertex {
@@ -67,6 +68,14 @@ struct PNCVertex {
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(PNCVertex), (void*)(2 * sizeof(glm::vec3)));
     }
+};
+
+template<typename Vertex>
+struct isAValidVertex {
+    static constexpr bool value = std::is_same<Vertex, PVertex>::value   ||
+                                  std::is_same<Vertex, PNVertex>::value  ||
+                                  std::is_same<Vertex, PNTVertex>::value ||
+                                  std::is_same<Vertex, PNCVertex>::value;
 };
 
 #endif // __VERTEX_H__

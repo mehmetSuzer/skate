@@ -2,7 +2,7 @@
 #ifndef __INPUT_HANDLER_H__
 #define __INPUT_HANDLER_H__
 
-#include <camera.h>
+#include "camera.h"
 #include <GLFW/glfw3.h>
 
 enum Button {

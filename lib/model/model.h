@@ -2,7 +2,7 @@
 #ifndef __MODEL_H__
 #define __MODEL_H__
 
-#include <mesh.h>
+#include "mesh.h"
 
 class Model {
 private:

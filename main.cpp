@@ -1,17 +1,15 @@
 
-#include <material.h>
-#include <input_handler.h>
-#include <shader.h>
-#include <texture2D.h>
-#include <light.h>
-#include <model.h>
-#include <scene.h>
+#include "material.h"
+#include "input_handler.h"
+#include "shader.h"
+#include "model.h"
+#include "scene.h"
 
 int main(int argc, char **argv) {
     //-------------------------------------- INITIALIZATION --------------------------------------//
 
     if (glfwInit() == GLFW_FALSE) {
-        throw Error("Failed to initialize GLFW!");
+        throw Exception("Failed to initialize GLFW!");
     }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -30,7 +28,7 @@ int main(int argc, char **argv) {
 
     const GLFWvidmode* videoMode = glfwGetVideoMode(monitor);
     if (!videoMode) {
-        throw Error("Failed to Get the Video Mode of the Monitor!");
+        throw Exception("Failed to Get the Video Mode of the Monitor!");
     }
 
     GLFWwindow* window = glfwCreateWindow(videoMode->width, videoMode->height, "Learn OpenGL", monitor, NULL); 
@@ -40,7 +38,7 @@ int main(int argc, char **argv) {
 
     if (window == NULL) {
         glfwTerminate();
-        throw Error("Failed to create GLFW Window!");
+        throw Exception("Failed to create GLFW Window!");
     }
     glfwMakeContextCurrent(window);
 
@@ -49,7 +47,7 @@ int main(int argc, char **argv) {
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         glfwTerminate();
-        throw Error("Failed to initialize GLAD!");
+        throw Exception("Failed to initialize GLAD!");
     }
 
 #ifdef __FULL_SCREEN__

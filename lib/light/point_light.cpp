@@ -3,9 +3,9 @@
 
 void PointLight::AssertAttenuationCoefficients(float linear_, float quadratic_) const {
     if (linear_ < 0.0f || quadratic_ < 0.0f) {
-        const std::string errorMessage = "Attenuation Coefficients Cannot Be Negative. Given: " + 
+        const std::string message = "Attenuation Coefficients Cannot Be Negative. Given: " + 
             std::to_string(linear_) + " " + std::to_string(quadratic_);
-        throw Error(errorMessage);
+        throw Exception(message);
     }
 }
 

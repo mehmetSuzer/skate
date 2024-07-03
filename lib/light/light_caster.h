@@ -2,8 +2,8 @@
 #ifndef __LIGHT_CASTER_H__
 #define __LIGHT_CASTER_H__
 
-#include <error.h>
-#include <glm.hpp>
+#include "exception.h"
+#include "glm.hpp"
 
 namespace color {
     const glm::vec3 red =       glm::vec3(1.0f,  0.0f,  0.0f);
@@ -56,9 +56,7 @@ public:
     }
 
     void SetColor(float red, float green, float blue) {
-    #ifdef __COMPILE_ERROR_HANDLERS__
         AssertColorValidity(red, green, blue);
-    #endif
         color = glm::vec3(red, green, blue);
     }
 

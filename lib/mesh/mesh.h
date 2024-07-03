@@ -2,10 +2,10 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
-#include <vbo.h>
-#include <light.h>
-#include <texture2D.h>
-#include <shader.h>
+#include "vbo.h"
+#include "light.h"
+#include "texture2D.h"
+#include "shader.h"
 
 class Mesh {
 private:
