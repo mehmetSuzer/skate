@@ -6,17 +6,6 @@
 #include "glad.h"
 #include "glm.hpp"
 
-// Just Position
-struct PVertex {
-    glm::vec3 position;
-
-    static void LinkAttributes(void) {
-        // position
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(PVertex), (void*)0);
-    }
-};
-
 // Position + Normal
 struct PNVertex {
     glm::vec3 position;
@@ -72,8 +61,7 @@ struct PNCVertex {
 
 template<typename Vertex>
 struct isAValidVertex {
-    static constexpr bool value = std::is_same<Vertex, PVertex>::value   ||
-                                  std::is_same<Vertex, PNVertex>::value  ||
+    static constexpr bool value = std::is_same<Vertex, PNVertex>::value  ||
                                   std::is_same<Vertex, PNTVertex>::value ||
                                   std::is_same<Vertex, PNCVertex>::value;
 };

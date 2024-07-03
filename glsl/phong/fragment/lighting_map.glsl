@@ -29,14 +29,12 @@ in vec3 position;
 in vec3 normal;
 in vec2 tex;
 
-const float ambientPower = 0.2f;
-const float emissionPower = 1.0f;
-
 uniform vec3 cameraPosition;
 uniform Light light;
 uniform MaterialMap materialMap;
 
 void directionalLight() {
+    float ambientPower = 0.2f;
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
     vec4 ambientAndDiffuse = (ambientPower + diffusePower) + texture(materialMap.diffuse, tex);
     
@@ -46,6 +44,7 @@ void directionalLight() {
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
     vec4 specular = specularPower * vec4(texture(materialMap.specular, tex).rrr, 1.0f);
 
+    float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
 
     FragColor = emission + vec4(light.intensity * light.color, 1.0f) * (ambientAndDiffuse + specular);
@@ -58,6 +57,7 @@ void pointLight() {
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
+    float ambientPower = 0.2f;
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
     vec4 ambientAndDiffuse = (ambientPower + diffusePower) * texture(materialMap.diffuse, tex);
     
@@ -67,6 +67,7 @@ void pointLight() {
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
     vec4 specular = specularPower * vec4(texture(materialMap.specular, tex).rrr, 1.0f);
 
+    float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
     
     FragColor = emission + vec4(attenuation * light.color, 1.0f) * (ambientAndDiffuse + specular);
@@ -80,7 +81,10 @@ void spotLight() {
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
+    float ambientPower = 0.2f;
     vec4 ambient = ambientPower * texture(materialMap.diffuse, tex);
+
+    float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
 
     float cosTheta = dot(-directionToLight, light.direction);

@@ -1,9 +1,6 @@
 
 #include <iostream>
-#include "material.h"
 #include "input_handler.h"
-#include "shader.h"
-#include "model.h"
 #include "scene.h"
 
 int main(int argc, char **argv) {
@@ -65,50 +62,56 @@ int main(int argc, char **argv) {
     const Texture2D woodContainerSpecularMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2_specular.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D matrixEmissionMap = Texture2D((Common::Instance().GetTexturesPath() + "matrix.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);    
 
-    const std::vector<Mesh> containerMeshes = {
-        Mesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap, matrixEmissionMap, GL_STATIC_DRAW),
+    //-------------------------------------- CONTAINER MODEL --------------------------------------//
+
+    const std::vector<TextureMesh> containerMeshes = {
+        TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap, matrixEmissionMap, GL_STATIC_DRAW),
     };
 
-    const glm::vec3 containerPosition = glm::vec3(2.0f, -0.0f, -2.5f);
+    const glm::vec3 containerPosition = glm::vec3(2.0f, 0.0f, -2.5f);
     const glm::quat containerRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     const glm::vec3 containerScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    const Model container = Model(containerMeshes, containerPosition, containerRotation, containerScalar);
+    const Model container = Model(containerMeshes, containerPosition, containerRotation, containerScalar); 
 
-    //-------------------------------------- PYRAMID MODEL --------------------------------------//
+    //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
 
-#if __PYRAMID_VERTEX_TYPE__ == __PNT_VERTEX__
-    Shader pyramidShader = Shader(
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, TEXTURE_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, TEXTURE_VERTEX).c_str()
+    const std::vector<ColorMesh> colorPyramidMeshes = {
+        ColorMesh(pyramidColorVertices, pyramidIndices, GL_STATIC_DRAW),
+    };
+
+    const glm::vec3 colorPyramidPosition = glm::vec3(-2.0f, 0.0f, -2.5f);
+    const glm::quat colorPyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    const glm::vec3 colorPyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    const Model colorPyramid = Model(colorPyramidMeshes, colorPyramidPosition, colorPyramidRotation, colorPyramidScalar);
+
+    //---------------------------------- MATERIAL PYRAMID MODEL ---------------------------------//
+
+    const std::vector<MaterialMesh> materialPyramidMeshes = {
+        MaterialMesh(pyramidNormalVertices, pyramidIndices, material::bronze, GL_STATIC_DRAW),
+    };
+
+    const glm::vec3 materialPyramidPosition = glm::vec3(0.0f, 0.0f, -2.5f);
+    const glm::quat materialPyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+    const glm::vec3 materialPyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    const Model materialPyramid = Model(materialPyramidMeshes, materialPyramidPosition, materialPyramidRotation, materialPyramidScalar);
+
+    //--------------------------------------- SHADERS -----------------------------------------//
+
+    const Shader textureShader = Shader(
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, LIGHTING_MAP_VERTEX).c_str(), 
+        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, LIGHTING_MAP_VERTEX).c_str()
     );
-#elif __PYRAMID_VERTEX_TYPE__ == __PNC_VERTEX__
-    Shader pyramidShader = Shader(
+
+    const Shader colorShader = Shader(
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, COLOR_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, COLOR_VERTEX).c_str()
     );
-#elif __PYRAMID_VERTEX_TYPE__ == __PN_VERTEX__
-    const Material& pyramidMaterial = material::gold;
-    Shader pyramidShader = Shader(
+    const Shader materialShader = Shader(
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, MATERIAL_VERTEX).c_str(), 
         Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, MATERIAL_VERTEX).c_str()
-    );
-#else
-#endif
-
-#if __PYRAMID_VERTEX_TYPE__ == __PNT_VERTEX__
-    pyramidShader.SetUniformInt(0, "textureImage");
-#elif __PYRAMID_VERTEX_TYPE__ == __PN_VERTEX__
-    pyramidShader.SetUniformVec3(pyramidMaterial.ambient, "material.ambient");
-    pyramidShader.SetUniformVec3(pyramidMaterial.diffuse, "material.diffuse");
-    pyramidShader.SetUniformVec3(pyramidMaterial.specular, "material.specular");
-    pyramidShader.SetUniformFloat(pyramidMaterial.shininess, "material.shininess");
-#else
-#endif
-
-    const Shader shader = Shader(
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, VERTEX_SHADER, LIGHTING_MAP_VERTEX).c_str(), 
-        Common::Instance().GetShaderProgramPath(PHONG_SHADING, FRAGMENT_SHADER, LIGHTING_MAP_VERTEX).c_str()
     );
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
@@ -147,14 +150,21 @@ int main(int argc, char **argv) {
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        container.Draw(shader, projectionView, cameraPosition, light);
+        container.Draw(textureShader, projectionView, cameraPosition, light);
+        colorPyramid.Draw(colorShader, projectionView, cameraPosition, light);
+        materialPyramid.Draw(materialShader, projectionView, cameraPosition, light);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    container.Delete();
-    shader.Delete();
+    // container.Delete();
+    // colorPyramid.Delete();
+    // materialPyramid.Delete();
+
+    textureShader.Delete();
+    colorShader.Delete();
+    materialShader.Delete();
 
     brickTexture.Delete();
     woodContainerDiffuseMap.Delete();

@@ -88,22 +88,6 @@ const std::vector<GLuint> pyramidIndices =
 	13, 15, 14, // Facing side
 };
 
-// const std::vector<Texture2D> pyramidTextures = 
-// {
-// 	brickTexture
-// };
-
-// const std::vector<Mesh> pyramidMeshes = 
-// {
-// 	Mesh(pyramidTextureVertices, pyramidIndices, pyramidTextures, 16, GL_STATIC_DRAW),
-// };
-
-// const glm::vec3 pyramidPosition = glm::vec3(0.0f, -0.0f, -2.5f);
-// const glm::quat pyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-// const glm::vec3 pyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
-
-// const Model pyramid = Model(pyramidMeshes, pyramidPosition, pyramidRotation, pyramidScalar);
-
 const std::vector<PNTVertex> containerTextureVertices = {
         	 //         positions          /             normals           /        textures       //
     PNTVertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(0.0f,  0.0f)},
@@ -153,16 +137,16 @@ const std::vector<GLuint> containerIndices =
 	20, 22, 23,
 };
 
-const std::vector<PVertex> lightVertices =
+const std::vector<PNVertex> lightVertices =
 { 		   //         positions         //
-	PVertex{glm::vec3(-0.1f, -0.1f,  0.1f)},
-	PVertex{glm::vec3(-0.1f, -0.1f, -0.1f)},
-	PVertex{glm::vec3( 0.1f, -0.1f, -0.1f)},
-	PVertex{glm::vec3( 0.1f, -0.1f,  0.1f)},
-	PVertex{glm::vec3(-0.1f,  0.1f,  0.1f)},
-	PVertex{glm::vec3(-0.1f,  0.1f, -0.1f)},
-	PVertex{glm::vec3( 0.1f,  0.1f, -0.1f)},
-	PVertex{glm::vec3( 0.1f,  0.1f,  0.1f)},
+	PNVertex{glm::vec3(-0.1f, -0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f, -1.0f,  1.0f)},
+	PNVertex{glm::vec3(-0.1f, -0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f, -1.0f, -1.0f)},
+	PNVertex{glm::vec3( 0.1f, -0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f, -1.0f, -1.0f)},
+	PNVertex{glm::vec3( 0.1f, -0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f, -1.0f,  1.0f)},
+	PNVertex{glm::vec3(-0.1f,  0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f,  1.0f,  1.0f)},
+	PNVertex{glm::vec3(-0.1f,  0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f,  1.0f, -1.0f)},
+	PNVertex{glm::vec3( 0.1f,  0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f,  1.0f, -1.0f)},
+	PNVertex{glm::vec3( 0.1f,  0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f,  1.0f,  1.0f)},
 };
 
 const std::vector<GLuint> lightIndices =

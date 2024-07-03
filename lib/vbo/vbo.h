@@ -14,7 +14,7 @@ private:
 public:
     template<typename Vertex>
     VBO(const std::vector<Vertex>& vertices, GLenum usage) {
-        static_assert(isAValidVertex<Vertex>::value, "Vertex must be one of PVertex, PNVertex, PNTVertex, and PNCVertex!");
+        static_assert(isAValidVertex<Vertex>::value, "Vertex must be one of PNVertex, PNTVertex, and PNCVertex!");
         glGenBuffers(1, &ID);
         glBindBuffer(GL_ARRAY_BUFFER, ID);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), usage);
