@@ -147,6 +147,10 @@ int main(int argc, char **argv) {
     container.Delete();
     shader.Delete();
 
+    for (uint32_t i = 0; i < containerTextures.size(); i++) {
+        containerTextures[i].Delete();
+    }
+
     glfwTerminate();
     return 0;
 }

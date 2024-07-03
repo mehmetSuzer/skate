@@ -24,6 +24,9 @@ public:
     void UpdateScalar(const glm::vec3& scalar_);
 
     void Draw(const Shader& shader, const glm::mat4& projectionView, const glm::vec3& cameraPosition, const Light& light) const;
+
+    // Textures in meshes are not deleted in this method,
+    // in case there are other meshes using same textures
     void Delete(void) const;
 };
 

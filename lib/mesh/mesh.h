@@ -22,6 +22,9 @@ public:
         const std::vector<Texture2D>& textures_, GLenum usage);
 
     void Draw(const Shader& shader) const;
+
+    // Textures are not deleted in this method,
+    // in case there are other meshes using same textures
     void Delete(void) const;
 };
 
