@@ -11,11 +11,18 @@ Model<Mesh>::Model(
 
 template<typename Mesh>
 void Model<Mesh>::UpdateMatrices(void) {
+    const glm::mat3 rotation3x3 = glm::mat3_cast(rotation);
+    const glm::mat4 rotation4x4 = glm::mat4(rotation3x3);
+    const glm::mat3 inverseScalar3x3 = glm::mat3(1.0f/scalar.x, 0.0f, 0.0f, 0.0f, 1.0f/scalar.y, 0.0f, 0.0f, 0.0f, 1.0f/scalar.z);
+
     model = glm::mat4(1.0f);
     model = glm::translate(model, position);
-    model = model * glm::mat4_cast(rotation);
+    model = model * rotation4x4;
     model = glm::scale(model, scalar);
-    normalMatrix = glm::mat3(glm::transpose(glm::inverse(model)));
+
+    // normalMatrix = the upper left 3x3 matrix of the transpose of the inverse of the model matrix
+    // the following calculation is the simplified version
+    normalMatrix = rotation3x3 * inverseScalar3x3;
 }
 
 template<typename Mesh>
@@ -54,7 +61,7 @@ void Model<Mesh>::Draw(const Shader& shader, const glm::mat4& projectionView, co
     shader.SetUniformFloat(light.quadratic, "light.quadratic");
     shader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
     shader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
-
+    
     for (uint32_t i = 0; i < meshes.size(); i++) {
         meshes[i].Draw(shader);
     }

@@ -5,6 +5,7 @@
 #include "exception.h"
 #include "glm.hpp"
 
+// Common colors
 namespace color {
     const glm::vec3 red =       glm::vec3(1.0f,  0.0f,  0.0f);
     const glm::vec3 green =     glm::vec3(0.0f,  1.0f,  0.0f);

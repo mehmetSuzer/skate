@@ -18,10 +18,7 @@ public:
         return ID;
     }
 
-    void Bind(GLuint unit) const;
-    void Unbind(void) const;
     void Delete(void) const;
-
     static void SetBorderColor(float red, float green, float blue, float alpha);
 };
 

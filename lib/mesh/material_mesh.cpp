@@ -14,7 +14,6 @@ void MaterialMesh::Draw(const Shader& shader) const {
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
 }
 

@@ -37,18 +37,16 @@ uniform MaterialMap materialMap;
 vec4 directionalLight() {
     float ambientPower = 0.2f;
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
-    vec4 ambientAndDiffuse = (ambientPower + diffusePower) + texture(materialMap.diffuse, tex);
     
     vec3 directionToCamera = normalize(cameraPosition - position);
-    vec3 reflectionDirection = reflect(-light.direction, normal);
-    
+    vec3 reflectionDirection = reflect(light.direction, normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), materialMap.shininess) : 0.0f;
-    vec4 specular = specularPower * vec4(texture(materialMap.specular, tex).rrr, 1.0f);
+    specularPower *= texture(materialMap.specular, tex).r;
 
     float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
 
-    return emission + vec4(light.intensity * light.color, 1.0f) * (ambientAndDiffuse + specular);
+    return emission + light.intensity * (ambientPower + diffusePower + specularPower) * texture(materialMap.diffuse, tex) * vec4(light.color, 1.0f);
 }
 
 vec4 pointLight() {
@@ -59,31 +57,27 @@ vec4 pointLight() {
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
     float ambientPower = 0.2f;
-    float diffusePower = max(dot(normal, -light.direction), 0.0f);
-    vec4 ambientAndDiffuse = (ambientPower + diffusePower) * texture(materialMap.diffuse, tex);
+    float diffusePower = max(dot(normal, directionToLight), 0.0f);
     
     vec3 directionToCamera = normalize(cameraPosition - position);
     vec3 reflectionDirection = reflect(-directionToLight, normal);
-    
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), materialMap.shininess) : 0.0f;
-    vec4 specular = specularPower * vec4(texture(materialMap.specular, tex).rrr, 1.0f);
+    specularPower *= texture(materialMap.specular, tex).r;
 
     float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
     
-    return emission + vec4(attenuation * light.color, 1.0f) * (ambientAndDiffuse + specular);
+    return emission + attenuation * (ambientPower + diffusePower + specularPower) * texture(materialMap.diffuse, tex) * vec4(light.color, 1.0f);
 }
 
 vec4 spotLight() {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
-    vec3 reflectionDirection = reflect(-directionToLight, normal);
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
     float ambientPower = 0.2f;
-    vec4 ambient = ambientPower * texture(materialMap.diffuse, tex);
 
     float emissionPower = 1.0f;
     vec4 emission = emissionPower * texture(materialMap.emission, tex);
@@ -92,12 +86,14 @@ vec4 spotLight() {
 
     // If out of the outer cone, use only ambient and emission
     if (cosTheta < light.cosOuterCutOff) {
-        return emission + vec4(attenuation * light.color, 1.0f) * ambient;
+        return emission + attenuation * ambientPower * texture(materialMap.diffuse, tex) * vec4(light.color, 1.0f);
     }
 
     vec3 directionToCamera = normalize(cameraPosition - position);
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
+    vec3 reflectionDirection = reflect(-directionToLight, normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), materialMap.shininess) : 0.0f;
+    specularPower *= texture(materialMap.specular, tex).r;
 
     // If between the inner cone and the outer cone
     if (cosTheta < light.cosInnerCutOff) {
@@ -107,10 +103,7 @@ vec4 spotLight() {
         specularPower *= intensity;
     }
 
-    vec4 diffuse = diffusePower * texture(materialMap.diffuse, tex);
-    vec4 specular = specularPower * vec4(texture(materialMap.specular, tex).rrr, 1.0f);
-
-    return emission + vec4(attenuation * light.color, 1.0f) * (ambient + diffuse + specular);
+    return emission + attenuation * (ambientPower + diffusePower + specularPower) * texture(materialMap.diffuse, tex) * vec4(light.color, 1.0f);
 }
 
 void main() {

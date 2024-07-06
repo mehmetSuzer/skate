@@ -58,10 +58,12 @@ int main(int argc, char **argv) {
     // Enable the depth buffer
 	glEnable(GL_DEPTH_TEST);
 
-    //------------------------------------ TEXTURES AND SHADERS ------------------------------------//
+    //-------------------------------- TEXTURES, SHADERS, AND LIGHTS -------------------------------//
 
-    const Texture2D brickTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D blackTexture = Texture2D((Common::Instance().GetTexturesPath() + "black.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    const Texture2D whiteTexture = Texture2D((Common::Instance().GetTexturesPath() + "white.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    
+    const Texture2D brickTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D woodContainerDiffuseMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D woodContainerSpecularMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2_specular.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D matrixEmissionMap = Texture2D((Common::Instance().GetTexturesPath() + "matrix.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);    
@@ -70,15 +72,19 @@ int main(int argc, char **argv) {
     const Shader materialShader = Shader(PHONG_SHADING, MATERIAL_VERTEX);
     const Shader textureShader = Shader(PHONG_SHADING, TEXTURE_VERTEX);
 
+    DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 1.0f, color::white);
+    PointLight pointLight = PointLight(glm::vec3(1.5f, 2.0f, 0.0f), 0.09f, 0.032f, color::white);
+    SpotLight spotLight = SpotLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.09f, 0.032f, glm::vec3(-1.0f, 0.0f, 0.0f), M_PIf/8.0f, M_PIf/6.0f, color::white);
+
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
     const std::vector<TextureMesh> containerMeshes = {
-        TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap, matrixEmissionMap, 16.0f, GL_STATIC_DRAW),
+        TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap, blackTexture, 16.0f, GL_STATIC_DRAW),
     };
 
-    const glm::vec3 containerPosition = glm::vec3(-2.0f, 0.0f, -2.5f);
-    const glm::quat containerRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    const glm::vec3 containerScalar = glm::vec3(1.0f, 1.0f, 1.0f);
+    const glm::vec3 containerPosition = glm::vec3(2.5f, 0.0f, 0.0f);
+    const glm::quat containerRotation = glm::angleAxis(0.0f, glm::vec3(0.6f, 0.8f, 0.0f));
+    const glm::vec3 containerScalar = glm::vec3(0.4f, 0.4f, 0.4f);
 
     const Model container = Model(containerMeshes, containerPosition, containerRotation, containerScalar); 
 
@@ -100,7 +106,7 @@ int main(int argc, char **argv) {
         MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::bronze, GL_STATIC_DRAW),
     };
 
-    const glm::vec3 materialPyramidPosition = glm::vec3(2.0f, 0.0f, -2.5f);
+    const glm::vec3 materialPyramidPosition = glm::vec3(-2.5f, 0.0f, 0.0f);
     const glm::quat materialPyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     const glm::vec3 materialPyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -109,10 +115,10 @@ int main(int argc, char **argv) {
     //---------------------------------- TEXTURE PYRAMID MODEL ---------------------------------//
 
     const std::vector<TextureMesh> texturePyramidMeshes = {
-        TextureMesh(pyramidTextureVertices, pyramidIndices, brickTexture, brickTexture, blackTexture, 16.0f, GL_STATIC_DRAW),
+        TextureMesh(pyramidTextureVertices, pyramidIndices, brickTexture, whiteTexture, blackTexture, 16.0f, GL_STATIC_DRAW),
     };
 
-    const glm::vec3 texturePyramidPosition = glm::vec3(4.0f, 0.0f, -2.5f);
+    const glm::vec3 texturePyramidPosition = glm::vec3(0.0f, 0.0f, 2.5f);
     const glm::quat texturePyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     const glm::vec3 texturePyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
@@ -148,7 +154,8 @@ int main(int argc, char **argv) {
         Camera::Instance().UpdatePosition(elapsedTimeSinceLastFrame);
         const glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
         const glm::vec3& cameraPosition = Camera::Instance().GetPosition();
-        const Light light = Camera::Instance().GetFlashLight().GetLight();
+        // const Light light = Camera::Instance().GetFlashLight().GetLight();
+        Light light = pointLight.GetLight();
 
         const glm::vec4& backgroundColor = Common::Instance().GetBackgroundColor();
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
@@ -172,8 +179,9 @@ int main(int argc, char **argv) {
     colorShader.Delete();
     materialShader.Delete();
 
-    brickTexture.Delete();
+    whiteTexture.Delete();
     blackTexture.Delete();
+    brickTexture.Delete();
     woodContainerDiffuseMap.Delete();
     woodContainerSpecularMap.Delete();
     matrixEmissionMap.Delete();

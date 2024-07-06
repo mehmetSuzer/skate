@@ -38,10 +38,10 @@ vec4 directionalLight() {
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
     
     vec3 directionToCamera = normalize(cameraPosition - position);
-    vec3 reflectionDirection = reflect(-light.direction, normal);
+    vec3 reflectionDirection = reflect(light.direction, normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
-    return aColor * vec4(light.color, 1.0f) * light.intensity * (ambientPower + diffusePower + specularPower);
+    return light.intensity * (ambientPower + diffusePower + specularPower) * aColor * vec4(light.color, 1.0f);
 }
 
 vec4 pointLight() {
@@ -58,14 +58,13 @@ vec4 pointLight() {
     vec3 reflectionDirection = reflect(-directionToLight, normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
-    return aColor * vec4(light.color, 1.0f) * attenuation * (ambientPower + diffusePower + specularPower);
+    return attenuation * (ambientPower + diffusePower + specularPower) * aColor * vec4(light.color, 1.0f);
 }
 
 vec4 spotLight() {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
-    vec3 reflectionDirection = reflect(-directionToLight, normal);
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
@@ -75,11 +74,13 @@ vec4 spotLight() {
 
     // If out of the outer cone, use only ambient
     if (cosTheta < light.cosOuterCutOff) {
-        return aColor * vec4(light.color, 1.0f) * attenuation * ambientPower;
+        return attenuation * ambientPower * aColor * vec4(light.color, 1.0f);
     }
 
-    vec3 directionToCamera = normalize(cameraPosition - position);
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
+
+    vec3 directionToCamera = normalize(cameraPosition - position);
+    vec3 reflectionDirection = reflect(-directionToLight, normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
     // If between the inner cone and the outer cone
@@ -90,13 +91,13 @@ vec4 spotLight() {
         specularPower *= intensity;
     }
 
-    return aColor * vec4(light.color, 1.0f) * attenuation * (ambientPower + diffusePower + specularPower);
+    return attenuation * (ambientPower + diffusePower + specularPower) * aColor * vec4(light.color, 1.0f);
 }
 
 void main() {
     position = vec3(model * vec4(aPosition, 1.0f));
     gl_Position = projectionView * vec4(position, 1.0f);
-    normal = normalMatrix * aNormal;
+    normal = normalize(normalMatrix * aNormal);
 
     if (light.type == DIRECTIONAL_LIGHT) {
         color = directionalLight();

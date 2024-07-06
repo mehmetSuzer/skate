@@ -124,11 +124,12 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
 InputHandler InputHandler::instance;
 
 void InputHandler::SetButton(GLuint key, enum Button button) {
-    for (uint32_t i = 0; i < buttonMapSize; i++) {
-        if (buttonMap[i] == button) {
-            buttonMap[i] = UNKNOWN_BUTTON;
-            break;
-        }
+    uint32_t index = 0;
+    while (index < buttonMapSize && buttonMap[index] != button) {
+        index++;
+    }
+    if (index < buttonMapSize) {
+        buttonMap[index] = UNKNOWN_BUTTON;
     }
     buttonMap[key] = button;
 }

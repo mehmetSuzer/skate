@@ -4,8 +4,8 @@
 
 #include <vector>
 #include "common.h"
-#include "light.h"
 #include "vertex.h"
+#include "light.h"
 
 const std::vector<ColorVertex> pyramidColorVertices =
 {  			   //         positions         /            normals            /              colors              //

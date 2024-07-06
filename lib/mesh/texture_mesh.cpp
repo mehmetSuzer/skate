@@ -9,22 +9,19 @@ void TextureMesh::Draw(const Shader& shader) const {
     shader.Use();
 
     glActiveTexture(GL_TEXTURE0);
-    shader.SetUniformInt(0, "materialMap.diffuse");
     glBindTexture(GL_TEXTURE_2D, diffuse.GetID());
-
     glActiveTexture(GL_TEXTURE1);
-    shader.SetUniformInt(1, "materialMap.specular");
     glBindTexture(GL_TEXTURE_2D, specular.GetID());
-
     glActiveTexture(GL_TEXTURE2);
-    shader.SetUniformInt(2, "materialMap.emission");
     glBindTexture(GL_TEXTURE_2D, emission.GetID());
 
+    shader.SetUniformInt(0, "materialMap.diffuse");
+    shader.SetUniformInt(1, "materialMap.specular");
+    shader.SetUniformInt(2, "materialMap.emission");
     shader.SetUniformFloat(shininess, "materialMap.shininess");
     
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, (void*)0);
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
 }
 

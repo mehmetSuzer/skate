@@ -13,11 +13,6 @@
 // #define __APPLE__
 
 // Disables VSYNC and prints FPS
-#define __FPS__
-
-#define __PNT_VERTEX__  0
-#define __PNC_VERTEX__  1
-#define __PN_VERTEX__   2
-#define __PYRAMID_VERTEX_TYPE__     3
+// #define __FPS__
 
 #endif // __CONFIG_H__
