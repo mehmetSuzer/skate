@@ -7,6 +7,9 @@
 #include "material_mesh.h"
 #include "texture_mesh.h"
 
+// Update shaders as well when you update this
+#define MAX_LIGHT_CASTER_NUMBER 8
+
 template<typename Mesh>
 class Model {
 private:
@@ -26,7 +29,8 @@ public:
     void UpdateRotation(const glm::quat& rotation_);
     void UpdateScalar(const glm::vec3& scalar_);
 
-    void Draw(const Shader& shader, const glm::mat4& projectionView, const glm::vec3& cameraPosition, const Light& light) const;
+    void Draw(const Shader& shader, const glm::mat4& projectionView, 
+        const glm::vec3& cameraPosition, const std::vector<LightCaster*>& lightCasters) const;
     void Delete(void) const;
 };
 

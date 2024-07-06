@@ -5,6 +5,8 @@ layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec4 aColor;
 
+#define MAX_LIGHT_CASTER_NUMBER 8
+
 #define DIRECTIONAL_LIGHT   0
 #define POINT_LIGHT         1
 #define SPOT_LIGHT          2
@@ -28,13 +30,14 @@ uniform mat4 projectionView;
 uniform mat3 normalMatrix;
 
 uniform vec3 cameraPosition;
-uniform Light light;
+uniform int lightCasterNumber;
+uniform Light lights[MAX_LIGHT_CASTER_NUMBER];
 
 vec3 position;
 vec3 normal;
 
-vec4 directionalLight() {
-    float ambientPower = 0.2f;
+vec4 directionalLight(Light light) {
+    float ambientPower = 0.1f;
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
     
     vec3 directionToCamera = normalize(cameraPosition - position);
@@ -44,14 +47,14 @@ vec4 directionalLight() {
     return light.intensity * (ambientPower + diffusePower + specularPower) * aColor * vec4(light.color, 1.0f);
 }
 
-vec4 pointLight() {
+vec4 pointLight(Light light) {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
-    float ambientPower = 0.2f;
+    float ambientPower = 0.1f;
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
     
     vec3 directionToCamera = normalize(cameraPosition - position);
@@ -61,14 +64,14 @@ vec4 pointLight() {
     return attenuation * (ambientPower + diffusePower + specularPower) * aColor * vec4(light.color, 1.0f);
 }
 
-vec4 spotLight() {
+vec4 spotLight(Light light) {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
 
     float attenuation = 1.0f / ((light.quadratic * distanceToLight + light.linear) * distanceToLight + 1.0f);
 
-    float ambientPower = 0.2f;
+    float ambientPower = 0.1f;
 
     float cosTheta = dot(-directionToLight, light.direction);
 
@@ -98,14 +101,15 @@ void main() {
     position = vec3(model * vec4(aPosition, 1.0f));
     gl_Position = projectionView * vec4(position, 1.0f);
     normal = normalize(normalMatrix * aNormal);
+    color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-    if (light.type == DIRECTIONAL_LIGHT) {
-        color = directionalLight();
-    } else if (light.type == POINT_LIGHT) {
-        color = pointLight();
-    } else if (light.type == SPOT_LIGHT) {
-        color = spotLight();
-    } else {
-        color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < lightCasterNumber; i++) {
+        if (lights[i].type == DIRECTIONAL_LIGHT) {
+            color += directionalLight(lights[i]);
+        } else if (lights[i].type == POINT_LIGHT) {
+            color += pointLight(lights[i]);
+        } else if (lights[i].type == SPOT_LIGHT) {
+            color += spotLight(lights[i]);
+        }
     }
 }

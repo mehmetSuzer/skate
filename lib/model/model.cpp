@@ -44,24 +44,32 @@ void Model<Mesh>::UpdateScalar(const glm::vec3& scalar_) {
 }
 
 template<typename Mesh>
-void Model<Mesh>::Draw(const Shader& shader, const glm::mat4& projectionView, const glm::vec3& cameraPosition, const Light& light) const {
+void Model<Mesh>::Draw(const Shader& shader, const glm::mat4& projectionView, 
+    const glm::vec3& cameraPosition, const std::vector<LightCaster*>& lightCasters) const {
     shader.Use();
     shader.SetUniformMat4(model, "model");
     shader.SetUniformMat3(normalMatrix, "normalMatrix");
-
     shader.SetUniformMat4(projectionView, "projectionView");
     shader.SetUniformVec3(cameraPosition, "cameraPosition");
 
-    shader.SetUniformInt(light.type, "light.type");
-    shader.SetUniformVec3(light.color, "light.color");
-    shader.SetUniformVec3(light.position, "light.position");
-    shader.SetUniformVec3(light.direction, "light.direction");
-    shader.SetUniformFloat(light.intensity, "light.intensity");
-    shader.SetUniformFloat(light.linear, "light.linear");
-    shader.SetUniformFloat(light.quadratic, "light.quadratic");
-    shader.SetUniformFloat(light.cosInnerCutOff, "light.cosInnerCutOff");
-    shader.SetUniformFloat(light.cosOuterCutOff, "light.cosOuterCutOff");
-    
+    uint32_t lightCasterNumber = (lightCasters.size() < MAX_LIGHT_CASTER_NUMBER) ? lightCasters.size() : MAX_LIGHT_CASTER_NUMBER;
+    shader.SetUniformInt(lightCasterNumber, "lightCasterNumber");
+
+    for (uint32_t i = 0; i < lightCasterNumber; i++) {
+        const Light light = lightCasters[i]->GetLight();
+        const std::string arrayString = "lights[" + std::to_string(i) + "].";
+
+        shader.SetUniformInt(light.type, (arrayString + "type").c_str());
+        shader.SetUniformVec3(light.color, (arrayString + "color").c_str());
+        shader.SetUniformVec3(light.position, (arrayString + "position").c_str());
+        shader.SetUniformVec3(light.direction, (arrayString + "direction").c_str());
+        shader.SetUniformFloat(light.intensity, (arrayString + "intensity").c_str());
+        shader.SetUniformFloat(light.linear, (arrayString + "linear").c_str());
+        shader.SetUniformFloat(light.quadratic, (arrayString + "quadratic").c_str());
+        shader.SetUniformFloat(light.cosInnerCutOff, (arrayString + "cosInnerCutOff").c_str());
+        shader.SetUniformFloat(light.cosOuterCutOff, (arrayString + "cosOuterCutOff").c_str());
+    }
+
     for (uint32_t i = 0; i < meshes.size(); i++) {
         meshes[i].Draw(shader);
     }

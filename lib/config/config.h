@@ -13,6 +13,6 @@
 // #define __APPLE__
 
 // Disables VSYNC and prints FPS
-// #define __FPS__
+#define __FPS__
 
 #endif // __CONFIG_H__

@@ -68,13 +68,19 @@ int main(int argc, char **argv) {
     const Texture2D woodContainerSpecularMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2_specular.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D matrixEmissionMap = Texture2D((Common::Instance().GetTexturesPath() + "matrix.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);    
 
-    const Shader colorShader = Shader(PHONG_SHADING, COLOR_VERTEX);
-    const Shader materialShader = Shader(PHONG_SHADING, MATERIAL_VERTEX);
+    const Shader colorShader = Shader(GOURAUD_SHADING, COLOR_VERTEX);
+    const Shader materialShader = Shader(GOURAUD_SHADING, MATERIAL_VERTEX);
     const Shader textureShader = Shader(PHONG_SHADING, TEXTURE_VERTEX);
 
-    DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 1.0f, color::white);
-    PointLight pointLight = PointLight(glm::vec3(1.5f, 2.0f, 0.0f), 0.09f, 0.032f, color::white);
-    SpotLight spotLight = SpotLight(glm::vec3(0.0f, 1.0f, 0.0f), 0.09f, 0.032f, glm::vec3(-1.0f, 0.0f, 0.0f), M_PIf/8.0f, M_PIf/6.0f, color::white);
+    const DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.6f, color::white);
+    const PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.22f, 0.20f, color::white);
+    const SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf/8.0f, M_PIf/6.0f, color::white);
+
+    const std::vector<LightCaster*> lightCasters = {
+        (LightCaster*)&directionalLight,
+        (LightCaster*)&pointLight,
+        (LightCaster*)&spotLight,
+    };
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
@@ -154,17 +160,15 @@ int main(int argc, char **argv) {
         Camera::Instance().UpdatePosition(elapsedTimeSinceLastFrame);
         const glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
         const glm::vec3& cameraPosition = Camera::Instance().GetPosition();
-        // const Light light = Camera::Instance().GetFlashLight().GetLight();
-        Light light = pointLight.GetLight();
 
         const glm::vec4& backgroundColor = Common::Instance().GetBackgroundColor();
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        container.Draw(textureShader, projectionView, cameraPosition, light);
-        colorPyramid.Draw(colorShader, projectionView, cameraPosition, light);
-        materialPyramid.Draw(materialShader, projectionView, cameraPosition, light);
-        texturePyramid.Draw(textureShader, projectionView, cameraPosition, light);
+        container.Draw(textureShader, projectionView, cameraPosition, lightCasters);
+        colorPyramid.Draw(colorShader, projectionView, cameraPosition, lightCasters);
+        materialPyramid.Draw(materialShader, projectionView, cameraPosition, lightCasters);
+        texturePyramid.Draw(textureShader, projectionView, cameraPosition, lightCasters);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

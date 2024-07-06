@@ -4,6 +4,8 @@
 layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec3 aNormal;
 
+#define MAX_LIGHT_CASTER_NUMBER 8
+
 #define DIRECTIONAL_LIGHT   0
 #define POINT_LIGHT         1
 #define SPOT_LIGHT          2
@@ -34,13 +36,14 @@ uniform mat4 projectionView;
 uniform mat3 normalMatrix;
 
 uniform vec3 cameraPosition;
-uniform Light light;
 uniform Material material;
+uniform int lightCasterNumber;
+uniform Light lights[MAX_LIGHT_CASTER_NUMBER];
 
 vec3 position;
 vec3 normal;
 
-vec4 directionalLight() {
+vec4 directionalLight(Light light) {
     float ambientPower = 0.2f;
     vec3 ambient = material.ambient * ambientPower;
 
@@ -55,7 +58,7 @@ vec4 directionalLight() {
     return vec4(light.intensity * (ambient + diffuse + specular) * light.color, 1.0f);
 }
 
-vec4 pointLight() {
+vec4 pointLight(Light light) {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
@@ -76,7 +79,7 @@ vec4 pointLight() {
     return vec4(attenuation * (ambient + diffuse + specular) * light.color, 1.0f);
 }
 
-vec4 spotLight() {
+vec4 spotLight(Light light) {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
@@ -117,14 +120,15 @@ void main() {
     position = vec3(model * vec4(aPosition, 1.0f));
     gl_Position = projectionView * vec4(position, 1.0f);
     normal = normalize(normalMatrix * aNormal);
+    color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-    if (light.type == DIRECTIONAL_LIGHT) {
-        color = directionalLight();
-    } else if (light.type == POINT_LIGHT) {
-        color = pointLight();
-    } else if (light.type == SPOT_LIGHT) {
-        color = spotLight();
-    } else {
-        color = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    for (int i = 0; i < lightCasterNumber; i++) {
+        if (lights[i].type == DIRECTIONAL_LIGHT) {
+            color += directionalLight(lights[i]);
+        } else if (lights[i].type == POINT_LIGHT) {
+            color += pointLight(lights[i]);
+        } else if (lights[i].type == SPOT_LIGHT) {
+            color += spotLight(lights[i]);
+        }
     }
 }
