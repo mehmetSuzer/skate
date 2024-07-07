@@ -15,8 +15,8 @@ protected:
     GLuint VBO;
     GLuint EBO;
 
-    const std::vector<Vertex>& vertices;
-    const std::vector<GLuint>& indices;
+    const std::vector<Vertex> vertices;
+    const std::vector<GLuint> indices;
 
 public:
     Mesh(const std::vector<Vertex>& vertices_, const std::vector<GLuint>& indices_, GLenum usage) : 

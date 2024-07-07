@@ -5,6 +5,9 @@
 #include "exception.h"
 #include "common.h"
 
+// Update shaders as well when you update this
+#define MAX_LIGHT_CASTER_NUMBER 8
+
 enum ShaderError {
     VERTEX_SHADER_COMPILE_ERROR = 0,
     FRAGMENT_SHADER_COMPILE_ERROR,

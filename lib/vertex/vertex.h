@@ -14,10 +14,10 @@ struct MaterialVertex {
     static void LinkAttributes(void) {
         // position
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MaterialVertex), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MaterialVertex), (void*)offsetof(MaterialVertex, position));
         // normal
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(MaterialVertex), (void*)sizeof(MaterialVertex::position));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(MaterialVertex), (void*)offsetof(MaterialVertex, normal));
     }
 };
 
@@ -30,13 +30,13 @@ struct TextureVertex {
     static void LinkAttributes(void) {
         // position
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)offsetof(TextureVertex, position));
         // normal
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)sizeof(TextureVertex::position));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)offsetof(TextureVertex, normal));
         // texture
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)(sizeof(TextureVertex::position) + sizeof(TextureVertex::normal)));
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)offsetof(TextureVertex, texture));
     }
 };
 
@@ -49,13 +49,13 @@ struct ColorVertex {
     static void LinkAttributes(void) {
         // position
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)offsetof(ColorVertex, position));
         // normal
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)sizeof(ColorVertex::position));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)offsetof(ColorVertex, normal));
         // color
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)(sizeof(ColorVertex::position) + sizeof(ColorVertex::normal)));
+        glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)offsetof(ColorVertex, color));
     }
 };
 

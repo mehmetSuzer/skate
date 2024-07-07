@@ -7,9 +7,9 @@
 
 class TextureMesh : public Mesh<TextureVertex> {
 private:
-    const Texture2D& diffuse;
-    const Texture2D& specular;
-    const Texture2D& emission;
+    const Texture2D diffuse;
+    const Texture2D specular;
+    const Texture2D emission;
     const float shininess;
 
 public:

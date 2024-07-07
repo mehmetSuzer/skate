@@ -3,11 +3,14 @@
 #include "input_handler.h"
 #include "scene.h"
 #include "model.h"
+#include "assimp_model.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     //-------------------------------------- INITIALIZATION --------------------------------------//
 
-    if (glfwInit() == GLFW_FALSE) {
+    if (glfwInit() == GLFW_FALSE)
+    {
         throw Exception("Failed to initialize GLFW!");
     }
 
@@ -20,22 +23,25 @@ int main(int argc, char **argv) {
 #endif
 
 #ifdef __FULL_SCREEN__
-    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
-    if (!monitor) {
+    GLFWmonitor *monitor = glfwGetPrimaryMonitor();
+    if (!monitor)
+    {
         throw Error("Failed to Find the Primary Monitor!");
     }
 
-    const GLFWvidmode* videoMode = glfwGetVideoMode(monitor);
-    if (!videoMode) {
+    const GLFWvidmode *videoMode = glfwGetVideoMode(monitor);
+    if (!videoMode)
+    {
         throw Exception("Failed to Get the Video Mode of the Monitor!");
     }
 
-    GLFWwindow* window = glfwCreateWindow(videoMode->width, videoMode->height, "Learn OpenGL", monitor, NULL); 
+    GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "Learn OpenGL", monitor, NULL);
 #else
-    GLFWwindow* window = glfwCreateWindow(Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight(), "Learn OpenGL", NULL, NULL); 
+    GLFWwindow *window = glfwCreateWindow(Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight(), "Learn OpenGL", NULL, NULL);
 #endif
 
-    if (window == NULL) {
+    if (window == NULL)
+    {
         glfwTerminate();
         throw Exception("Failed to create GLFW Window!");
     }
@@ -44,7 +50,8 @@ int main(int argc, char **argv) {
     Camera::Instance().Initialize();
     InputHandler::Instance().Initialize(window);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
         glfwTerminate();
         throw Exception("Failed to initialize GLAD!");
     }
@@ -56,30 +63,34 @@ int main(int argc, char **argv) {
 #endif
 
     // Enable the depth buffer
-	glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
 
     //-------------------------------- TEXTURES, SHADERS, AND LIGHTS -------------------------------//
 
-    const Texture2D blackTexture = Texture2D((Common::Instance().GetTexturesPath() + "black.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-    const Texture2D whiteTexture = Texture2D((Common::Instance().GetTexturesPath() + "white.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-    
-    const Texture2D brickTexture = Texture2D((Common::Instance().GetTexturesPath() + "brick.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerDiffuseMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerSpecularMap = Texture2D((Common::Instance().GetTexturesPath() + "wood_container2_specular.png").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D matrixEmissionMap = Texture2D((Common::Instance().GetTexturesPath() + "matrix.jpg").c_str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);    
+    const Texture2D blackTexture = Texture2D(Common::Instance().GetTexturesPath() + "black.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    const Texture2D whiteTexture = Texture2D(Common::Instance().GetTexturesPath() + "white.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    const Texture2D brickTexture = Texture2D(Common::Instance().GetTexturesPath() + "brick.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D woodContainerDiffuseMap = Texture2D(Common::Instance().GetTexturesPath() + "wood_container2.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D woodContainerSpecularMap = Texture2D(Common::Instance().GetTexturesPath() + "wood_container2_specular.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D matrixEmissionMap = Texture2D(Common::Instance().GetTexturesPath() + "matrix.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
 
     const Shader colorShader = Shader(GOURAUD_SHADING, COLOR_VERTEX);
     const Shader materialShader = Shader(GOURAUD_SHADING, MATERIAL_VERTEX);
     const Shader textureShader = Shader(PHONG_SHADING, TEXTURE_VERTEX);
+    const std::vector<Shader> shaders = {
+        colorShader,
+        materialShader,
+        textureShader,
+    };
 
     const DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.6f, color::white);
-    const PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.22f, 0.20f, color::white);
-    const SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf/8.0f, M_PIf/6.0f, color::white);
+    const PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
+    const SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
 
-    const std::vector<LightCaster*> lightCasters = {
-        (LightCaster*)&directionalLight,
-        (LightCaster*)&pointLight,
-        (LightCaster*)&spotLight,
+    const std::vector<LightCaster *> lightCasters = {
+        (LightCaster *)&directionalLight,
+        (LightCaster *)&pointLight,
+        (LightCaster *)&spotLight,
     };
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
@@ -92,7 +103,7 @@ int main(int argc, char **argv) {
     const glm::quat containerRotation = glm::angleAxis(0.0f, glm::vec3(0.6f, 0.8f, 0.0f));
     const glm::vec3 containerScalar = glm::vec3(0.4f, 0.4f, 0.4f);
 
-    const Model container = Model(containerMeshes, containerPosition, containerRotation, containerScalar); 
+    const Model container = Model(containerMeshes, containerPosition, containerRotation, containerScalar);
 
     //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
 
@@ -130,6 +141,24 @@ int main(int argc, char **argv) {
 
     const Model texturePyramid = Model(texturePyramidMeshes, texturePyramidPosition, texturePyramidRotation, texturePyramidScalar);
 
+    //------------------------------------- BACKPACK MODEL ------------------------------------//
+
+    const glm::vec3 backpackPosition = glm::vec3(0.0f, 1.0f, 2.5f);
+    const glm::quat backpackRotation = glm::angleAxis(M_PIf/1.5f, glm::vec3(0.0f, 1.0f, 0.0f));
+    const glm::vec3 backpackScalar = glm::vec3(0.1f, 0.1f, 0.1f);
+
+    const AssimpModel backpack = AssimpModel(Common::Instance().GetModelsPath() + "backpack/backpack.obj", 
+        backpackPosition, backpackRotation, backpackScalar);
+
+    //------------------------------------- SWORD MODEL ------------------------------------//
+
+    const glm::vec3 swordPosition = glm::vec3(0.0f, 0.0f, 0.5f);
+    const glm::quat swordRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    const glm::vec3 swordScalar = glm::vec3(0.05f, 0.05f, 0.05f);
+
+    const AssimpModel sword = AssimpModel(Common::Instance().GetModelsPath() + "map/scene.gltf", 
+        swordPosition, swordRotation, swordScalar);
+
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
     float currentTime;
@@ -139,36 +168,65 @@ int main(int argc, char **argv) {
 #ifdef __FPS__
     float fpsDeltaTime = 0.0f;
     uint32_t frameCount = 0;
-	glfwSwapInterval(0);
+    glfwSwapInterval(0);
 #endif
 
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window))
+    {
         currentTime = glfwGetTime();
         elapsedTimeSinceLastFrame = currentTime - lastFrameTime;
         lastFrameTime = currentTime;
 
-    #ifdef __FPS__
+#ifdef __FPS__
         frameCount++;
         fpsDeltaTime += elapsedTimeSinceLastFrame;
-        if (fpsDeltaTime > 1.0f) {
+        if (fpsDeltaTime > 1.0f)
+        {
             std::cout << "FPS: " << frameCount / fpsDeltaTime << std::endl;
             frameCount = 0;
             fpsDeltaTime = 0.0f;
         }
-    #endif 
-        
+#endif
+
         Camera::Instance().UpdatePosition(elapsedTimeSinceLastFrame);
         const glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
-        const glm::vec3& cameraPosition = Camera::Instance().GetPosition();
+        const glm::vec3 &cameraPosition = Camera::Instance().GetPosition();
 
-        const glm::vec4& backgroundColor = Common::Instance().GetBackgroundColor();
+        const glm::vec4 &backgroundColor = Common::Instance().GetBackgroundColor();
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        container.Draw(textureShader, projectionView, cameraPosition, lightCasters);
-        colorPyramid.Draw(colorShader, projectionView, cameraPosition, lightCasters);
-        materialPyramid.Draw(materialShader, projectionView, cameraPosition, lightCasters);
-        texturePyramid.Draw(textureShader, projectionView, cameraPosition, lightCasters);
+        // Update shaders
+        for (uint32_t i = 0; i < shaders.size(); i++) { 
+            shaders[i].Use();
+            shaders[i].SetUniformMat4(projectionView, "projectionView");
+            shaders[i].SetUniformVec3(cameraPosition, "cameraPosition");
+
+            uint32_t lightCasterNumber = (lightCasters.size() < MAX_LIGHT_CASTER_NUMBER) ? lightCasters.size() : MAX_LIGHT_CASTER_NUMBER;
+            shaders[i].SetUniformInt(lightCasterNumber, "lightCasterNumber");
+
+            for (uint32_t j = 0; j < lightCasterNumber; j++) {
+                const Light light = lightCasters[j]->GetLight();
+                const std::string arrayString = "lights[" + std::to_string(j) + "].";
+
+                shaders[i].SetUniformInt(light.type, (arrayString + "type").c_str());
+                shaders[i].SetUniformVec3(light.color, (arrayString + "color").c_str());
+                shaders[i].SetUniformVec3(light.position, (arrayString + "position").c_str());
+                shaders[i].SetUniformVec3(light.direction, (arrayString + "direction").c_str());
+                shaders[i].SetUniformFloat(light.intensity, (arrayString + "intensity").c_str());
+                shaders[i].SetUniformFloat(light.linear, (arrayString + "linear").c_str());
+                shaders[i].SetUniformFloat(light.quadratic, (arrayString + "quadratic").c_str());
+                shaders[i].SetUniformFloat(light.cosInnerCutOff, (arrayString + "cosInnerCutOff").c_str());
+                shaders[i].SetUniformFloat(light.cosOuterCutOff, (arrayString + "cosOuterCutOff").c_str());
+            }
+        }
+
+        container.Draw(textureShader);
+        colorPyramid.Draw(colorShader);
+        materialPyramid.Draw(materialShader);
+        texturePyramid.Draw(textureShader);
+        backpack.Draw(textureShader);
+        sword.Draw(textureShader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -178,13 +236,14 @@ int main(int argc, char **argv) {
     colorPyramid.Delete();
     materialPyramid.Delete();
     texturePyramid.Delete();
+    backpack.Delete();
 
     textureShader.Delete();
     colorShader.Delete();
     materialShader.Delete();
 
-    whiteTexture.Delete();
     blackTexture.Delete();
+    whiteTexture.Delete();
     brickTexture.Delete();
     woodContainerDiffuseMap.Delete();
     woodContainerSpecularMap.Delete();

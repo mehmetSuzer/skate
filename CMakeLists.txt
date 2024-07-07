@@ -74,6 +74,9 @@ include_directories(${LIB_DIR}/mesh)
 add_subdirectory(${LIB_DIR}/model)
 include_directories(${LIB_DIR}/model)
 
+add_subdirectory(${LIB_DIR}/assimp_model)
+include_directories(${LIB_DIR}/assimp_model)
+
 add_subdirectory(${LIB_DIR}/scene)
 include_directories(${LIB_DIR}/scene)
 
@@ -82,6 +85,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} 
+    assimp_model
     mesh
     shader
     texture
@@ -95,6 +99,7 @@ target_link_libraries(${PROJECT_NAME}
     object_pool
     observer_subject
     exception
+    assimp
     glfw
     OpenGL::GL
 )
