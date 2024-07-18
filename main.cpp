@@ -62,8 +62,11 @@ int main(int argc, char **argv)
     glViewport(0, 0, Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight());
 #endif
 
-    // Enable the depth buffer
+    // Enable the depth buffer and face culling
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
 
     //-------------------------------- TEXTURES, SHADERS, AND LIGHTS -------------------------------//
 
@@ -87,10 +90,10 @@ int main(int argc, char **argv)
     const PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
     const SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
 
-    const std::vector<LightCaster *> lightCasters = {
-        (LightCaster *)&directionalLight,
-        (LightCaster *)&pointLight,
-        (LightCaster *)&spotLight,
+    const std::vector<LightCaster*> lightCasters = {
+        (LightCaster*)&directionalLight,
+        (LightCaster*)&pointLight,
+        (LightCaster*)&spotLight,
     };
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
@@ -141,23 +144,13 @@ int main(int argc, char **argv)
 
     const Model texturePyramid = Model(texturePyramidMeshes, texturePyramidPosition, texturePyramidRotation, texturePyramidScalar);
 
-    //------------------------------------- BACKPACK MODEL ------------------------------------//
+    //------------------------------------- OBJECT MODEL ------------------------------------//
 
-    const glm::vec3 backpackPosition = glm::vec3(0.0f, 1.0f, 2.5f);
-    const glm::quat backpackRotation = glm::angleAxis(M_PIf/1.5f, glm::vec3(0.0f, 1.0f, 0.0f));
-    const glm::vec3 backpackScalar = glm::vec3(0.1f, 0.1f, 0.1f);
+    const glm::vec3 objectPosition = glm::vec3(0.0f, 1.0f, 2.5f);
+    const glm::quat objectRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+    const glm::vec3 objectScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    const AssimpModel backpack = AssimpModel(Common::Instance().GetModelsPath() + "backpack/backpack.obj", 
-        backpackPosition, backpackRotation, backpackScalar);
-
-    //--------------------------------------- MAP MODEL --------------------------------------//
-
-    const glm::vec3 mapPosition = glm::vec3(0.0f, 0.0f, 0.5f);
-    const glm::quat mapRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-    const glm::vec3 mapScalar = glm::vec3(0.05f, 0.05f, 0.05f);
-
-    const AssimpModel map = AssimpModel(Common::Instance().GetModelsPath() + "map/scene.gltf", 
-        mapPosition, mapRotation, mapScalar);
+    const AssimpModel object = AssimpModel(Common::Instance().GetModelsPath() + "bunny/scene.gltf", objectPosition, objectRotation, objectScalar);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -205,8 +198,7 @@ int main(int argc, char **argv)
         colorPyramid.Draw(colorShader);
         materialPyramid.Draw(materialShader);
         texturePyramid.Draw(textureShader);
-        backpack.Draw(textureShader);
-        map.Draw(textureShader);
+        object.Draw(textureShader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -216,7 +208,7 @@ int main(int argc, char **argv)
     colorPyramid.Delete();
     materialPyramid.Delete();
     texturePyramid.Delete();
-    backpack.Delete();
+    object.Delete();
 
     textureShader.Delete();
     colorShader.Delete();

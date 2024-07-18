@@ -30,7 +30,7 @@ private:
     static constexpr glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 
     float pitch = 0.0f;
-    float yaw = -M_PIf / 2.0f;
+    float yaw = M_PIf / 2.0f;
     
     float FOVradian = M_PIf / 4.0f;
     float near = 0.1f;

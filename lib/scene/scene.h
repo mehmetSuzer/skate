@@ -91,10 +91,10 @@ const std::vector<GLuint> pyramidIndices =
 
 const std::vector<TextureVertex> containerTextureVertices = {
         	     //         positions          /             normals           /        textures       //
-    TextureVertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(0.0f,  0.0f)},
-    TextureVertex{glm::vec3( 0.5f, -0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(1.0f,  0.0f)},
-    TextureVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(1.0f,  1.0f)},
-    TextureVertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(0.0f,  1.0f)},
+	TextureVertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(0.0f,  0.0f)},
+	TextureVertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(0.0f,  1.0f)},
+	TextureVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(1.0f,  1.0f)},
+	TextureVertex{glm::vec3( 0.5f, -0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(1.0f,  0.0f)},
 
     TextureVertex{glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec2(0.0f,  0.0f)},
     TextureVertex{glm::vec3( 0.5f, -0.5f,  0.5f), glm::vec3( 0.0f,  0.0f,  1.0f), glm::vec2(1.0f,  0.0f)},
@@ -106,20 +106,20 @@ const std::vector<TextureVertex> containerTextureVertices = {
     TextureVertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f,  1.0f)},
     TextureVertex{glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3(-1.0f,  0.0f,  0.0f), glm::vec2(0.0f,  0.0f)},
 
-    TextureVertex{glm::vec3( 0.5f,  0.5f,  0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(1.0f,  0.0f)},
-    TextureVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(1.0f,  1.0f)},
-    TextureVertex{glm::vec3( 0.5f, -0.5f, -0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(0.0f,  1.0f)},
-    TextureVertex{glm::vec3( 0.5f, -0.5f,  0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(0.0f,  0.0f)},
+	TextureVertex{glm::vec3( 0.5f,  0.5f,  0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(1.0f,  0.0f)},
+	TextureVertex{glm::vec3( 0.5f, -0.5f,  0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(0.0f,  0.0f)},
+	TextureVertex{glm::vec3( 0.5f, -0.5f, -0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(0.0f,  1.0f)},
+	TextureVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3( 1.0f,  0.0f,  0.0f), glm::vec2(1.0f,  1.0f)},
 
     TextureVertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec2(0.0f,  1.0f)},
     TextureVertex{glm::vec3( 0.5f, -0.5f, -0.5f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec2(1.0f,  1.0f)},
     TextureVertex{glm::vec3( 0.5f, -0.5f,  0.5f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec2(1.0f,  0.0f)},
     TextureVertex{glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec3( 0.0f, -1.0f,  0.0f), glm::vec2(0.0f,  0.0f)},
 
-    TextureVertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(0.0f,  1.0f)},
-    TextureVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(1.0f,  1.0f)},
-    TextureVertex{glm::vec3( 0.5f,  0.5f,  0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(1.0f,  0.0f)},
-    TextureVertex{glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(0.0f,  0.0f)},
+	TextureVertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(0.0f,  1.0f)},
+	TextureVertex{glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(0.0f,  0.0f)},
+	TextureVertex{glm::vec3( 0.5f,  0.5f,  0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(1.0f,  0.0f)},
+	TextureVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(1.0f,  1.0f)},
 };
 
 const std::vector<GLuint> containerIndices =
@@ -140,30 +140,31 @@ const std::vector<GLuint> containerIndices =
 
 const std::vector<MaterialVertex> lightVertices =
 { 		          //         positions          /                    normals                           //
-	MaterialVertex{glm::vec3(-0.1f, -0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f, -1.0f,  1.0f)},
-	MaterialVertex{glm::vec3(-0.1f, -0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f, -1.0f, -1.0f)},
-	MaterialVertex{glm::vec3( 0.1f, -0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f, -1.0f, -1.0f)},
-	MaterialVertex{glm::vec3( 0.1f, -0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f, -1.0f,  1.0f)},
-	MaterialVertex{glm::vec3(-0.1f,  0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f,  1.0f,  1.0f)},
-	MaterialVertex{glm::vec3(-0.1f,  0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f,  1.0f, -1.0f)},
-	MaterialVertex{glm::vec3( 0.1f,  0.1f, -0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f,  1.0f, -1.0f)},
-	MaterialVertex{glm::vec3( 0.1f,  0.1f,  0.1f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f,  1.0f,  1.0f)},
+	MaterialVertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f, -1.0f, -1.0f)},
+	MaterialVertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f,  1.0f, -1.0f)},
+	MaterialVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f,  1.0f, -1.0f)},
+	MaterialVertex{glm::vec3( 0.5f, -0.5f, -0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f, -1.0f, -1.0f)},
+	
+	MaterialVertex{glm::vec3(-0.5f, -0.5f,  0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f, -1.0f,  1.0f)},
+	MaterialVertex{glm::vec3( 0.5f, -0.5f,  0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f, -1.0f,  1.0f)},
+	MaterialVertex{glm::vec3( 0.5f,  0.5f,  0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3( 1.0f,  1.0f,  1.0f)},
+	MaterialVertex{glm::vec3(-0.5f,  0.5f,  0.5f), glm::sqrt(1.0f/3.0f) * glm::vec3(-1.0f,  1.0f,  1.0f)},
 };
 
 const std::vector<GLuint> lightIndices =
 {
 	0, 1, 2,
 	0, 2, 3,
-	0, 4, 7,
-	0, 7, 3,
-	3, 7, 6,
-	3, 6, 2,
-	2, 6, 5,
-	2, 5, 1,
-	1, 5, 4,
-	1, 4, 0,
 	4, 5, 6,
 	4, 6, 7,
+	0, 3, 6, 
+	0, 6, 5,
+	1, 4, 7,
+	1, 7, 2,
+	0, 5, 4,
+	0, 4, 1,
+	2, 7, 6,
+	2, 6, 3,
 };
 
 #endif // __SCENE_H__
