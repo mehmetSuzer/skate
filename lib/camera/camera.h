@@ -46,68 +46,57 @@ private:
     glm::mat4 view;
     glm::mat4 projection;
 
-    SpotLight flashLight = SpotLight(position, 0.07f, 0.017f, glm::vec3(0.0f, 0.0f, -1.0f), M_PIf/12.0f, M_PIf/6.0f, glm::vec3(1.0f, 1.0f, 1.0f));
-
     bool updateViewFlag;
     bool updateProjectionFlag;
 
     Camera() {}
 
 public:
-    static Camera& Instance(void) {
+    inline static Camera& Instance(void) {
         return instance;
     }
 
-    const glm::vec3& GetPosition(void) const {
+    inline const glm::vec3& GetPosition(void) const {
         return position;
     }
 
-    const glm::mat4& GetView(void) const {
+    inline const glm::mat4& GetView(void) const {
         return view;
     }
 
-    const glm::mat4& GetProjection(void) const {
+    inline const glm::mat4& GetProjection(void) const {
         return projection;
     }
 
-    void SetRightDirection(enum AxisDirection axisDirection) {
+    inline void SetRightDirection(enum AxisDirection axisDirection) {
         direction.right = axisDirection;
     }
 
-    void SetUpDirection(enum AxisDirection axisDirection) {
+    inline void SetUpDirection(enum AxisDirection axisDirection) {
         direction.up = axisDirection;
     }
 
-    void SetForwardDirection(enum AxisDirection axisDirection) {
+    inline void SetForwardDirection(enum AxisDirection axisDirection) {
         direction.forward = axisDirection;
     }
 
-    void SetLowSpeed(void) {
+    inline void SetLowSpeed(void) {
         speed = lowSpeed;
     }
 
-    void SetHighSpeed(void) {
+    inline void SetHighSpeed(void) {
         speed = highSpeed;
     }
 
-    void UpdateView(void) {
+    inline void UpdateView(void) {
         view = glm::lookAt(position, position + forward, up);
     }
 
-    void UpdateProjection(void) {
+    inline void UpdateProjection(void) {
         projection = glm::perspective(FOVradian, Common::Instance().GetAspectRatio(), near, far);
     }
 
-    const SpotLight& GetFlashLight(void) const {
-        return flashLight;
-    }
-
-    void ToggleFlashLight(void) {
-        flashLight.Toggle();
-    }
-
     void UpdateVectors(void);
-    void UpdateFlashLight(void);
     void Initialize(void);
 
     // Use this function in mouse scroll callback

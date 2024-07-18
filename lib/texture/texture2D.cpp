@@ -51,10 +51,6 @@ Texture2D::Texture2D(const std::string& path_, GLint wrapS, GLint wrapT, GLint m
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture2D::Delete(void) const {
-    glDeleteTextures(1, &ID);
-}
-
 void Texture2D::SetBorderColor(float red, float green, float blue, float alpha) {
     Texture2D::borderColor[0] = red;
     Texture2D::borderColor[1] = green;

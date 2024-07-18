@@ -64,9 +64,6 @@ void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, in
         case SPEED_UP_BUTTON:
             Camera::Instance().SetLowSpeed();
             break;
-        case TURN_ON_OFF_FLASHLIGHT_BUTTON:
-            Camera::Instance().ToggleFlashLight();
-            break;
         default:
             break;
         }
@@ -155,7 +152,6 @@ void InputHandler::Initialize(GLFWwindow* window) {
     buttonMap[GLFW_KEY_SPACE] = UP_BUTTON;
     buttonMap[GLFW_KEY_LEFT_CONTROL] = DOWN_BUTTON;
     buttonMap[GLFW_KEY_LEFT_SHIFT] = SPEED_UP_BUTTON;
-    buttonMap[GLFW_KEY_F] = TURN_ON_OFF_FLASHLIGHT_BUTTON;
 
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     ActivateInputs(window);

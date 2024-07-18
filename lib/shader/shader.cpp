@@ -32,6 +32,30 @@ Shader::Shader(ShadingType shading, VertexType vertex) {
     glDeleteShader(fragmentShader);
 }
 
+void Shader::SetUniforms(const glm::mat4& projectionView, const glm::vec3& cameraPosition, const std::vector<LightCaster*>& lightCasters) const {
+    Use();
+    SetUniformMat4(projectionView, "projectionView");
+    SetUniformVec3(cameraPosition, "cameraPosition");
+
+    uint32_t lightCasterNumber = (lightCasters.size() < MAX_LIGHT_CASTER_NUMBER) ? lightCasters.size() : MAX_LIGHT_CASTER_NUMBER;
+    SetUniformInt(lightCasterNumber, "lightCasterNumber");
+
+    for (uint32_t j = 0; j < lightCasterNumber; j++) {
+        const Light light = lightCasters[j]->GetLight();
+        const std::string arrayString = "lights[" + std::to_string(j) + "].";
+
+        SetUniformInt(light.type, (arrayString + "type").c_str());
+        SetUniformVec3(light.color, (arrayString + "color").c_str());
+        SetUniformVec3(light.position, (arrayString + "position").c_str());
+        SetUniformVec3(light.direction, (arrayString + "direction").c_str());
+        SetUniformFloat(light.intensity, (arrayString + "intensity").c_str());
+        SetUniformFloat(light.linear, (arrayString + "linear").c_str());
+        SetUniformFloat(light.quadratic, (arrayString + "quadratic").c_str());
+        SetUniformFloat(light.cosInnerCutOff, (arrayString + "cosInnerCutOff").c_str());
+        SetUniformFloat(light.cosOuterCutOff, (arrayString + "cosOuterCutOff").c_str());
+    }
+}
+
 void Shader::CheckShaderError(GLuint shader, enum ShaderError type, const char* filePath) const {
     GLint success;
     GLchar shaderInfoLog[shaderInfoLogSize];

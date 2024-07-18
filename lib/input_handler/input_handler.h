@@ -5,7 +5,7 @@
 #include "camera.h"
 #include <GLFW/glfw3.h>
 
-enum Button {
+enum Button : uint8_t {
     UNKNOWN_BUTTON = 0,
     ESCAPE_BUTTON,
     INPUT_ACTIVATION_BUTTON,
@@ -16,7 +16,6 @@ enum Button {
     UP_BUTTON,
     DOWN_BUTTON,
     SPEED_UP_BUTTON,
-    TURN_ON_OFF_FLASHLIGHT_BUTTON,
 };
 
 class InputHandler {
@@ -32,35 +31,35 @@ private:
     enum Button buttonMap[buttonMapSize];
 
 public:
-    static InputHandler& Instance(void) {
+    inline static InputHandler& Instance(void) {
         return instance;
     }
 
-    float GetCursorPosSensitivity(void) const {
+    inline float GetCursorPosSensitivity(void) const {
         return cursorPosSensitivity;
     }
 
-    void SetCursorPosSensitivity(float sensitivity) {
+    inline void SetCursorPosSensitivity(float sensitivity) {
         cursorPosSensitivity = sensitivity;
     }
 
-    float GetScrollSensitivity(void) const {
+    inline float GetScrollSensitivity(void) const {
         return scrollSensitivity;
     }
 
-    void SetScrollSensitivity(float sensitivity) {
+    inline void SetScrollSensitivity(float sensitivity) {
         scrollSensitivity = sensitivity;
     }
 
-    bool GetFirstMouse(void) const {
+    inline bool GetFirstMouse(void) const {
         return firstMouse;
     }
 
-    void SetFirstMouse(bool boolean) {
+    inline void SetFirstMouse(bool boolean) {
         firstMouse = boolean;
     }
 
-    enum Button GetButton(GLuint key) const {
+    inline enum Button GetButton(GLuint key) const {
         return buttonMap[key];
     }
 

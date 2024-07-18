@@ -5,14 +5,18 @@ AssimpModel::AssimpModel(const std::string& path, const glm::vec3& position_, co
     : position(position_), rotation(rotation_), scalar(scalar_) {
 
     LoadModel(path);
-    UpdateMatrices();
+    UpdateModelAndNormalMatrices();
 }
 
 void AssimpModel::LoadModel(const std::string& path) {
     Assimp::Importer importer;
-    // Sometimes aiProcess_FlipUVs is necessary
-    const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
-
+    unsigned int postProcessSteps = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace;
+    const std::string fileExtension = path.substr(path.find_last_of('.') + 1);
+    if (fileExtension == "obj") {
+        postProcessSteps |= aiProcess_FlipUVs;
+    }
+    
+    const aiScene *scene = importer.ReadFile(path, postProcessSteps);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         const std::string message = "ERROR::ASSIMP::" + std::string(importer.GetErrorString()) + "\n";
         throw Exception(message);
@@ -98,7 +102,14 @@ std::vector<Texture2D> AssimpModel::LoadMaterialTextures(aiMaterial *mat, aiText
     return textures;
 }
 
-void AssimpModel::UpdateMatrices(void) {
+void AssimpModel::UpdateModelMatrix(void) {
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, position);
+    model = model * glm::mat4_cast(rotation);
+    model = glm::scale(model, scalar);
+}
+
+void AssimpModel::UpdateModelAndNormalMatrices(void) {
     const glm::mat3 rotation3x3 = glm::mat3_cast(rotation);
     const glm::mat4 rotation4x4 = glm::mat4(rotation3x3);
     const glm::mat3 inverseScalar3x3 = glm::mat3(1.0f/scalar.x, 0.0f, 0.0f, 0.0f, 1.0f/scalar.y, 0.0f, 0.0f, 0.0f, 1.0f/scalar.z);
@@ -109,23 +120,23 @@ void AssimpModel::UpdateMatrices(void) {
     model = glm::scale(model, scalar);
 
     // normalMatrix = the upper left 3x3 matrix of the transpose of the inverse of the model matrix
-    // the following calculation is the simplified version
+    // the following calculation is mathematically the simplified version
     normalMatrix = rotation3x3 * inverseScalar3x3;
 }
 
 void AssimpModel::UpdatePosition(const glm::vec3& position_) {
     position = position_;
-    UpdateMatrices();
+    UpdateModelMatrix();
 }
 
 void AssimpModel::UpdateRotation(const glm::quat& rotation_) {
     rotation = rotation_;
-    UpdateMatrices();
+    UpdateModelAndNormalMatrices();
 }
 
 void AssimpModel::UpdateScalar(const glm::vec3& scalar_) {
     scalar = scalar_;
-    UpdateMatrices();
+    UpdateModelAndNormalMatrices();
 }
 
 void AssimpModel::Draw(const Shader& shader) const {

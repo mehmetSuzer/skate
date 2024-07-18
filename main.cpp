@@ -150,14 +150,14 @@ int main(int argc, char **argv)
     const AssimpModel backpack = AssimpModel(Common::Instance().GetModelsPath() + "backpack/backpack.obj", 
         backpackPosition, backpackRotation, backpackScalar);
 
-    //------------------------------------- SWORD MODEL ------------------------------------//
+    //--------------------------------------- MAP MODEL --------------------------------------//
 
-    const glm::vec3 swordPosition = glm::vec3(0.0f, 0.0f, 0.5f);
-    const glm::quat swordRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-    const glm::vec3 swordScalar = glm::vec3(0.05f, 0.05f, 0.05f);
+    const glm::vec3 mapPosition = glm::vec3(0.0f, 0.0f, 0.5f);
+    const glm::quat mapRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+    const glm::vec3 mapScalar = glm::vec3(0.05f, 0.05f, 0.05f);
 
-    const AssimpModel sword = AssimpModel(Common::Instance().GetModelsPath() + "map/scene.gltf", 
-        swordPosition, swordRotation, swordScalar);
+    const AssimpModel map = AssimpModel(Common::Instance().GetModelsPath() + "map/scene.gltf", 
+        mapPosition, mapRotation, mapScalar);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
         fpsDeltaTime += elapsedTimeSinceLastFrame;
         if (fpsDeltaTime > 1.0f)
         {
-            std::cout << "FPS: " << frameCount / fpsDeltaTime << std::endl;
+            std::cout << "FPS: " << frameCount << std::endl;
             frameCount = 0;
             fpsDeltaTime = 0.0f;
         }
@@ -198,27 +198,7 @@ int main(int argc, char **argv)
 
         // Update shaders
         for (uint32_t i = 0; i < shaders.size(); i++) { 
-            shaders[i].Use();
-            shaders[i].SetUniformMat4(projectionView, "projectionView");
-            shaders[i].SetUniformVec3(cameraPosition, "cameraPosition");
-
-            uint32_t lightCasterNumber = (lightCasters.size() < MAX_LIGHT_CASTER_NUMBER) ? lightCasters.size() : MAX_LIGHT_CASTER_NUMBER;
-            shaders[i].SetUniformInt(lightCasterNumber, "lightCasterNumber");
-
-            for (uint32_t j = 0; j < lightCasterNumber; j++) {
-                const Light light = lightCasters[j]->GetLight();
-                const std::string arrayString = "lights[" + std::to_string(j) + "].";
-
-                shaders[i].SetUniformInt(light.type, (arrayString + "type").c_str());
-                shaders[i].SetUniformVec3(light.color, (arrayString + "color").c_str());
-                shaders[i].SetUniformVec3(light.position, (arrayString + "position").c_str());
-                shaders[i].SetUniformVec3(light.direction, (arrayString + "direction").c_str());
-                shaders[i].SetUniformFloat(light.intensity, (arrayString + "intensity").c_str());
-                shaders[i].SetUniformFloat(light.linear, (arrayString + "linear").c_str());
-                shaders[i].SetUniformFloat(light.quadratic, (arrayString + "quadratic").c_str());
-                shaders[i].SetUniformFloat(light.cosInnerCutOff, (arrayString + "cosInnerCutOff").c_str());
-                shaders[i].SetUniformFloat(light.cosOuterCutOff, (arrayString + "cosOuterCutOff").c_str());
-            }
+            shaders[i].SetUniforms(projectionView, cameraPosition, lightCasters);
         }
 
         container.Draw(textureShader);
@@ -226,7 +206,7 @@ int main(int argc, char **argv)
         materialPyramid.Draw(materialShader);
         texturePyramid.Draw(textureShader);
         backpack.Draw(textureShader);
-        sword.Draw(textureShader);
+        map.Draw(textureShader);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

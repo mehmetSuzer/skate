@@ -51,51 +51,41 @@ private:
     GLsizei windowHeight = 800;
     float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
 
-    float secondsPerPhysicsUpdate = 1.0f / 50.0f;
-
     Common() {}
     
 public:
-    static Common& Instance(void) {
+    inline static Common& Instance(void) {
         return instance;
     }
 
-    const std::string& GetModelsPath(void) const {
+    inline const std::string& GetModelsPath(void) const {
         return modelsPath;
     }
 
-    const std::string& GetTexturesPath(void) const {
+    inline const std::string& GetTexturesPath(void) const {
         return texturesPath;
     }
 
-    const glm::vec4& GetBackgroundColor(void) const {
+    inline const glm::vec4& GetBackgroundColor(void) const {
         return backgroundColor;
     }
 
-    GLsizei GetWindowWidth(void) const {
+    inline GLsizei GetWindowWidth(void) const {
         return windowWidth;
     }
 
-    GLsizei GetWindowHeight(void) const {
+    inline GLsizei GetWindowHeight(void) const {
         return windowHeight;
     }
 
-    float GetAspectRatio(void) const {
+    inline float GetAspectRatio(void) const {
         return aspectRatio;
     }
 
-    void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) {
+    inline void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) {
         windowWidth = windowWidth_;
         windowHeight = windowHeight_;
         aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
-    }
-
-    float GetSecondsPerPhysicsUpdate(void) const {
-        return secondsPerPhysicsUpdate;
-    }
-
-    float RGB2Gray(float red, float green, float blue) const {
-        return 0.299f * red + 0.587f * green + 0.114f * blue;
     }
 
     std::string ReadFile(const std::string& filePath) const;

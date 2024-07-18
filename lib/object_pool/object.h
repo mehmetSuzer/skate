@@ -7,11 +7,11 @@ private:
     Object* next;
 
 public:
-    Object* GetNext(void) const {
+    inline Object* GetNext(void) const {
         return next;
     }
 
-    void SetNext(Object* next_) {
+    inline void SetNext(Object* next_) {
         next = next_;
     }
 

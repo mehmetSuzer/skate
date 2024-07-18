@@ -22,7 +22,7 @@ private:
 public:
     ObjectPool();
 
-    uint32_t GetAvailableCount(void) const {
+    inline uint32_t GetAvailableCount(void) const {
         return availableCount;
     }
 

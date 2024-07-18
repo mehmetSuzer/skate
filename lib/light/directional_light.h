@@ -17,17 +17,17 @@ public:
     DirectionalLight(const glm::vec3& direction_, float intensity_, float red, float green, float blue);
     DirectionalLight(const glm::vec3& direction_, float intensity_, const glm::vec3& color_);
 
-    void SetDirection(const glm::vec3& direction_) {
+    inline void SetDirection(const glm::vec3& direction_) {
         AssertDirection(direction_);
         direction = direction_;
     }
 
-    void SetIntensity(float intensity_) {
+    inline void SetIntensity(float intensity_) {
         AssertIntensity(intensity_);
         intensity = intensity_;
     }
 
-    Light GetLight(void) const override {
+    inline Light GetLight(void) const override {
         return Light {
             .type = DIRECTIONAL_LIGHT,
             .color = GetColor(),

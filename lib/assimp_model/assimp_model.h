@@ -32,7 +32,8 @@ private:
 public:
     AssimpModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_);
 
-    void UpdateMatrices(void);
+    void UpdateModelMatrix(void);
+    void UpdateModelAndNormalMatrices(void);
     void UpdatePosition(const glm::vec3& position_);
     void UpdateRotation(const glm::quat& rotation_);
     void UpdateScalar(const glm::vec3& scalar_);

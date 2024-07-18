@@ -52,36 +52,36 @@ public:
 
     virtual ~LightCaster() {}
 
-    const glm::vec3& GetColor(void) const {
+    inline const glm::vec3& GetColor(void) const {
         return (active) ? color : color::black;
     }
 
-    void SetColor(float red, float green, float blue) {
+    inline void SetColor(float red, float green, float blue) {
         AssertColorValidity(red, green, blue);
         color = glm::vec3(red, green, blue);
     }
 
-    void SetColor(const glm::vec3& color_) {
+    inline void SetColor(const glm::vec3& color_) {
         SetColor(color_.r, color_.g, color_.b);
     }
 
-    bool IsActive(void) const {
+    inline bool IsActive(void) const {
         return active;
     }
 
-    void Activate(void) {
+    inline void Activate(void) {
         active = true;
     }
 
-    void Deactivate(void) {
+    inline void Deactivate(void) {
         active = false;
     }
 
-    void Toggle(void) {
+    inline void Toggle(void) {
         active = !active;
     }
 
-    virtual Light GetLight(void) const = 0;
+    inline virtual Light GetLight(void) const = 0;
 };
 
 #endif // __LIGHT_CASTER_H__

@@ -26,12 +26,12 @@ public:
     SpotLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& direction_, 
         float innerCutOffRadian, float outerCutOffRadian, const glm::vec3& color_);
 
-    void SetDirection(const glm::vec3& direction_) {
+    inline void SetDirection(const glm::vec3& direction_) {
         AssertDirection(direction_);
         direction = direction_;
     }
 
-    void SetCutOffRadians(float innerCutOffRadian, float outerCutOffRadian) {
+    inline void SetCutOffRadians(float innerCutOffRadian, float outerCutOffRadian) {
         AssertCutOffRadian(innerCutOffRadian);
         AssertCutOffRadian(outerCutOffRadian);
         AssertInnerLessThanOuter(innerCutOffRadian, outerCutOffRadian);
@@ -39,7 +39,7 @@ public:
         cosOuterCutOff = glm::cos(outerCutOffRadian);
     }
 
-    Light GetLight(void) const override {
+    inline Light GetLight(void) const override {
         return Light {
             .type = SPOT_LIGHT,
             .color = GetColor(),

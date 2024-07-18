@@ -17,11 +17,6 @@ void Camera::UpdateVectors(void) {
     right = glm::normalize(glm::cross(forward, up));
 }
 
-void Camera::UpdateFlashLight(void) {
-    flashLight.SetPosition(position);
-    flashLight.SetDirection(forward);
-}
-
 void Camera::Initialize(void) {
     if (initialized) {
         return;
@@ -31,7 +26,6 @@ void Camera::Initialize(void) {
     UpdateVectors();
     UpdateView();
     UpdateProjection();
-    UpdateFlashLight();
 }
 
 void Camera::UpdateFOVradian(float deltaFOVradian) {
@@ -46,31 +40,42 @@ void Camera::UpdateFOVradian(float deltaFOVradian) {
 
 void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {
     glm::vec3 velocityDirection = glm::vec3(0.0f, 0.0f, 0.0f);
+    uint32_t activeDirection = 0;
 
     if (direction.forward == AXIS_POSITIVE) {
         velocityDirection += forward;
+        activeDirection++;
     } else if (direction.forward == AXIS_NEGATIVE) {
         velocityDirection -= forward;
+        activeDirection++;
     }
 
     if (direction.right == AXIS_POSITIVE) {
         velocityDirection += right;
+        activeDirection++;
     } else if (direction.right == AXIS_NEGATIVE) {
         velocityDirection -= right;
+        activeDirection++;
     }
 
     if (direction.up == AXIS_POSITIVE) {
         velocityDirection += up;
+        activeDirection++;
     } else if (direction.up == AXIS_NEGATIVE) {
         velocityDirection -= up;
+        activeDirection++;
     }
 
-    float length = glm::length(velocityDirection);
-    if (glm::epsilonNotEqual(length, 0.0f, 1E-6f)) {
+    if (activeDirection == 0) {
+        return;
+    } else if (activeDirection == 1) {
+        position += velocityDirection * (elapsedTimeSinceLastFrame * speed);
+    } else {
+        float length = glm::length(velocityDirection);
         position += velocityDirection * (elapsedTimeSinceLastFrame * speed / length);
-        UpdateView();
-        UpdateFlashLight();
     }
+
+    UpdateView();
 }
 
 void Camera::UpdateOrientation(float xOffset, float yOffset) {
@@ -86,5 +91,4 @@ void Camera::UpdateOrientation(float xOffset, float yOffset) {
 
 	UpdateVectors();
     UpdateView();
-    UpdateFlashLight();
 }
