@@ -50,8 +50,8 @@ include_directories(${LIB_DIR}/light)
 add_subdirectory(${LIB_DIR}/material)
 include_directories(${LIB_DIR}/material)
 
-add_subdirectory(${LIB_DIR}/common)
-include_directories(${LIB_DIR}/common)
+add_subdirectory(${LIB_DIR}/util)
+include_directories(${LIB_DIR}/util)
 
 add_subdirectory(${LIB_DIR}/camera)
 include_directories(${LIB_DIR}/camera)
@@ -91,7 +91,7 @@ target_link_libraries(${PROJECT_NAME}
     texture
     input_handler
     camera
-    common
+    util
     light
     glm
     glad

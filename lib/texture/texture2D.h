@@ -2,7 +2,6 @@
 #ifndef __TEXTURE2D_H__
 #define __TEXTURE2D_H__
 
-#include "common.h"
 #include "stb_image.h"
 #include "exception.h"
 #include "glad.h"

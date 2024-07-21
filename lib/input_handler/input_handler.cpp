@@ -5,7 +5,7 @@
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
-    Common::Instance().SetWindowWidthAndHeight(width, height);
+    util::SetWindowWidthAndHeight(width, height);
     Camera::Instance().UpdateProjection();
 }
 
@@ -92,8 +92,8 @@ void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, 
 
 void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
     // Last positions from the last mouse callback
-	static double lastX = Common::Instance().GetWindowWidth() / 2.0; 
-	static double lastY = Common::Instance().GetWindowHeight() / 2.0;
+	static double lastX = util::windowWidth / 2.0; 
+	static double lastY = util::windowWidth / 2.0;
 
     // Prevent mouse to overshoot the scene in the first mouse callback
     if (InputHandler::Instance().GetFirstMouse()) {
@@ -158,7 +158,7 @@ void InputHandler::Initialize(GLFWwindow* window) {
 }
 
 void InputHandler::ActivateInputs(GLFWwindow *window) {
-    glfwSetCursorPos(window, (Common::Instance().GetWindowWidth() / 2.0), (Common::Instance().GetWindowHeight() / 2.0));
+    glfwSetCursorPos(window, util::windowWidth / 2.0, util::windowHeight / 2.0);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, cursorPosCallback);
     glfwSetKeyCallback(window, activeKeyCallback);

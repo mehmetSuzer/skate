@@ -1,22 +1,22 @@
 
 #include "shader.h"
 
-Shader::Shader(ShadingType shading, VertexType vertex) {
-    if (shading == GOURAUD_SHADING && vertex == TEXTURE_VERTEX) {
+Shader::Shader(util::ShadingType shading, util::VertexType vertex) {
+    if (shading == util::GOURAUD_SHADING && vertex == util::TEXTURE_VERTEX) {
         throw Exception("Gouraud shading does not support Texture Vertices!");    
     }
 
-    const std::string vertexShaderPath = Common::Instance().GetShaderProgramPath(shading, VERTEX_SHADER, vertex);
+    const std::string vertexShaderPath = util::GetShaderProgramPath(shading, util::VERTEX_SHADER, vertex);
     const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    const std::string vertexShaderCode = Common::Instance().ReadFile(vertexShaderPath);
+    const std::string vertexShaderCode = util::ReadFile(vertexShaderPath);
     const char* vertexShaderSource = vertexShaderCode.c_str();
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
     CheckShaderError(vertexShader, VERTEX_SHADER_COMPILE_ERROR, vertexShaderPath.c_str());
 
-    const std::string fragmentShaderPath = Common::Instance().GetShaderProgramPath(shading, FRAGMENT_SHADER, vertex);
+    const std::string fragmentShaderPath = util::GetShaderProgramPath(shading, util::FRAGMENT_SHADER, vertex);
     const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    const std::string fragmentShaderCode = Common::Instance().ReadFile(fragmentShaderPath);
+    const std::string fragmentShaderCode = util::ReadFile(fragmentShaderPath);
     const char* fragmentShaderSource = fragmentShaderCode.c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);

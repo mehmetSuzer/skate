@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 
     GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "Learn OpenGL", monitor, NULL);
 #else
-    GLFWwindow *window = glfwCreateWindow(Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight(), "Learn OpenGL", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(util::windowWidth, util::windowHeight, "Learn OpenGL", NULL, NULL);
 #endif
 
     if (window == NULL)
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 #ifdef __FULL_SCREEN__
     glViewport(0, 0, videoMode->width, videoMode->height);
 #else
-    glViewport(0, 0, Common::Instance().GetWindowWidth(), Common::Instance().GetWindowHeight());
+    glViewport(0, 0, util::windowWidth, util::windowHeight);
 #endif
 
     // Enable the depth buffer and face culling
@@ -70,16 +70,16 @@ int main(int argc, char **argv)
 
     //-------------------------------- TEXTURES, SHADERS, AND LIGHTS -------------------------------//
 
-    const Texture2D blackTexture = Texture2D(Common::Instance().GetTexturesPath() + "black.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-    const Texture2D whiteTexture = Texture2D(Common::Instance().GetTexturesPath() + "white.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-    const Texture2D brickTexture = Texture2D(Common::Instance().GetTexturesPath() + "brick.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerDiffuseMap = Texture2D(Common::Instance().GetTexturesPath() + "wood_container2.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerSpecularMap = Texture2D(Common::Instance().GetTexturesPath() + "wood_container2_specular.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D matrixEmissionMap = Texture2D(Common::Instance().GetTexturesPath() + "matrix.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D blackTexture = Texture2D(util::texturesPath + "black.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    const Texture2D whiteTexture = Texture2D(util::texturesPath + "white.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    const Texture2D brickTexture = Texture2D(util::texturesPath + "brick.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D woodContainerDiffuseMap = Texture2D(util::texturesPath + "wood_container2.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D woodContainerSpecularMap = Texture2D(util::texturesPath + "wood_container2_specular.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture2D matrixEmissionMap = Texture2D(util::texturesPath + "matrix.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
 
-    const Shader colorShader = Shader(GOURAUD_SHADING, COLOR_VERTEX);
-    const Shader materialShader = Shader(GOURAUD_SHADING, MATERIAL_VERTEX);
-    const Shader textureShader = Shader(PHONG_SHADING, TEXTURE_VERTEX);
+    const Shader colorShader = Shader(util::GOURAUD_SHADING, util::COLOR_VERTEX);
+    const Shader materialShader = Shader(util::GOURAUD_SHADING, util::MATERIAL_VERTEX);
+    const Shader textureShader = Shader(util::PHONG_SHADING, util::TEXTURE_VERTEX);
     const std::vector<Shader> shaders = {
         colorShader,
         materialShader,
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
     const glm::quat objectRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
     const glm::vec3 objectScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    const AssimpModel object = AssimpModel(Common::Instance().GetModelsPath() + "bunny/scene.gltf", objectPosition, objectRotation, objectScalar);
+    const AssimpModel object = AssimpModel(util::modelsPath + "bunny/scene.gltf", objectPosition, objectRotation, objectScalar);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -185,8 +185,7 @@ int main(int argc, char **argv)
         const glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
         const glm::vec3 &cameraPosition = Camera::Instance().GetPosition();
 
-        const glm::vec4 &backgroundColor = Common::Instance().GetBackgroundColor();
-        glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
+        glClearColor(util::backgroundColor.r, util::backgroundColor.g, util::backgroundColor.b, util::backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Update shaders

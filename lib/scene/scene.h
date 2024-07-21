@@ -3,7 +3,6 @@
 #define __SCENE_H__
 
 #include <vector>
-#include "common.h"
 #include "vertex.h"
 #include "light.h"
 

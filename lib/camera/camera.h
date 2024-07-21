@@ -2,8 +2,8 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
-#include "common.h"
-#include "spot_light.h"
+#include "util.h"
+#include "gtc/type_ptr.hpp"
 
 enum AxisDirection {
     AXIS_NONE = 0,
@@ -93,7 +93,7 @@ public:
     }
 
     inline void UpdateProjection(void) {
-        projection = glm::perspective(FOVradian, Common::Instance().GetAspectRatio(), near, far);
+        projection = glm::perspective(FOVradian, util::aspectRatio, near, far);
     }
 
     void UpdateVectors(void);

@@ -4,8 +4,9 @@
 
 #include <vector>
 #include "exception.h"
-#include "common.h"
+#include "util.h"
 #include "light.h"
+#include "gtc/type_ptr.hpp"
 
 // Update shaders as well when you update this
 #define MAX_LIGHT_CASTER_NUMBER 8
@@ -24,7 +25,7 @@ private:
     void CheckShaderError(GLuint shader, enum ShaderError type, const char* filePath) const;
     
 public:
-    Shader(ShadingType shading, VertexType vertex);
+    Shader(util::ShadingType shading, util::VertexType vertex);
 
     inline GLuint GetID(void) const {
         return ID;

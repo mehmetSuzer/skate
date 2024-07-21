@@ -43,8 +43,8 @@ TextureMesh AssimpModel::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
     std::vector<Texture2D> specularMaps;
     std::vector<Texture2D> emissionMaps;
 
-    const Texture2D blackTexture = Texture2D(Common::Instance().GetTexturesPath() + "black.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-    const Texture2D whiteTexture = Texture2D(Common::Instance().GetTexturesPath() + "white.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    const Texture2D blackTexture = Texture2D(util::texturesPath + "black.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+    const Texture2D whiteTexture = Texture2D(util::texturesPath + "white.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
 
     for (uint32_t i = 0; i < mesh->mNumVertices; i++) {
         TextureVertex vertex;
