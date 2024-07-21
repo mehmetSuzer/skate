@@ -11,18 +11,9 @@
 // Update shaders as well when you update this
 #define MAX_LIGHT_CASTER_NUMBER 8
 
-enum ShaderError {
-    VERTEX_SHADER_COMPILE_ERROR = 0,
-    FRAGMENT_SHADER_COMPILE_ERROR,
-    SHADER_PROGRAM_LINKING_ERROR,
-};
-
 class Shader {
 private:
-    static const GLsizei shaderInfoLogSize = 1024;
     GLuint ID;
-
-    void CheckShaderError(GLuint shader, enum ShaderError type, const char* filePath) const;
     
 public:
     Shader(util::VertexType vertex);
