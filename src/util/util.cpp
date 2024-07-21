@@ -36,10 +36,7 @@ namespace skate
             std::ifstream in = std::ifstream(filename, std::ios::binary);
 
             if (!in) 
-            {
-                std::string message = "File " + filename + " couldn't be found!";
-                throw Exception(message);
-            }
+                throw Exception("File " + filename + " couldn't be found!");
             
             std::string contents;
             in.seekg(0, std::ios::end);

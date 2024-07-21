@@ -6,11 +6,7 @@ namespace skate
     void PointLight::AssertAttenuationCoefficients(float linear_, float quadratic_) const 
     {
         if (linear_ < 0.0f || quadratic_ < 0.0f) 
-        {
-            const std::string message = "Attenuation Coefficients Cannot Be Negative. Given: " + 
-                std::to_string(linear_) + " " + std::to_string(quadratic_);
-            throw Exception(message);
-        }
+            throw Exception("Attenuation Coefficients Cannot Be Negative. Given: " + std::to_string(linear_) + " " + std::to_string(quadratic_));
     }
 
     PointLight::PointLight(const glm::vec3& position_, float linear_, float quadratic_, float red, float green, float blue)

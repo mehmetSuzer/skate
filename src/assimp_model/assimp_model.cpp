@@ -15,17 +15,14 @@ namespace skate
         Assimp::Importer importer;
         unsigned int postProcessSteps = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace;
         const std::string fileExtension = path.substr(path.find_last_of('.') + 1);
+
         if (fileExtension == "obj") 
-        {
             postProcessSteps |= aiProcess_FlipUVs;
-        }
         
         const aiScene *scene = importer.ReadFile(path, postProcessSteps);
         if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
-        {
-            const std::string message = "ERROR::ASSIMP::" + std::string(importer.GetErrorString()) + "\n";
-            throw Exception(message);
-        }
+            throw Exception("ERROR::ASSIMP::" + std::string(importer.GetErrorString()) + "\n");
+        
         directory = path.substr(0, path.find_last_of('/')) + '/';
         ProcessNode(scene->mRootNode, scene);
     }
@@ -39,9 +36,7 @@ namespace skate
         }
 
         for (uint32_t i = 0; i < node->mNumChildren; i++) 
-        {
             ProcessNode(node->mChildren[i], scene);
-        }
     }
 
     TextureMesh AssimpModel::ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept 
@@ -72,9 +67,7 @@ namespace skate
         {
             aiFace face = mesh->mFaces[i];
             for (uint32_t j = 0; j < face.mNumIndices; j++) 
-            {
                 indices.push_back(face.mIndices[j]);
-            }
         }
 
         if (mesh->mMaterialIndex >= 0) 
@@ -169,16 +162,13 @@ namespace skate
         shader.SetUniformMat4(model, "model");
         shader.SetUniformMat3(normalMatrix, "normalMatrix");
 
-        for (uint32_t i = 0; i < meshes.size(); i++) {
+        for (uint32_t i = 0; i < meshes.size(); i++)
             meshes[i].Draw(shader);
-        }
     }
 
     void AssimpModel::Delete(void) const noexcept 
     {
         for (uint32_t i = 0; i < meshes.size(); i++) 
-        {
             meshes[i].Delete();
-        }
     }
 }

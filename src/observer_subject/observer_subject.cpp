@@ -52,9 +52,7 @@ namespace skate
     Observer<T>::~Observer() noexcept 
     {
         for (uint32_t i = 0; i < subjectNumber; i++) 
-        {
             subjects[i]->RemoveObserver(this);
-        }
     }
 
     //-------------------------------------- SUBJECT --------------------------------------// 
@@ -64,9 +62,7 @@ namespace skate
     void Subject<T>::Notify(const T& t, enum Event event) const noexcept 
     {
         for (uint32_t i = 0; i < observerNumber; i++) 
-        {
             observers[i]->OnNotify(t, event);
-        }
     }
 
     // Removes itself from subject lists of observers that it notifies.
@@ -74,9 +70,7 @@ namespace skate
     Subject<T>::~Subject() noexcept 
     {
         for (uint32_t i = 0; i < observerNumber; i++) 
-        {
             observers[i]->RemoveSubject(this);
-        }
     }
 
     template<typename T>
@@ -85,14 +79,13 @@ namespace skate
         // Check whether the observer is already in the array
         for (uint32_t i = 0; i < observerNumber; i++) 
         {
-            if (observers[i] == observer) return;
+            if (observers[i] == observer) 
+                return;
         }
 
         // If it is not in the array, add to the end
         if (observerNumber < maxObserverNumber && observer->AddSubject(this)) 
-        {
             observers[observerNumber++] = observer;
-        }
     }
 
     template<typename T>
@@ -104,9 +97,8 @@ namespace skate
             if (observers[i] == observer) 
             {
                 if (observer->RemoveSubject(this)) 
-                {
                     observers[i] = observers[--observerNumber];
-                }
+
                 return;
             }
         }
@@ -163,16 +155,15 @@ namespace skate
         Observer<T>* current = head;
         while (current != NULL) 
         {
-            if (current == observer) return; 
+            if (current == observer) 
+                return; 
             current = current->next;
         }
 
         // If the observer is not in the list, add it to the beginning
         observer->next = head;
         if (observer->next != NULL) 
-        {
             observer->next->prev = observer;
-        }
         head = observer;
     }
 
@@ -198,9 +189,7 @@ namespace skate
                 current->next = observer->next;
                 observer->prev = NULL;
                 if (observer->next != NULL) 
-                {
                     observer->next->prev = current;
-                }
                 observer->next = NULL;
                 return;
             }

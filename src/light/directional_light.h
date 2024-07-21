@@ -34,7 +34,8 @@ namespace skate
 
         inline Light GetLight(void) const noexcept override 
         {
-            return Light {
+            return Light 
+            {
                 .type = DIRECTIONAL_LIGHT,
                 .color = GetColor(),
                 .direction = direction,

@@ -12,16 +12,10 @@ namespace skate
         unsigned char* bytes = stbi_load(path.c_str(), &imageWidth, &imageHeight, &colorChannelNumber, 0);
 
         if (bytes == NULL) 
-        {
-            std::string message = "Failed to read " + path;
-            throw Exception(message);
-        }
+            throw Exception("Failed to read " + path);
 
         if (colorChannelNumber != 1 && colorChannelNumber != 3 && colorChannelNumber != 4) 
-        {
-            std::string message = "Invalid Color Channel: " + std::to_string(colorChannelNumber);
-            throw Exception(message);
-        }
+            throw Exception("Invalid Color Channel: " + std::to_string(colorChannelNumber));
 
         glGenTextures(1, &ID);
         glBindTexture(GL_TEXTURE_2D, ID);
@@ -35,9 +29,7 @@ namespace skate
 
         // Set border color if GL_CLAMP_TO_BORDER is used
         if (wrapS == GL_CLAMP_TO_BORDER || wrapT == GL_CLAMP_TO_BORDER) 
-        {
             glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-        }
         
         glTexImage2D(
             GL_TEXTURE_2D,

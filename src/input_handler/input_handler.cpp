@@ -100,7 +100,8 @@ namespace skate
         static double lastY = util::windowWidth / 2.0;
 
         // Prevent mouse to overshoot the scene in the first mouse callback
-        if (InputHandler::Instance().GetFirstMouse()) {
+        if (InputHandler::Instance().GetFirstMouse()) 
+        {
             lastX = xPos;
             lastY = yPos;
             InputHandler::Instance().SetFirstMouse(false);
@@ -128,7 +129,8 @@ namespace skate
     void InputHandler::SetButton(GLuint key, enum Button button) noexcept 
     {
         uint32_t index = 0;
-        while (index < buttonMapSize && buttonMap[index] != button) index++;
+        while (index < buttonMapSize && buttonMap[index] != button) 
+            index++;
 
         if (index < buttonMapSize)
             buttonMap[index] = UNKNOWN_BUTTON;
@@ -137,14 +139,13 @@ namespace skate
     }
 
     void InputHandler::Initialize(GLFWwindow* window) noexcept {
-        if (initialized) return;
+        if (initialized) 
+            return;
         initialized = true;
 
         // Clear all buttons
         for (uint32_t i = 0; i < buttonMapSize; i++) 
-        {
             buttonMap[i] = UNKNOWN_BUTTON;
-        }
 
         // Default buttons
         buttonMap[GLFW_KEY_ESCAPE] = ESCAPE_BUTTON;

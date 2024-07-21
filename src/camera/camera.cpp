@@ -22,7 +22,8 @@ namespace skate
 
     void Camera::Initialize(void) noexcept 
     {
-        if (initialized) return;
+        if (initialized) 
+            return;
         initialized = true;
 
         UpdateVectors();
@@ -79,21 +80,11 @@ namespace skate
             activeDirection++;
         }
 
-        if (activeDirection == 0) 
+        if (activeDirection != 0)
         {
-            return;
-        } 
-        else if (activeDirection == 1) 
-        {
-            position += velocityDirection * (elapsedTimeSinceLastFrame * speed);
-        } 
-        else 
-        {
-            float length = glm::length(velocityDirection);
-            position += velocityDirection * (elapsedTimeSinceLastFrame * speed / length);
+            position += velocityDirection * (elapsedTimeSinceLastFrame * speed / glm::sqrt(static_cast<float>(activeDirection)));
+            UpdateView();
         }
-
-        UpdateView();
     }
 
     void Camera::UpdateOrientation(float xOffset, float yOffset) noexcept 

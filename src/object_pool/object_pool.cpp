@@ -7,9 +7,7 @@ namespace skate
     ObjectPool<T>::ObjectPool() noexcept 
     {
         for (uint32_t i = 0; i < poolSize-1; i++) 
-        {
             pool[i].SetNext(pool+(i+1));
-        }
 
         pool[poolSize-1].SetNext(NULL);
         firstAvailable = pool;
@@ -35,7 +33,8 @@ namespace skate
         const T* start = pool;
         const T* end = pool + (poolSize-1);
 
-        if (start > t || t > end) return;
+        if (start > t || t > end) 
+            return;
         
         t->SetNext(firstAvailable);
         firstAvailable = t;

@@ -2,7 +2,6 @@
 #ifndef __MODEL_H__
 #define __MODEL_H__
 
-#include "light.h"
 #include "color_mesh.h"
 #include "material_mesh.h"
 #include "texture_mesh.h"

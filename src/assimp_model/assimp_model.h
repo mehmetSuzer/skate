@@ -6,7 +6,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "light.h"
 #include "texture_mesh.h"
 #include "gtc/type_ptr.hpp"
 

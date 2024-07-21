@@ -65,17 +65,13 @@ namespace skate
         shader.SetUniformMat3(normalMatrix, "normalMatrix");
 
         for (uint32_t i = 0; i < meshes.size(); i++) 
-        {
             meshes[i].Draw(shader);
-        }
     }
 
     template<typename Mesh>
     void Model<Mesh>::Delete(void) const noexcept 
     {
         for (uint32_t i = 0; i < meshes.size(); i++) 
-        {
             meshes[i].Delete();
-        }
     }
 }

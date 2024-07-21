@@ -46,7 +46,8 @@ namespace skate
 
         inline Light GetLight(void) const noexcept override 
         {
-            return Light {
+            return Light 
+            {
                 .type = SPOT_LIGHT,
                 .color = GetColor(),
                 .position = position,

@@ -12,9 +12,7 @@ int main(int argc, char **argv)
     //-------------------------------------- INITIALIZATION --------------------------------------//
 
     if (glfwInit() == GLFW_FALSE)
-    {
         throw Exception("Failed to initialize GLFW!");
-    }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -27,15 +25,11 @@ int main(int argc, char **argv)
 #ifdef __FULL_SCREEN__
     GLFWmonitor *monitor = glfwGetPrimaryMonitor();
     if (!monitor)
-    {
-        throw Error("Failed to Find the Primary Monitor!");
-    }
+        throw Exception("Failed to Find the Primary Monitor!");
 
     const GLFWvidmode *videoMode = glfwGetVideoMode(monitor);
     if (!videoMode)
-    {
         throw Exception("Failed to Get the Video Mode of the Monitor!");
-    }
 
     GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "Learn OpenGL", monitor, NULL);
 #else
@@ -193,9 +187,7 @@ int main(int argc, char **argv)
 
         // Update shaders
         for (uint32_t i = 0; i < shaders.size(); i++) 
-        { 
             shaders[i].Update(projectionView, cameraPosition, lightCasters);
-        }
 
         container.Draw(textureShader);
         colorPyramid.Draw(colorShader);

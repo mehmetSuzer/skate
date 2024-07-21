@@ -5,7 +5,7 @@
 #include <vector>
 #include "exception.h"
 #include "util.h"
-#include "light.h"
+#include "light_caster.h"
 #include "gtc/type_ptr.hpp"
 
 // Update shaders as well when you update this
