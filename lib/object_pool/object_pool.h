@@ -20,14 +20,14 @@ private:
     T* firstAvailable;
 
 public:
-    ObjectPool();
+    ObjectPool() noexcept;
 
-    inline uint32_t GetAvailableCount(void) const {
+    inline uint32_t GetAvailableCount(void) const noexcept {
         return availableCount;
     }
 
-    T* Get(void);
-    void Release(T* t);
+    T* Get(void) noexcept;
+    void Release(T* t) noexcept;
 };
 
 #endif // __OBJECT_POOL_H__

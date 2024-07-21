@@ -9,11 +9,6 @@
 
 namespace util {
 
-    enum ShadingType {
-        GOURAUD_SHADING = 0,
-        PHONG_SHADING,
-    };
-
     enum ShaderType {
         VERTEX_SHADER = 0,
         FRAGMENT_SHADER,
@@ -26,9 +21,6 @@ namespace util {
     };
 
     extern const std::string glslPath;
-    extern const std::string gouraudShadingPath;
-    extern const std::string phongShadingPath;
-
     extern const std::string vertexShaderPath;
     extern const std::string fragmentShaderPath;
 
@@ -47,9 +39,9 @@ namespace util {
     extern GLsizei windowHeight;
     extern float aspectRatio;
 
-    void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_);
+    void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) noexcept;
     std::string ReadFile(const std::string& filePath);
-    const std::string GetShaderProgramPath(enum ShadingType shading, enum ShaderType shader, enum VertexType vertex);
+    const std::string GetShaderProgramPath(enum ShaderType shader, enum VertexType vertex) noexcept;
 }
 
 #endif // __UTIL_H__

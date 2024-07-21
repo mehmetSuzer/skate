@@ -2,10 +2,10 @@
 #include "texture_mesh.h"
 
 TextureMesh::TextureMesh(const std::vector<TextureVertex>& vertices_, const std::vector<GLuint>& indices_, 
-    const Texture2D& diffuse_, const Texture2D& specular_, const Texture2D& emission_, float shininess_, GLenum usage) : 
-    Mesh<TextureVertex>(vertices_, indices_, usage), diffuse(diffuse_), specular(specular_), emission(emission_), shininess(shininess_) { }
+    const Texture2D& diffuse_, const Texture2D& specular_, const Texture2D& emission_, float shininess_, GLenum usage) noexcept 
+    : Mesh<TextureVertex>(vertices_, indices_, usage), diffuse(diffuse_), specular(specular_), emission(emission_), shininess(shininess_) { }
 
-void TextureMesh::Draw(const Shader& shader) const {
+void TextureMesh::Draw(const Shader& shader) const noexcept {
     shader.Use();
 
     glActiveTexture(GL_TEXTURE0);
@@ -25,7 +25,7 @@ void TextureMesh::Draw(const Shader& shader) const {
     glBindVertexArray(0);
 }
 
-void TextureMesh::Delete(void) const {
+void TextureMesh::Delete(void) const noexcept {
     glDeleteBuffers(1, &EBO);
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);

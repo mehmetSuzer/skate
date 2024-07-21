@@ -14,10 +14,10 @@ private:
 
 public:
     TextureMesh(const std::vector<TextureVertex>& vertices_, const std::vector<GLuint>& indices_, 
-        const Texture2D& diffuse_, const Texture2D& specular_, const Texture2D& emission_, float shininess_, GLenum usage);
+        const Texture2D& diffuse_, const Texture2D& specular_, const Texture2D& emission_, float shininess_, GLenum usage) noexcept;
 
-    void Draw(const Shader& shader) const override;
-    void Delete(void) const override;
+    void Draw(const Shader& shader) const noexcept override;
+    void Delete(void) const noexcept override;
 };
 
 #endif // __TEXTURE_MESH_H__

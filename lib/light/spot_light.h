@@ -39,7 +39,7 @@ public:
         cosOuterCutOff = glm::cos(outerCutOffRadian);
     }
 
-    inline Light GetLight(void) const override {
+    inline Light GetLight(void) const noexcept override {
         return Light {
             .type = SPOT_LIGHT,
             .color = GetColor(),

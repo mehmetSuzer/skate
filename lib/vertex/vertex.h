@@ -11,7 +11,7 @@ struct MaterialVertex {
     glm::vec3 position;
     glm::vec3 normal;
 
-    static void LinkAttributes(void) {
+    static void LinkAttributes(void) noexcept {
         // position
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(MaterialVertex), (void*)offsetof(MaterialVertex, position));
@@ -27,7 +27,7 @@ struct TextureVertex {
     glm::vec3 normal;
     glm::vec2 texture;
 
-    static void LinkAttributes(void) {
+    static void LinkAttributes(void) noexcept {
         // position
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(TextureVertex), (void*)offsetof(TextureVertex, position));
@@ -46,7 +46,7 @@ struct ColorVertex {
     glm::vec3 normal;
     glm::vec4 color;
 
-    static void LinkAttributes(void) {
+    static void LinkAttributes(void) noexcept {
         // position
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(ColorVertex), (void*)offsetof(ColorVertex, position));

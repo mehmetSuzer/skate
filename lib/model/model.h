@@ -19,16 +19,16 @@ private:
     glm::mat4 normalMatrix;
 
 public:
-    Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_);
+    Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_) noexcept;
 
-    void UpdateModelMatrix(void);
-    void UpdateModelAndNormalMatrices(void);
-    void UpdatePosition(const glm::vec3& position_);
-    void UpdateRotation(const glm::quat& rotation_);
-    void UpdateScalar(const glm::vec3& scalar_);
+    void UpdateModelMatrix(void) noexcept;
+    void UpdateModelAndNormalMatrices(void) noexcept;
+    void UpdatePosition(const glm::vec3& position_) noexcept;
+    void UpdateRotation(const glm::quat& rotation_) noexcept;
+    void UpdateScalar(const glm::vec3& scalar_) noexcept;
 
-    void Draw(const Shader& shader) const;
-    void Delete(void) const;
+    void Draw(const Shader& shader) const noexcept;
+    void Delete(void) const noexcept;
 };
 
 #include "model.cpp"

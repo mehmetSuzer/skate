@@ -7,16 +7,16 @@ private:
     Object* next;
 
 public:
-    inline Object* GetNext(void) const {
+    inline Object* GetNext(void) const noexcept {
         return next;
     }
 
-    inline void SetNext(Object* next_) {
+    inline void SetNext(Object* next_) noexcept {
         next = next_;
     }
 
-    virtual ~Object() {}
-    virtual void Initialize(void) = 0;
+    virtual ~Object() noexcept {}
+    virtual void Initialize(void) noexcept = 0;
 };
 
 #endif // __OBJECT_H__

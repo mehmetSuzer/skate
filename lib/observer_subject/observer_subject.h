@@ -30,12 +30,12 @@ private:
     Subject<T>* subjects[maxSubjectNumber];
     uint32_t subjectNumber = 0;
 
-    bool AddSubject(Subject<T>* subject);
-    bool RemoveSubject(Subject<T>* subject);
+    bool AddSubject(Subject<T>* subject) noexcept;
+    bool RemoveSubject(Subject<T>* subject) noexcept;
 
 public:
-    ~Observer();
-    virtual void OnNotify(const T& t, enum Event event) = 0;
+    ~Observer() noexcept;
+    virtual void OnNotify(const T& t, enum Event event) noexcept = 0;
 };
 
 template<typename T>
@@ -46,12 +46,12 @@ private:
     uint32_t observerNumber = 0;
 
 protected:
-    void Notify(const T& t, enum Event event) const;
+    void Notify(const T& t, enum Event event) const noexcept;
 
 public:
-    ~Subject();
-    void AddObserver(Observer<T>* observer);
-    void RemoveObserver(Observer<T>* observer);
+    ~Subject() noexcept;
+    void AddObserver(Observer<T>* observer) noexcept;
+    void RemoveObserver(Observer<T>* observer) noexcept;
 };
 
 #else
@@ -65,8 +65,8 @@ private:
     Observer<T>* next = NULL;
 
 public:
-    ~Observer();
-    virtual void OnNotify(const T& t, enum Event event) = 0;
+    ~Observer() noexcept;
+    virtual void OnNotify(const T& t, enum Event event) noexcept = 0;
 };
 
 template<typename T>
@@ -75,12 +75,12 @@ private:
     Observer<T>* head = NULL;
 
 protected:
-    void Notify(const T& t, enum Event event) const;
+    void Notify(const T& t, enum Event event) const noexcept;
 
 public:
-    ~Subject();
-    void AddObserver(Observer<T>* observer);
-    void RemoveObserver(Observer<T>* observer);
+    ~Subject() noexcept;
+    void AddObserver(Observer<T>* observer) noexcept;
+    void RemoveObserver(Observer<T>* observer) noexcept;
 };
 
 #endif // __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__

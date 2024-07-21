@@ -25,7 +25,7 @@ void AssimpModel::LoadModel(const std::string& path) {
     ProcessNode(scene->mRootNode, scene);
 }
 
-void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene) {
+void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene) noexcept {
     for (uint32_t i = 0; i < node->mNumMeshes; i++) {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(ProcessMesh(mesh, scene));
@@ -36,7 +36,7 @@ void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene) {
     }
 }
 
-TextureMesh AssimpModel::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
+TextureMesh AssimpModel::ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept {
     std::vector<TextureVertex> vertices;
     std::vector<GLuint> indices;
     std::vector<Texture2D> diffuseMaps;
@@ -78,7 +78,7 @@ TextureMesh AssimpModel::ProcessMesh(aiMesh *mesh, const aiScene *scene) {
     return TextureMesh(vertices, indices, diffuse, specular, emission, 16.0f, GL_STATIC_DRAW);
 }
 
-std::vector<Texture2D> AssimpModel::LoadMaterialTextures(aiMaterial *mat, aiTextureType type) {
+std::vector<Texture2D> AssimpModel::LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept {
     std::vector<Texture2D> textures;
     for (uint32_t i = 0; i < mat->GetTextureCount(type); i++) {
         aiString path;
@@ -102,14 +102,14 @@ std::vector<Texture2D> AssimpModel::LoadMaterialTextures(aiMaterial *mat, aiText
     return textures;
 }
 
-void AssimpModel::UpdateModelMatrix(void) {
+void AssimpModel::UpdateModelMatrix(void) noexcept {
     model = glm::mat4(1.0f);
     model = glm::translate(model, position);
     model = model * glm::mat4_cast(rotation);
     model = glm::scale(model, scalar);
 }
 
-void AssimpModel::UpdateModelAndNormalMatrices(void) {
+void AssimpModel::UpdateModelAndNormalMatrices(void) noexcept {
     const glm::mat3 rotation3x3 = glm::mat3_cast(rotation);
     const glm::mat4 rotation4x4 = glm::mat4(rotation3x3);
     const glm::mat3 inverseScalar3x3 = glm::mat3(1.0f/scalar.x, 0.0f, 0.0f, 0.0f, 1.0f/scalar.y, 0.0f, 0.0f, 0.0f, 1.0f/scalar.z);
@@ -124,22 +124,22 @@ void AssimpModel::UpdateModelAndNormalMatrices(void) {
     normalMatrix = rotation3x3 * inverseScalar3x3;
 }
 
-void AssimpModel::UpdatePosition(const glm::vec3& position_) {
+void AssimpModel::UpdatePosition(const glm::vec3& position_) noexcept {
     position = position_;
     UpdateModelMatrix();
 }
 
-void AssimpModel::UpdateRotation(const glm::quat& rotation_) {
+void AssimpModel::UpdateRotation(const glm::quat& rotation_) noexcept {
     rotation = rotation_;
     UpdateModelAndNormalMatrices();
 }
 
-void AssimpModel::UpdateScalar(const glm::vec3& scalar_) {
+void AssimpModel::UpdateScalar(const glm::vec3& scalar_) noexcept {
     scalar = scalar_;
     UpdateModelAndNormalMatrices();
 }
 
-void AssimpModel::Draw(const Shader& shader) const {
+void AssimpModel::Draw(const Shader& shader) const noexcept {
     shader.Use();
     shader.SetUniformMat4(model, "model");
     shader.SetUniformMat3(normalMatrix, "normalMatrix");
@@ -149,7 +149,7 @@ void AssimpModel::Draw(const Shader& shader) const {
     }
 }
 
-void AssimpModel::Delete(void) const {
+void AssimpModel::Delete(void) const noexcept {
     for (uint32_t i = 0; i < meshes.size(); i++) {
         meshes[i].Delete();
     }

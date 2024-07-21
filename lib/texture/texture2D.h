@@ -16,19 +16,19 @@ private:
 public:
     Texture2D(const std::string& path_, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
 
-    inline GLuint GetID(void) const {
+    inline GLuint GetID(void) const noexcept {
         return ID;
     }
 
-    inline const std::string& GetPath(void) const {
+    inline const std::string& GetPath(void) const noexcept {
         return path;
     }
 
-    inline void Delete(void) const {
+    inline void Delete(void) const noexcept {
         glDeleteTextures(1, &ID);
     }
 
-    static void SetBorderColor(float red, float green, float blue, float alpha);
+    static void SetBorderColor(float red, float green, float blue, float alpha) noexcept;
 };
 
 #endif // __TEXTURE2D_H__

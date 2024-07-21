@@ -9,7 +9,7 @@
 // Returns true if the subject is added successfully.
 // Otherwise, it returns false.
 template<typename T>
-bool Observer<T>::AddSubject(Subject<T>* subject) {
+bool Observer<T>::AddSubject(Subject<T>* subject) noexcept {
     // Check whether the subject is already in the array
     for (uint32_t i = 0; i < subjectNumber; i++) {
         if (subjects[i] == subject) {
@@ -29,7 +29,7 @@ bool Observer<T>::AddSubject(Subject<T>* subject) {
 // Returns true if the subject is removed successfully.
 // Otherwise, it returns false.
 template<typename T>
-bool Observer<T>::RemoveSubject(Subject<T>* subject) {
+bool Observer<T>::RemoveSubject(Subject<T>* subject) noexcept {
     // Linear search on the array
     for (uint32_t i = 0; i < subjectNumber; i++) {
         if (subjects[i] == subject) {
@@ -42,7 +42,7 @@ bool Observer<T>::RemoveSubject(Subject<T>* subject) {
 
 // Removes itself from observer lists of subjects that it observes.
 template<typename T>
-Observer<T>::~Observer() {
+Observer<T>::~Observer() noexcept {
     for (uint32_t i = 0; i < subjectNumber; i++) {
         subjects[i]->RemoveObserver(this);
     }
@@ -52,7 +52,7 @@ Observer<T>::~Observer() {
 
 // Notifies all observers in the array.
 template<typename T>
-void Subject<T>::Notify(const T& t, enum Event event) const {
+void Subject<T>::Notify(const T& t, enum Event event) const noexcept {
     for (uint32_t i = 0; i < observerNumber; i++) {
         observers[i]->OnNotify(t, event);
     }
@@ -60,14 +60,14 @@ void Subject<T>::Notify(const T& t, enum Event event) const {
 
 // Removes itself from subject lists of observers that it notifies.
 template<typename T>
-Subject<T>::~Subject() {
+Subject<T>::~Subject() noexcept {
     for (uint32_t i = 0; i < observerNumber; i++) {
         observers[i]->RemoveSubject(this);
     }
 }
 
 template<typename T>
-void Subject<T>::AddObserver(Observer<T>* observer) {
+void Subject<T>::AddObserver(Observer<T>* observer) noexcept {
     // Check whether the observer is already in the array
     for (uint32_t i = 0; i < observerNumber; i++) {
         if (observers[i] == observer) {
@@ -82,7 +82,7 @@ void Subject<T>::AddObserver(Observer<T>* observer) {
 }
 
 template<typename T>
-void Subject<T>::RemoveObserver(Observer<T>* observer) {
+void Subject<T>::RemoveObserver(Observer<T>* observer) noexcept {
     // Linear search on the array
     for (uint32_t i = 0; i < observerNumber; i++) {
         if (observers[i] == observer) {
@@ -100,7 +100,7 @@ void Subject<T>::RemoveObserver(Observer<T>* observer) {
 
 // Removes itself from the linked list.
 template<typename T>
-Observer<T>::~Observer() {
+Observer<T>::~Observer() noexcept {
     if (next != NULL) {
         next->prev = prev;
     }
@@ -113,7 +113,7 @@ Observer<T>::~Observer() {
 
 // Removes all observers from the linked list.
 template<typename T>
-Subject<T>::~Subject() {
+Subject<T>::~Subject() noexcept {
     Observer<T>* observer = head;
     while (observer != NULL) {
         head = observer->next;
@@ -127,7 +127,7 @@ Subject<T>::~Subject() {
 
 // Notifies all observers in the linked list.
 template<typename T>
-void Subject<T>::Notify(const T& t, enum Event event) const {
+void Subject<T>::Notify(const T& t, enum Event event) const noexcept {
     Observer<T>* observer = head;
     while (observer != NULL) {
         observer->OnNotify(t, event);
@@ -136,7 +136,7 @@ void Subject<T>::Notify(const T& t, enum Event event) const {
 }
 
 template<typename T>
-void Subject<T>::AddObserver(Observer<T>* observer) {
+void Subject<T>::AddObserver(Observer<T>* observer) noexcept {
     // Linear search over the linked list
     Observer<T>* current = head;
     while (current != NULL) {
@@ -155,7 +155,7 @@ void Subject<T>::AddObserver(Observer<T>* observer) {
 }
 
 template<typename T>
-void Subject<T>::RemoveObserver(Observer<T>* observer) {
+void Subject<T>::RemoveObserver(Observer<T>* observer) noexcept {
     // Check if the observer is the head of the list
     if (head == observer) {
         head = observer->next;

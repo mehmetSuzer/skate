@@ -3,7 +3,7 @@
 
 Camera Camera::instance;
 
-void Camera::UpdateVectors(void) {
+void Camera::UpdateVectors(void) noexcept {
     const float sinYaw = glm::sin(yaw);
     const float cosYaw = glm::cos(yaw);
     const float sinPitch = glm::sin(pitch);
@@ -17,7 +17,7 @@ void Camera::UpdateVectors(void) {
     right = glm::normalize(glm::cross(forward, up));
 }
 
-void Camera::Initialize(void) {
+void Camera::Initialize(void) noexcept {
     if (initialized) {
         return;
     }
@@ -28,7 +28,7 @@ void Camera::Initialize(void) {
     UpdateProjection();
 }
 
-void Camera::UpdateFOVradian(float deltaFOVradian) {
+void Camera::UpdateFOVradian(float deltaFOVradian) noexcept {
     FOVradian += deltaFOVradian;
     if (FOVradian < minFOVradian) {
         FOVradian = minFOVradian;
@@ -38,7 +38,7 @@ void Camera::UpdateFOVradian(float deltaFOVradian) {
     UpdateProjection();
 }
 
-void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {
+void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) noexcept {
     glm::vec3 velocityDirection = glm::vec3(0.0f, 0.0f, 0.0f);
     uint32_t activeDirection = 0;
 
@@ -78,7 +78,7 @@ void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) {
     UpdateView();
 }
 
-void Camera::UpdateOrientation(float xOffset, float yOffset) {
+void Camera::UpdateOrientation(float xOffset, float yOffset) noexcept {
     yaw   += xOffset;
     pitch += yOffset;
 

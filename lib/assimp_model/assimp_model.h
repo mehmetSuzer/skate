@@ -2,7 +2,6 @@
 #ifndef __ASSIMP_MODEL_H__
 #define __ASSIMP_MODEL_H__
 
-#include <iostream>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -25,21 +24,21 @@ private:
     glm::mat4 normalMatrix;
 
     void LoadModel(const std::string& path);
-    void ProcessNode(aiNode* node, const aiScene* scene);
-    TextureMesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
-    std::vector<Texture2D> LoadMaterialTextures(aiMaterial *mat, aiTextureType type);
+    void ProcessNode(aiNode* node, const aiScene* scene) noexcept;
+    TextureMesh ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept;
+    std::vector<Texture2D> LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept;
     
 public:
     AssimpModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_);
 
-    void UpdateModelMatrix(void);
-    void UpdateModelAndNormalMatrices(void);
-    void UpdatePosition(const glm::vec3& position_);
-    void UpdateRotation(const glm::quat& rotation_);
-    void UpdateScalar(const glm::vec3& scalar_);
+    void UpdateModelMatrix(void) noexcept;
+    void UpdateModelAndNormalMatrices(void) noexcept;
+    void UpdatePosition(const glm::vec3& position_) noexcept;
+    void UpdateRotation(const glm::quat& rotation_) noexcept;
+    void UpdateScalar(const glm::vec3& scalar_) noexcept;
 
-    void Draw(const Shader& shader) const;
-    void Delete(void) const;
+    void Draw(const Shader& shader) const noexcept;
+    void Delete(void) const noexcept;
 };
 
 #endif // __ASSIMP_MODEL_H__

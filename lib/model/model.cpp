@@ -3,14 +3,14 @@
 
 template<typename Mesh>
 Model<Mesh>::Model(
-    const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_) 
+    const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_) noexcept
     : meshes(meshes_), position(position_), rotation(rotation_), scalar(scalar_) {
 
     UpdateModelAndNormalMatrices();
 }
 
 template<typename Mesh>
-void Model<Mesh>::UpdateModelMatrix(void) {
+void Model<Mesh>::UpdateModelMatrix(void) noexcept {
     model = glm::mat4(1.0f);
     model = glm::translate(model, position);
     model = model * glm::mat4_cast(rotation);
@@ -18,7 +18,7 @@ void Model<Mesh>::UpdateModelMatrix(void) {
 }
 
 template<typename Mesh>
-void Model<Mesh>::UpdateModelAndNormalMatrices(void) {
+void Model<Mesh>::UpdateModelAndNormalMatrices(void) noexcept {
     const glm::mat3 rotation3x3 = glm::mat3_cast(rotation);
     const glm::mat4 rotation4x4 = glm::mat4(rotation3x3);
     const glm::mat3 inverseScalar3x3 = glm::mat3(1.0f/scalar.x, 0.0f, 0.0f, 0.0f, 1.0f/scalar.y, 0.0f, 0.0f, 0.0f, 1.0f/scalar.z);
@@ -34,25 +34,25 @@ void Model<Mesh>::UpdateModelAndNormalMatrices(void) {
 }
 
 template<typename Mesh>
-void Model<Mesh>::UpdatePosition(const glm::vec3& position_) {
+void Model<Mesh>::UpdatePosition(const glm::vec3& position_) noexcept {
     position = position_;
     UpdateModelMatrix();
 }
 
 template<typename Mesh>
-void Model<Mesh>::UpdateRotation(const glm::quat& rotation_) {
+void Model<Mesh>::UpdateRotation(const glm::quat& rotation_) noexcept {
     rotation = rotation_;
     UpdateModelAndNormalMatrices();
 }
 
 template<typename Mesh>
-void Model<Mesh>::UpdateScalar(const glm::vec3& scalar_) {
+void Model<Mesh>::UpdateScalar(const glm::vec3& scalar_) noexcept {
     scalar = scalar_;
     UpdateModelAndNormalMatrices();
 }
 
 template<typename Mesh>
-void Model<Mesh>::Draw(const Shader& shader) const {
+void Model<Mesh>::Draw(const Shader& shader) const noexcept {
     shader.Use();
     shader.SetUniformMat4(model, "model");
     shader.SetUniformMat3(normalMatrix, "normalMatrix");
@@ -63,7 +63,7 @@ void Model<Mesh>::Draw(const Shader& shader) const {
 }
 
 template<typename Mesh>
-void Model<Mesh>::Delete(void) const {
+void Model<Mesh>::Delete(void) const noexcept {
     for (uint32_t i = 0; i < meshes.size(); i++) {
         meshes[i].Delete();
     }

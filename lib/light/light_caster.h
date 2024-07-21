@@ -52,7 +52,7 @@ public:
 
     virtual ~LightCaster() {}
 
-    inline const glm::vec3& GetColor(void) const {
+    inline const glm::vec3& GetColor(void) const noexcept {
         return (active) ? color : color::black;
     }
 
@@ -65,23 +65,23 @@ public:
         SetColor(color_.r, color_.g, color_.b);
     }
 
-    inline bool IsActive(void) const {
+    inline bool IsActive(void) const noexcept {
         return active;
     }
 
-    inline void Activate(void) {
+    inline void Activate(void) noexcept {
         active = true;
     }
 
-    inline void Deactivate(void) {
+    inline void Deactivate(void) noexcept {
         active = false;
     }
 
-    inline void Toggle(void) {
+    inline void Toggle(void) noexcept {
         active = !active;
     }
 
-    inline virtual Light GetLight(void) const = 0;
+    inline virtual Light GetLight(void) const noexcept = 0;
 };
 
 #endif // __LIGHT_CASTER_H__

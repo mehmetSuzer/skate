@@ -1,12 +1,8 @@
 
 #include "shader.h"
 
-Shader::Shader(util::ShadingType shading, util::VertexType vertex) {
-    if (shading == util::GOURAUD_SHADING && vertex == util::TEXTURE_VERTEX) {
-        throw Exception("Gouraud shading does not support Texture Vertices!");    
-    }
-
-    const std::string vertexShaderPath = util::GetShaderProgramPath(shading, util::VERTEX_SHADER, vertex);
+Shader::Shader(util::VertexType vertex) {
+    const std::string vertexShaderPath = util::GetShaderProgramPath(util::VERTEX_SHADER, vertex);
     const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     const std::string vertexShaderCode = util::ReadFile(vertexShaderPath);
     const char* vertexShaderSource = vertexShaderCode.c_str();
@@ -14,7 +10,7 @@ Shader::Shader(util::ShadingType shading, util::VertexType vertex) {
     glCompileShader(vertexShader);
     CheckShaderError(vertexShader, VERTEX_SHADER_COMPILE_ERROR, vertexShaderPath.c_str());
 
-    const std::string fragmentShaderPath = util::GetShaderProgramPath(shading, util::FRAGMENT_SHADER, vertex);
+    const std::string fragmentShaderPath = util::GetShaderProgramPath(util::FRAGMENT_SHADER, vertex);
     const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     const std::string fragmentShaderCode = util::ReadFile(fragmentShaderPath);
     const char* fragmentShaderSource = fragmentShaderCode.c_str();
@@ -32,7 +28,7 @@ Shader::Shader(util::ShadingType shading, util::VertexType vertex) {
     glDeleteShader(fragmentShader);
 }
 
-void Shader::SetUniforms(const glm::mat4& projectionView, const glm::vec3& cameraPosition, const std::vector<LightCaster*>& lightCasters) const {
+void Shader::Update(const glm::mat4& projectionView, const glm::vec3& cameraPosition, const std::vector<LightCaster*>& lightCasters) const noexcept {
     Use();
     SetUniformMat4(projectionView, "projectionView");
     SetUniformVec3(cameraPosition, "cameraPosition");

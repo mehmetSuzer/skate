@@ -77,14 +77,10 @@ int main(int argc, char **argv)
     const Texture2D woodContainerSpecularMap = Texture2D(util::texturesPath + "wood_container2_specular.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture2D matrixEmissionMap = Texture2D(util::texturesPath + "matrix.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
 
-    const Shader colorShader = Shader(util::GOURAUD_SHADING, util::COLOR_VERTEX);
-    const Shader materialShader = Shader(util::GOURAUD_SHADING, util::MATERIAL_VERTEX);
-    const Shader textureShader = Shader(util::PHONG_SHADING, util::TEXTURE_VERTEX);
-    const std::vector<Shader> shaders = {
-        colorShader,
-        materialShader,
-        textureShader,
-    };
+    const Shader colorShader = Shader(util::COLOR_VERTEX);
+    const Shader materialShader = Shader(util::MATERIAL_VERTEX);
+    const Shader textureShader = Shader(util::TEXTURE_VERTEX);
+    const std::vector<Shader> shaders = { colorShader, materialShader, textureShader };
 
     const DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.6f, color::white);
     const PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
@@ -190,7 +186,7 @@ int main(int argc, char **argv)
 
         // Update shaders
         for (uint32_t i = 0; i < shaders.size(); i++) { 
-            shaders[i].SetUniforms(projectionView, cameraPosition, lightCasters);
+            shaders[i].Update(projectionView, cameraPosition, lightCasters);
         }
 
         container.Draw(textureShader);

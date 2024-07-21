@@ -19,8 +19,8 @@ protected:
     const std::vector<GLuint> indices;
 
 public:
-    Mesh(const std::vector<Vertex>& vertices_, const std::vector<GLuint>& indices_, GLenum usage) : 
-        vertices(vertices_), indices(indices_) {
+    Mesh(const std::vector<Vertex>& vertices_, const std::vector<GLuint>& indices_, GLenum usage) noexcept 
+        : vertices(vertices_), indices(indices_) {
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
@@ -37,8 +37,10 @@ public:
         glBindVertexArray(0);
     }
 
-    virtual void Draw(const Shader& shader) const = 0;
-    virtual void Delete(void) const = 0;
+    virtual ~Mesh() noexcept {}
+
+    virtual void Draw(const Shader& shader) const noexcept = 0;
+    virtual void Delete(void) const noexcept = 0;
 };
 
 #endif // __MESH_H__

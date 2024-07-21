@@ -3,13 +3,13 @@
 
 // ------------------------------------------ CALLBACKS ------------------------------------------ //
 
-void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+void framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept {
     glViewport(0, 0, width, height);
     util::SetWindowWidthAndHeight(width, height);
     Camera::Instance().UpdateProjection();
 }
 
-void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept {
     const enum Button button = InputHandler::Instance().GetButton(key);
     if (action == GLFW_PRESS) {
         switch (button)
@@ -70,7 +70,7 @@ void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, in
     }
 }
 
-void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept {
     const enum Button button = InputHandler::Instance().GetButton(key);
     if (action == GLFW_PRESS) {
         switch (button)
@@ -90,7 +90,7 @@ void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, 
     }
 }
 
-void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
+void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) noexcept {
     // Last positions from the last mouse callback
 	static double lastX = util::windowWidth / 2.0; 
 	static double lastY = util::windowWidth / 2.0;
@@ -111,7 +111,7 @@ void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) {
     Camera::Instance().UpdateOrientation(xOffset, yOffset);
 }
 
-void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
+void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) noexcept {
     const float deltaFOVradian = yOffset * InputHandler::Instance().GetScrollSensitivity();
     Camera::Instance().UpdateFOVradian(deltaFOVradian);
 }
@@ -120,7 +120,7 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
 
 InputHandler InputHandler::instance;
 
-void InputHandler::SetButton(GLuint key, enum Button button) {
+void InputHandler::SetButton(GLuint key, enum Button button) noexcept {
     uint32_t index = 0;
     while (index < buttonMapSize && buttonMap[index] != button) {
         index++;
@@ -131,7 +131,7 @@ void InputHandler::SetButton(GLuint key, enum Button button) {
     buttonMap[key] = button;
 }
 
-void InputHandler::Initialize(GLFWwindow* window) {
+void InputHandler::Initialize(GLFWwindow* window) noexcept {
     if (initialized) {
         return;
     }
@@ -157,7 +157,7 @@ void InputHandler::Initialize(GLFWwindow* window) {
     ActivateInputs(window);
 }
 
-void InputHandler::ActivateInputs(GLFWwindow *window) {
+void InputHandler::ActivateInputs(GLFWwindow *window) noexcept {
     glfwSetCursorPos(window, util::windowWidth / 2.0, util::windowHeight / 2.0);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, cursorPosCallback);
@@ -166,7 +166,7 @@ void InputHandler::ActivateInputs(GLFWwindow *window) {
     SetFirstMouse(true);
 }
     
-void InputHandler::DeactivateInputs(GLFWwindow* window) {
+void InputHandler::DeactivateInputs(GLFWwindow* window) noexcept {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     glfwSetCursorPosCallback(window, NULL);
     glfwSetKeyCallback(window, deactiveKeyCallback);

@@ -31,42 +31,42 @@ private:
     enum Button buttonMap[buttonMapSize];
 
 public:
-    inline static InputHandler& Instance(void) {
+    inline static InputHandler& Instance(void) noexcept {
         return instance;
     }
 
-    inline float GetCursorPosSensitivity(void) const {
+    inline float GetCursorPosSensitivity(void) const noexcept {
         return cursorPosSensitivity;
     }
 
-    inline void SetCursorPosSensitivity(float sensitivity) {
+    inline void SetCursorPosSensitivity(float sensitivity) noexcept {
         cursorPosSensitivity = sensitivity;
     }
 
-    inline float GetScrollSensitivity(void) const {
+    inline float GetScrollSensitivity(void) const noexcept {
         return scrollSensitivity;
     }
 
-    inline void SetScrollSensitivity(float sensitivity) {
+    inline void SetScrollSensitivity(float sensitivity) noexcept {
         scrollSensitivity = sensitivity;
     }
 
-    inline bool GetFirstMouse(void) const {
+    inline bool GetFirstMouse(void) const noexcept {
         return firstMouse;
     }
 
-    inline void SetFirstMouse(bool boolean) {
+    inline void SetFirstMouse(bool boolean) noexcept {
         firstMouse = boolean;
     }
 
-    inline enum Button GetButton(GLuint key) const {
+    inline enum Button GetButton(GLuint key) const noexcept {
         return buttonMap[key];
     }
 
-    void SetButton(GLuint key, enum Button button);
-    void Initialize(GLFWwindow* window);
-    void ActivateInputs(GLFWwindow *window);
-    void DeactivateInputs(GLFWwindow* window);
+    void SetButton(GLuint key, enum Button button) noexcept;
+    void Initialize(GLFWwindow* window) noexcept;
+    void ActivateInputs(GLFWwindow *window) noexcept;
+    void DeactivateInputs(GLFWwindow* window) noexcept;
 };
 
 #endif // __INPUT_HANDLER_H__

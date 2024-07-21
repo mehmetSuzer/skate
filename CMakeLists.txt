@@ -1,13 +1,14 @@
 
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.12.0)
 cmake_policy(SET CMP0072 NEW)
 
 set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Comment if any problem occurs or a debug is needed
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Ofast")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
 project(opengl VERSION 0.1.0)
 
@@ -34,9 +35,6 @@ include_directories(${LIB_DIR}/object_pool)
 
 add_subdirectory(${LIB_DIR}/stb)
 include_directories(${LIB_DIR}/stb)
-
-add_subdirectory(${LIB_DIR}/json)
-include_directories(${LIB_DIR}/json)
 
 add_subdirectory(${LIB_DIR}/glad)
 include_directories(${LIB_DIR}/glad)
@@ -80,9 +78,7 @@ include_directories(${LIB_DIR}/assimp_model)
 add_subdirectory(${LIB_DIR}/scene)
 include_directories(${LIB_DIR}/scene)
 
-add_executable(${PROJECT_NAME}
-    main.cpp
-)
+add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} 
     assimp_model

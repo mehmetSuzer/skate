@@ -2,7 +2,7 @@
 #include "object_pool.h"
 
 template<typename T>
- ObjectPool<T>::ObjectPool() {
+ ObjectPool<T>::ObjectPool() noexcept {
     for (uint32_t i = 0; i < poolSize-1; i++) {
         pool[i].SetNext(pool+(i+1));
     }
@@ -12,9 +12,9 @@ template<typename T>
 }
 
 template<typename T>
-T* ObjectPool<T>::Get(void) {
+T* ObjectPool<T>::Get(void) noexcept {
     if (firstAvailable == NULL) {
-        throw Exception("Object Pool is Full!");
+        return NULL;
     }
 
     T* t = firstAvailable;
@@ -25,7 +25,14 @@ T* ObjectPool<T>::Get(void) {
 }
 
 template<typename T>
-void ObjectPool<T>::Release(T* t) {
+void ObjectPool<T>::Release(T* t) noexcept {
+    const T* start = pool;
+    const T* end = pool + (poolSize-1);
+
+    if (start > t || t > end) {
+        return;
+    }
+    
     t->SetNext(firstAvailable);
     firstAvailable = t;
     availableCount++;

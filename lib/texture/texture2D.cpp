@@ -51,7 +51,7 @@ Texture2D::Texture2D(const std::string& path_, GLint wrapS, GLint wrapT, GLint m
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture2D::SetBorderColor(float red, float green, float blue, float alpha) {
+void Texture2D::SetBorderColor(float red, float green, float blue, float alpha) noexcept {
     Texture2D::borderColor[0] = red;
     Texture2D::borderColor[1] = green;
     Texture2D::borderColor[2] = blue;

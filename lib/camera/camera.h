@@ -49,64 +49,62 @@ private:
     bool updateViewFlag;
     bool updateProjectionFlag;
 
-    Camera() {}
-
 public:
-    inline static Camera& Instance(void) {
+    inline static Camera& Instance(void) noexcept {
         return instance;
     }
 
-    inline const glm::vec3& GetPosition(void) const {
+    inline const glm::vec3& GetPosition(void) const noexcept {
         return position;
     }
 
-    inline const glm::mat4& GetView(void) const {
+    inline const glm::mat4& GetView(void) const noexcept {
         return view;
     }
 
-    inline const glm::mat4& GetProjection(void) const {
+    inline const glm::mat4& GetProjection(void) const noexcept {
         return projection;
     }
 
-    inline void SetRightDirection(enum AxisDirection axisDirection) {
+    inline void SetRightDirection(enum AxisDirection axisDirection) noexcept {
         direction.right = axisDirection;
     }
 
-    inline void SetUpDirection(enum AxisDirection axisDirection) {
+    inline void SetUpDirection(enum AxisDirection axisDirection) noexcept {
         direction.up = axisDirection;
     }
 
-    inline void SetForwardDirection(enum AxisDirection axisDirection) {
+    inline void SetForwardDirection(enum AxisDirection axisDirection) noexcept {
         direction.forward = axisDirection;
     }
 
-    inline void SetLowSpeed(void) {
+    inline void SetLowSpeed(void) noexcept {
         speed = lowSpeed;
     }
 
-    inline void SetHighSpeed(void) {
+    inline void SetHighSpeed(void) noexcept {
         speed = highSpeed;
     }
 
-    inline void UpdateView(void) {
+    inline void UpdateView(void) noexcept {
         view = glm::lookAt(position, position + forward, up);
     }
 
-    inline void UpdateProjection(void) {
+    inline void UpdateProjection(void) noexcept {
         projection = glm::perspective(FOVradian, util::aspectRatio, near, far);
     }
 
-    void UpdateVectors(void);
-    void Initialize(void);
+    void UpdateVectors(void) noexcept;
+    void Initialize(void) noexcept;
 
     // Use this function in mouse scroll callback
-    void UpdateFOVradian(float deltaFOVradian);
+    void UpdateFOVradian(float deltaFOVradian) noexcept;
 
     // use this function in main loop
-    void UpdatePosition(float elapsedTimeSinceLastFrame);
+    void UpdatePosition(float elapsedTimeSinceLastFrame) noexcept;
     
     // Use this function in cursor position callback
-    void UpdateOrientation(float xOffset, float yOffset);
+    void UpdateOrientation(float xOffset, float yOffset) noexcept;
 };
 
 #endif // __CAMERA_H__

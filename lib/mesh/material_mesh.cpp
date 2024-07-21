@@ -1,10 +1,11 @@
 
 #include "material_mesh.h"
 
-MaterialMesh::MaterialMesh(const std::vector<MaterialVertex>& vertices_, const std::vector<GLuint>& indices_, const Material& material_, GLenum usage) : 
-    Mesh<MaterialVertex>(vertices_, indices_,usage), material(material_) { }
+MaterialMesh::MaterialMesh(const std::vector<MaterialVertex>& vertices_, const std::vector<GLuint>& indices_, 
+    const Material& material_, GLenum usage) noexcept 
+    : Mesh<MaterialVertex>(vertices_, indices_,usage), material(material_) { }
 
-void MaterialMesh::Draw(const Shader& shader) const {
+void MaterialMesh::Draw(const Shader& shader) const noexcept {
     shader.Use();
 
     shader.SetUniformVec3(material.ambient, "material.ambient");
@@ -17,7 +18,7 @@ void MaterialMesh::Draw(const Shader& shader) const {
     glBindVertexArray(0);
 }
 
-void MaterialMesh::Delete(void) const {
+void MaterialMesh::Delete(void) const noexcept {
     glDeleteBuffers(1, &EBO);
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);

@@ -4,11 +4,8 @@
 namespace util {
 
     const std::string glslPath = "glsl/";
-    const std::string gouraudShadingPath = glslPath + "gouraud/";
-    const std::string phongShadingPath = glslPath + "phong/";
-
-    const std::string vertexShaderPath = "vertex/";
-    const std::string fragmentShaderPath = "fragment/";
+    const std::string vertexShaderPath = glslPath + "vertex/";
+    const std::string fragmentShaderPath = glslPath + "fragment/";
 
     const std::string glslFileExtension = ".glsl";
     const std::string colorVertexGLSL = "color" + glslFileExtension;
@@ -25,7 +22,7 @@ namespace util {
     GLsizei windowHeight = 800;
     float aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
     
-    void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) {
+    void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) noexcept {
         windowWidth = windowWidth_;
         windowHeight = windowHeight_;
         aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
@@ -48,16 +45,13 @@ namespace util {
         return contents;
     }
 
-    const std::string GetShaderProgramPath(enum ShadingType shading, enum ShaderType shader, enum VertexType vertex) {
-        const std::string& shadingPath = (shading == GOURAUD_SHADING) ? gouraudShadingPath : 
-                                                                        phongShadingPath;
-
+    const std::string GetShaderProgramPath(enum ShaderType shader, enum VertexType vertex) noexcept {
         const std::string& shaderPath = (shader == VERTEX_SHADER) ? vertexShaderPath : 
                                                                     fragmentShaderPath;
 
-        const std::string& vertexPath = (vertex == COLOR_VERTEX)    ? colorVertexGLSL : 
-                                        (vertex == MATERIAL_VERTEX) ? materialVertexGLSL :
+        const std::string& filename = (vertex == COLOR_VERTEX)    ? colorVertexGLSL : 
+                                      (vertex == MATERIAL_VERTEX) ? materialVertexGLSL :
                                                                     textureVertexGLSL;
-        return shadingPath + shaderPath + vertexPath;
+        return shaderPath + filename;
     }
 }
