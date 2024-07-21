@@ -5,6 +5,8 @@
 #include "model.h"
 #include "assimp_model.h"
 
+using namespace skate;
+
 int main(int argc, char **argv)
 {
     //-------------------------------------- INITIALIZATION --------------------------------------//
@@ -86,7 +88,8 @@ int main(int argc, char **argv)
     const PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
     const SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
 
-    const std::vector<LightCaster*> lightCasters = {
+    const std::vector<LightCaster*> lightCasters = 
+    {
         (LightCaster*)&directionalLight,
         (LightCaster*)&pointLight,
         (LightCaster*)&spotLight,
@@ -94,7 +97,8 @@ int main(int argc, char **argv)
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
-    const std::vector<TextureMesh> containerMeshes = {
+    const std::vector<TextureMesh> containerMeshes = 
+    {
         TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap, blackTexture, 16.0f, GL_STATIC_DRAW),
     };
 
@@ -106,7 +110,8 @@ int main(int argc, char **argv)
 
     //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
 
-    const std::vector<ColorMesh> colorPyramidMeshes = {
+    const std::vector<ColorMesh> colorPyramidMeshes = 
+    {
         ColorMesh(pyramidColorVertices, pyramidIndices, GL_STATIC_DRAW),
     };
 
@@ -118,7 +123,8 @@ int main(int argc, char **argv)
 
     //---------------------------------- MATERIAL PYRAMID MODEL ---------------------------------//
 
-    const std::vector<MaterialMesh> materialPyramidMeshes = {
+    const std::vector<MaterialMesh> materialPyramidMeshes = 
+    {
         MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::bronze, GL_STATIC_DRAW),
     };
 
@@ -130,7 +136,8 @@ int main(int argc, char **argv)
 
     //---------------------------------- TEXTURE PYRAMID MODEL ---------------------------------//
 
-    const std::vector<TextureMesh> texturePyramidMeshes = {
+    const std::vector<TextureMesh> texturePyramidMeshes = 
+    {
         TextureMesh(pyramidTextureVertices, pyramidIndices, brickTexture, whiteTexture, blackTexture, 16.0f, GL_STATIC_DRAW),
     };
 
@@ -185,7 +192,8 @@ int main(int argc, char **argv)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Update shaders
-        for (uint32_t i = 0; i < shaders.size(); i++) { 
+        for (uint32_t i = 0; i < shaders.size(); i++) 
+        { 
             shaders[i].Update(projectionView, cameraPosition, lightCasters);
         }
 
