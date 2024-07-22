@@ -1,22 +1,20 @@
 
-#ifndef __ASSIMP_MODEL_H__
-#define __ASSIMP_MODEL_H__
+#ifndef __LOADABLE_COLOR_MODEL_H__
+#define __LOADABLE_COLOR_MODEL_H__
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "texture_mesh.h"
+#include "color_mesh.h"
 #include "gtc/type_ptr.hpp"
 
 namespace skate 
 {
-    class AssimpModel 
+    class LoadableColorModel 
     {
     private:
-        std::vector<TextureMesh> meshes;
-        std::vector<Texture> texturesLoaded;
-        std::string directory;
+        std::vector<ColorMesh> meshes;
 
         glm::vec3 position;
         glm::quat rotation;
@@ -27,11 +25,10 @@ namespace skate
 
         void LoadModel(const std::string& path);
         void ProcessNode(aiNode* node, const aiScene* scene) noexcept;
-        TextureMesh ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept;
-        std::vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept;
+        ColorMesh ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept;
         
     public:
-        AssimpModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_);
+        LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_);
 
         void UpdateModelMatrix(void) noexcept;
         void UpdateModelAndNormalMatrices(void) noexcept;
@@ -44,4 +41,4 @@ namespace skate
     };
 }
 
-#endif // __ASSIMP_MODEL_H__
+#endif // __LOADABLE_COLOR_MODEL_H__

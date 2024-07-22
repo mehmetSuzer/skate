@@ -37,7 +37,7 @@ uniform int lightCasterNumber;
 uniform Light lights[MAX_LIGHT_CASTER_NUMBER];
 
 vec4 directionalLight(Light light) {
-    float ambientPower = 0.1f;
+    float ambientPower = 0.2f;
     vec3 ambient = material.ambient * ambientPower;
 
     float diffusePower = max(dot(normal, -light.direction), 0.0f);

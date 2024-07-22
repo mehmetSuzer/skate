@@ -73,8 +73,8 @@ include_directories(${SRC_DIR}/mesh)
 add_subdirectory(${SRC_DIR}/model)
 include_directories(${SRC_DIR}/model)
 
-add_subdirectory(${SRC_DIR}/assimp_model)
-include_directories(${SRC_DIR}/assimp_model)
+add_subdirectory(${SRC_DIR}/loadable_model)
+include_directories(${SRC_DIR}/loadable_model)
 
 add_subdirectory(${SRC_DIR}/scene)
 include_directories(${SRC_DIR}/scene)
@@ -82,7 +82,7 @@ include_directories(${SRC_DIR}/scene)
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} 
-    assimp_model
+    loadable_model
     mesh
     shader
     texture

@@ -1,16 +1,16 @@
 
-#include "assimp_model.h"
+#include "loadable_texture_model.h"
 
 namespace skate 
 {
-    AssimpModel::AssimpModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_)
+    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_)
         : position(position_), rotation(rotation_), scalar(scalar_) 
     {
         LoadModel(path);
         UpdateModelAndNormalMatrices();
     }
 
-    void AssimpModel::LoadModel(const std::string& path) 
+    void LoadableTextureModel::LoadModel(const std::string& path) 
     {
         Assimp::Importer importer;
         unsigned int postProcessSteps = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace;
@@ -27,7 +27,7 @@ namespace skate
         ProcessNode(scene->mRootNode, scene);
     }
 
-    void AssimpModel::ProcessNode(aiNode* node, const aiScene* scene) noexcept 
+    void LoadableTextureModel::ProcessNode(aiNode* node, const aiScene* scene) noexcept 
     {
         for (uint32_t i = 0; i < node->mNumMeshes; i++) 
         {
@@ -39,7 +39,7 @@ namespace skate
             ProcessNode(node->mChildren[i], scene);
     }
 
-    TextureMesh AssimpModel::ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept 
+    TextureMesh LoadableTextureModel::ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept 
     {
         std::vector<TextureVertex> vertices;
         std::vector<GLuint> indices;
@@ -82,7 +82,7 @@ namespace skate
         return TextureMesh(vertices, indices, diffuse, specular, emission, 16.0f, GL_STATIC_DRAW);
     }
 
-    std::vector<Texture> AssimpModel::LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept 
+    std::vector<Texture> LoadableTextureModel::LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept 
     {
         std::vector<Texture> textures;
         for (uint32_t i = 0; i < mat->GetTextureCount(type); i++) 
@@ -111,7 +111,7 @@ namespace skate
         return textures;
     }
 
-    void AssimpModel::UpdateModelMatrix(void) noexcept 
+    void LoadableTextureModel::UpdateModelMatrix(void) noexcept 
     {
         model = glm::mat4(1.0f);
         model = glm::translate(model, position);
@@ -119,7 +119,7 @@ namespace skate
         model = glm::scale(model, scalar);
     }
 
-    void AssimpModel::UpdateModelAndNormalMatrices(void) noexcept 
+    void LoadableTextureModel::UpdateModelAndNormalMatrices(void) noexcept 
     {
         const glm::mat3 rotation3x3 = glm::mat3_cast(rotation);
         const glm::mat4 rotation4x4 = glm::mat4(rotation3x3);
@@ -135,25 +135,25 @@ namespace skate
         normalMatrix = rotation3x3 * inverseScalar3x3;
     }
 
-    void AssimpModel::UpdatePosition(const glm::vec3& position_) noexcept 
+    void LoadableTextureModel::UpdatePosition(const glm::vec3& position_) noexcept 
     {
         position = position_;
         UpdateModelMatrix();
     }
 
-    void AssimpModel::UpdateRotation(const glm::quat& rotation_) noexcept 
+    void LoadableTextureModel::UpdateRotation(const glm::quat& rotation_) noexcept 
     {
         rotation = rotation_;
         UpdateModelAndNormalMatrices();
     }
 
-    void AssimpModel::UpdateScalar(const glm::vec3& scalar_) noexcept 
+    void LoadableTextureModel::UpdateScalar(const glm::vec3& scalar_) noexcept 
     {
         scalar = scalar_;
         UpdateModelAndNormalMatrices();
     }
 
-    void AssimpModel::Draw(const Shader& shader) const noexcept 
+    void LoadableTextureModel::Draw(const Shader& shader) const noexcept 
     {
         shader.Use();
         shader.SetUniformMat4(model, "model");
@@ -163,7 +163,7 @@ namespace skate
             meshes[i].Draw(shader);
     }
 
-    void AssimpModel::Delete(void) const noexcept 
+    void LoadableTextureModel::Delete(void) const noexcept 
     {
         for (uint32_t i = 0; i < meshes.size(); i++) 
             meshes[i].Delete();
