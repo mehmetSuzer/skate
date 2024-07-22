@@ -4,7 +4,7 @@
 namespace skate 
 {
     TextureMesh::TextureMesh(const std::vector<TextureVertex>& vertices_, const std::vector<GLuint>& indices_, 
-        const Texture2D& diffuse_, const Texture2D& specular_, const Texture2D& emission_, float shininess_, GLenum usage) noexcept 
+        const Texture& diffuse_, const Texture& specular_, const Texture& emission_, float shininess_, GLenum usage) noexcept 
         : Mesh<TextureVertex>(vertices_, indices_, usage), diffuse(diffuse_), specular(specular_), emission(emission_), shininess(shininess_) {}
 
     void TextureMesh::Draw(const Shader& shader) const noexcept 

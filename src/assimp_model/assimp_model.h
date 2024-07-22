@@ -15,7 +15,7 @@ namespace skate
     {
     private:
         std::vector<TextureMesh> meshes;
-        std::vector<Texture2D> texturesLoaded;
+        std::vector<Texture> texturesLoaded;
         std::string directory;
 
         glm::vec3 position;
@@ -28,7 +28,7 @@ namespace skate
         void LoadModel(const std::string& path);
         void ProcessNode(aiNode* node, const aiScene* scene) noexcept;
         TextureMesh ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept;
-        std::vector<Texture2D> LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept;
+        std::vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept;
         
     public:
         AssimpModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_);

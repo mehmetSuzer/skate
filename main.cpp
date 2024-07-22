@@ -66,21 +66,32 @@ int main(int argc, char **argv)
 
     //-------------------------------- TEXTURES, SHADERS, AND LIGHTS -------------------------------//
 
-    const Texture2D blackTexture = Texture2D(util::texturesPath + "black.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-    const Texture2D whiteTexture = Texture2D(util::texturesPath + "white.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-    const Texture2D brickTexture = Texture2D(util::texturesPath + "brick.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerDiffuseMap = Texture2D(util::texturesPath + "wood_container2.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D woodContainerSpecularMap = Texture2D(util::texturesPath + "wood_container2_specular.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-    const Texture2D matrixEmissionMap = Texture2D(util::texturesPath + "matrix.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    Texture::InitializeCommonTextures();
 
-    const Shader colorShader = Shader(util::COLOR_VERTEX);
-    const Shader materialShader = Shader(util::MATERIAL_VERTEX);
-    const Shader textureShader = Shader(util::TEXTURE_VERTEX);
+    const Texture brickTexture(
+        util::texturesPath + "common/brick.png", 
+        GL_REPEAT, GL_REPEAT, 
+        GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
+    );
+    const Texture woodContainerDiffuseMap(
+        util::texturesPath + "container/albedo.png", 
+        GL_REPEAT, GL_REPEAT, 
+        GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
+    );
+    const Texture woodContainerSpecularMap(
+        util::texturesPath + "container/metallic.png", 
+        GL_REPEAT, GL_REPEAT, 
+        GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
+    );
+
+    const Shader colorShader(util::COLOR_VERTEX);
+    const Shader materialShader(util::MATERIAL_VERTEX);
+    const Shader textureShader(util::TEXTURE_VERTEX);
     const std::vector<Shader> shaders = { colorShader, materialShader, textureShader };
 
-    const DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.6f, color::white);
-    const PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
-    const SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
+    const DirectionalLight directionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.6f, color::white);
+    const PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
+    const SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
 
     const std::vector<LightCaster*> lightCasters = 
     {
@@ -93,14 +104,22 @@ int main(int argc, char **argv)
 
     const std::vector<TextureMesh> containerMeshes = 
     {
-        TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap, blackTexture, 16.0f, GL_STATIC_DRAW),
+        TextureMesh(
+            containerTextureVertices, 
+            containerIndices, 
+            woodContainerDiffuseMap, 
+            woodContainerSpecularMap, 
+            Texture::black,
+            16.0f, 
+            GL_STATIC_DRAW
+        ),
     };
 
     const glm::vec3 containerPosition = glm::vec3(2.5f, 0.0f, 0.0f);
     const glm::quat containerRotation = glm::angleAxis(0.0f, glm::vec3(0.6f, 0.8f, 0.0f));
     const glm::vec3 containerScalar = glm::vec3(0.4f, 0.4f, 0.4f);
 
-    const Model container = Model(containerMeshes, containerPosition, containerRotation, containerScalar);
+    const Model container(containerMeshes, containerPosition, containerRotation, containerScalar);
 
     //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
 
@@ -113,7 +132,7 @@ int main(int argc, char **argv)
     const glm::quat colorPyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     const glm::vec3 colorPyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    const Model colorPyramid = Model(colorPyramidMeshes, colorPyramidPosition, colorPyramidRotation, colorPyramidScalar);
+    const Model colorPyramid(colorPyramidMeshes, colorPyramidPosition, colorPyramidRotation, colorPyramidScalar);
 
     //---------------------------------- MATERIAL PYRAMID MODEL ---------------------------------//
 
@@ -126,20 +145,28 @@ int main(int argc, char **argv)
     const glm::quat materialPyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     const glm::vec3 materialPyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    const Model materialPyramid = Model(materialPyramidMeshes, materialPyramidPosition, materialPyramidRotation, materialPyramidScalar);
+    const Model materialPyramid(materialPyramidMeshes, materialPyramidPosition, materialPyramidRotation, materialPyramidScalar);
 
     //---------------------------------- TEXTURE PYRAMID MODEL ---------------------------------//
 
     const std::vector<TextureMesh> texturePyramidMeshes = 
     {
-        TextureMesh(pyramidTextureVertices, pyramidIndices, brickTexture, whiteTexture, blackTexture, 16.0f, GL_STATIC_DRAW),
+        TextureMesh(
+            pyramidTextureVertices, 
+            pyramidIndices, 
+            brickTexture, 
+            Texture::white,
+            Texture::black, 
+            16.0f, 
+            GL_STATIC_DRAW
+        ),
     };
 
     const glm::vec3 texturePyramidPosition = glm::vec3(0.0f, 0.0f, 2.5f);
     const glm::quat texturePyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
     const glm::vec3 texturePyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    const Model texturePyramid = Model(texturePyramidMeshes, texturePyramidPosition, texturePyramidRotation, texturePyramidScalar);
+    const Model texturePyramid(texturePyramidMeshes, texturePyramidPosition, texturePyramidRotation, texturePyramidScalar);
 
     //------------------------------------- OBJECT MODEL ------------------------------------//
 
@@ -147,7 +174,7 @@ int main(int argc, char **argv)
     const glm::quat objectRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
     const glm::vec3 objectScalar = glm::vec3(1.0f, 1.0f, 1.0f);
 
-    const AssimpModel object = AssimpModel(util::modelsPath + "bunny/scene.gltf", objectPosition, objectRotation, objectScalar);
+    const AssimpModel object(util::modelsPath + "bunny/scene.gltf", objectPosition, objectRotation, objectScalar);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -209,12 +236,10 @@ int main(int argc, char **argv)
     colorShader.Delete();
     materialShader.Delete();
 
-    blackTexture.Delete();
-    whiteTexture.Delete();
+    Texture::DeleteCommonTextures();
     brickTexture.Delete();
     woodContainerDiffuseMap.Delete();
     woodContainerSpecularMap.Delete();
-    matrixEmissionMap.Delete();
 
     glfwTerminate();
     return 0;

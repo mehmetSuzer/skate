@@ -43,12 +43,9 @@ namespace skate
     {
         std::vector<TextureVertex> vertices;
         std::vector<GLuint> indices;
-        std::vector<Texture2D> diffuseMaps;
-        std::vector<Texture2D> specularMaps;
-        std::vector<Texture2D> emissionMaps;
-
-        const Texture2D blackTexture = Texture2D(util::texturesPath + "black.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
-        const Texture2D whiteTexture = Texture2D(util::texturesPath + "white.png", GL_REPEAT, GL_REPEAT, GL_NEAREST, GL_NEAREST);
+        std::vector<Texture> diffuseMaps;
+        std::vector<Texture> specularMaps;
+        std::vector<Texture> emissionMaps;
 
         for (uint32_t i = 0; i < mesh->mNumVertices; i++) 
         {
@@ -78,16 +75,16 @@ namespace skate
             emissionMaps = LoadMaterialTextures(material, aiTextureType_EMISSION_COLOR);
         }
 
-        const Texture2D& diffuse = (diffuseMaps.empty()) ? whiteTexture : diffuseMaps[0];
-        const Texture2D& specular = (specularMaps.empty()) ? whiteTexture : specularMaps[0];
-        const Texture2D& emission = (emissionMaps.empty()) ? blackTexture : emissionMaps[0];
+        const Texture& diffuse  = (diffuseMaps.empty())  ? Texture::white : diffuseMaps[0];
+        const Texture& specular = (specularMaps.empty()) ? Texture::white : specularMaps[0];
+        const Texture& emission = (emissionMaps.empty()) ? Texture::black : emissionMaps[0];
 
         return TextureMesh(vertices, indices, diffuse, specular, emission, 16.0f, GL_STATIC_DRAW);
     }
 
-    std::vector<Texture2D> AssimpModel::LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept 
+    std::vector<Texture> AssimpModel::LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept 
     {
-        std::vector<Texture2D> textures;
+        std::vector<Texture> textures;
         for (uint32_t i = 0; i < mat->GetTextureCount(type); i++) 
         {
             aiString path;
@@ -106,7 +103,7 @@ namespace skate
 
             if (!skip) 
             {
-                Texture2D texture = Texture2D(directory + path.C_Str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+                Texture texture = Texture(directory + path.C_Str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
                 textures.push_back(texture);
                 texturesLoaded.push_back(texture);
             }
