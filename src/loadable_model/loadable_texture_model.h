@@ -29,12 +29,10 @@ namespace skate
 
         LoadableTextureModel(const std::string& path, const glm::vec3& position_, 
             const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f));
-        LoadableTextureModel(const std::string& path, const glm::vec3& position_, 
-            const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), float scale = 1.0f);
-        LoadableTextureModel(const std::string& path, const glm::vec3& position_, 
-            const glm::vec3& eulerAngles = glm::vec3(0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f));
-        LoadableTextureModel(const std::string& path, const glm::vec3& position_, 
-            const glm::vec3& eulerAngles = glm::vec3(0.0f), float scale = 1.0f);
+        
+        LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, float scale);
+        LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_);
+        LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale);
 
         void Draw(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;

@@ -87,8 +87,8 @@ int main(int argc, char **argv)
     );
 
     const DirectionalLight directionalLight(glm::vec3(0.0f, -0.8f, -0.6f), 0.8f, color::white);
-    const PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
-    const SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
+    // const PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
+    // const SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
 
     const std::vector<LightCaster*> lightCasters = 
     {
@@ -124,10 +124,7 @@ int main(int argc, char **argv)
     };
 
     const glm::vec3 containerPosition = glm::vec3(2.5f, 0.0f, 0.0f);
-    const glm::quat containerRotation = glm::angleAxis(0.0f, glm::vec3(0.6f, 0.8f, 0.0f));
-    const glm::vec3 containerScalar = glm::vec3(0.4f, 0.4f, 0.4f);
-
-    const Model container(containerMeshes, containerPosition, containerRotation, containerScalar);
+    const Model container(containerMeshes, containerPosition);
 
     //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
 
@@ -137,10 +134,7 @@ int main(int argc, char **argv)
     };
 
     const glm::vec3 colorPyramidPosition = glm::vec3(0.0f, 0.0f, -2.5f);
-    const glm::quat colorPyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    const glm::vec3 colorPyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
-
-    const Model colorPyramid(colorPyramidMeshes, colorPyramidPosition, colorPyramidRotation, colorPyramidScalar);
+    const Model colorPyramid(colorPyramidMeshes, colorPyramidPosition);
 
     //---------------------------------- MATERIAL PYRAMID MODEL ---------------------------------//
 
@@ -150,10 +144,7 @@ int main(int argc, char **argv)
     };
 
     const glm::vec3 materialPyramidPosition = glm::vec3(-2.5f, 0.0f, 0.0f);
-    const glm::quat materialPyramidRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    const glm::vec3 materialPyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
-
-    const Model materialPyramid(materialPyramidMeshes, materialPyramidPosition, materialPyramidRotation, materialPyramidScalar);
+    const Model materialPyramid(materialPyramidMeshes, materialPyramidPosition);
 
     //---------------------------------- TEXTURE PYRAMID MODEL ---------------------------------//
 
@@ -171,17 +162,13 @@ int main(int argc, char **argv)
     };
 
     const glm::vec3 texturePyramidPosition = glm::vec3(0.0f, 0.0f, 2.5f);
-    const glm::quat texturePyramidRotation = glm::angleAxis(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-    const glm::vec3 texturePyramidScalar = glm::vec3(1.0f, 1.0f, 1.0f);
-
-    const Model texturePyramid(texturePyramidMeshes, texturePyramidPosition, texturePyramidRotation, texturePyramidScalar);
+    const Model texturePyramid(texturePyramidMeshes, texturePyramidPosition);
 
     //------------------------------------- OBJECT MODEL ------------------------------------//
 
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
     const glm::vec3 objectScalar = glm::vec3(0.1f, 0.1f, 0.1f);
-
     const LoadableColorModel object(util::modelsPath + "medieval_village/scene.gltf", objectPosition, objectRotation, objectScalar);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//

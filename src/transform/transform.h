@@ -22,9 +22,9 @@ namespace skate
 
     public:
         Transform(const glm::vec3& position_, const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f));
-        Transform(const glm::vec3& position_, const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), float scale = 1.0f);
-        Transform(const glm::vec3& position_, const glm::vec3& eulerAngles = glm::vec3(0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f));
-        Transform(const glm::vec3& position_, const glm::vec3& eulerAngles = glm::vec3(0.0f), float scale = 1.0f);
+        Transform(const glm::vec3& position_, const glm::quat& quaternion, float scale);
+        Transform(const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_);
+        Transform(const glm::vec3& position_, const glm::vec3& eulerAngles, float scale);
         
         inline const glm::vec3& GetPosition(void) const noexcept
         {
