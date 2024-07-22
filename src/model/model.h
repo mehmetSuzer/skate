@@ -2,6 +2,7 @@
 #ifndef __MODEL_H__
 #define __MODEL_H__
 
+#include "transform.h"
 #include "color_mesh.h"
 #include "material_mesh.h"
 #include "texture_mesh.h"
@@ -13,21 +14,18 @@ namespace skate
     {
     private:
         const std::vector<Mesh>& meshes;
-        glm::vec3 position;
-        glm::quat rotation;
-        glm::vec3 scalar;
-
-        glm::mat4 model;
-        glm::mat4 normalMatrix;
 
     public:
-        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_) noexcept;
+        Transform transform;
 
-        void UpdateModelMatrix(void) noexcept;
-        void UpdateModelAndNormalMatrices(void) noexcept;
-        void UpdatePosition(const glm::vec3& position_) noexcept;
-        void UpdateRotation(const glm::quat& rotation_) noexcept;
-        void UpdateScalar(const glm::vec3& scalar_) noexcept;
+        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, 
+            const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f)) noexcept;
+        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, 
+            const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), float scale = 1.0f) noexcept;
+        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, 
+            const glm::vec3& eulerAngles = glm::vec3(0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f)) noexcept;
+        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, 
+            const glm::vec3& eulerAngles = glm::vec3(0.0f), float scale = 1.0f) noexcept;
 
         void Draw(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;

@@ -3,11 +3,28 @@
 
 namespace skate 
 {
-    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::quat& rotation_, const glm::vec3& scalar_)
-        : position(position_), rotation(rotation_), scalar(scalar_) 
-    {
-        LoadModel(path);
-        UpdateModelAndNormalMatrices();
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, const glm::vec3& scalar_)
+        : transform(Transform(position_, quaternion, scalar_)) 
+    { 
+        LoadModel(path); 
+    }
+    
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, float scale)
+        : transform(Transform(position_, quaternion, scale)) 
+    { 
+        LoadModel(path); 
+    }
+    
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_)
+        : transform(Transform(position_, eulerAngles, scalar_)) 
+    { 
+        LoadModel(path); 
+    }
+
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale)
+        : transform(Transform(position_, eulerAngles, scale)) 
+    { 
+        LoadModel(path); 
     }
 
     void LoadableColorModel::LoadModel(const std::string& path) 
@@ -44,8 +61,15 @@ namespace skate
         std::vector<GLuint> indices;
 
         aiColor4D vertexColor(1.0f);
+        float metallicFactor = 0.0f;
+        float roughnessFactor = 0.0f;
+
         if (mesh->mMaterialIndex >= 0) 
+        {
             scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, vertexColor);
+            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_METALLIC_FACTOR, metallicFactor);
+            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughnessFactor);
+        }
 
         for (uint32_t i = 0; i < mesh->mNumVertices; i++) 
         {
@@ -66,53 +90,11 @@ namespace skate
         return ColorMesh(vertices, indices, GL_STATIC_DRAW);
     }
 
-    void LoadableColorModel::UpdateModelMatrix(void) noexcept 
-    {
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, position);
-        model = model * glm::mat4_cast(rotation);
-        model = glm::scale(model, scalar);
-    }
-
-    void LoadableColorModel::UpdateModelAndNormalMatrices(void) noexcept 
-    {
-        const glm::mat3 rotation3x3 = glm::mat3_cast(rotation);
-        const glm::mat4 rotation4x4 = glm::mat4(rotation3x3);
-        const glm::mat3 inverseScalar3x3 = glm::mat3(1.0f/scalar.x, 0.0f, 0.0f, 0.0f, 1.0f/scalar.y, 0.0f, 0.0f, 0.0f, 1.0f/scalar.z);
-
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, position);
-        model = model * rotation4x4;
-        model = glm::scale(model, scalar);
-
-        // normalMatrix = the upper left 3x3 matrix of the transpose of the inverse of the model matrix
-        // the following calculation is mathematically the simplified version
-        normalMatrix = rotation3x3 * inverseScalar3x3;
-    }
-
-    void LoadableColorModel::UpdatePosition(const glm::vec3& position_) noexcept 
-    {
-        position = position_;
-        UpdateModelMatrix();
-    }
-
-    void LoadableColorModel::UpdateRotation(const glm::quat& rotation_) noexcept 
-    {
-        rotation = rotation_;
-        UpdateModelAndNormalMatrices();
-    }
-
-    void LoadableColorModel::UpdateScalar(const glm::vec3& scalar_) noexcept 
-    {
-        scalar = scalar_;
-        UpdateModelAndNormalMatrices();
-    }
-
     void LoadableColorModel::Draw(const Shader& shader) const noexcept 
     {
         shader.Use();
-        shader.SetUniformMat4(model, "model");
-        shader.SetUniformMat3(normalMatrix, "normalMatrix");
+        shader.SetUniformMat4(transform.GetModelMatrix(), "model");
+        shader.SetUniformMat3(transform.GetNormalMatrix(), "normalMatrix");
 
         for (uint32_t i = 0; i < meshes.size(); i++)
             meshes[i].Draw(shader);

@@ -31,6 +31,9 @@ include_directories(${LIB_DIR}/glad)
 add_subdirectory(${LIB_DIR}/glm)
 include_directories(${LIB_DIR}/glm)
 
+add_subdirectory(${SRC_DIR}/transform)
+include_directories(${SRC_DIR}/transform)
+
 add_subdirectory(${SRC_DIR}/config)
 include_directories(${SRC_DIR}/config)
 
@@ -93,6 +96,7 @@ target_link_libraries(${PROJECT_NAME}
     object_pool
     observer_subject
     exception
+    transform
     glm
     glad
     stb
