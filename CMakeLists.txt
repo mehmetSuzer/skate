@@ -10,16 +10,26 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Comment if any problem occurs or a debug is needed
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
 
-project(opengl VERSION 0.1.0)
+project(skate VERSION 1.0.0)
 
 find_package(OpenGL REQUIRED)
 
+set(LIB_DIR lib)
 set(SRC_DIR src)
 set(DATA_DIR data)
 set(GLSL_DIR glsl)
 
 file(COPY ${CMAKE_SOURCE_DIR}/${GLSL_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 file(COPY ${CMAKE_SOURCE_DIR}/${DATA_DIR} DESTINATION ${CMAKE_BINARY_DIR})
+
+add_subdirectory(${LIB_DIR}/stb)
+include_directories(${LIB_DIR}/stb)
+
+add_subdirectory(${LIB_DIR}/glad)
+include_directories(${LIB_DIR}/glad)
+
+add_subdirectory(${LIB_DIR}/glm)
+include_directories(${LIB_DIR}/glm)
 
 add_subdirectory(${SRC_DIR}/config)
 include_directories(${SRC_DIR}/config)
@@ -32,15 +42,6 @@ include_directories(${SRC_DIR}/observer_subject)
 
 add_subdirectory(${SRC_DIR}/object_pool)
 include_directories(${SRC_DIR}/object_pool)
-
-add_subdirectory(${SRC_DIR}/stb)
-include_directories(${SRC_DIR}/stb)
-
-add_subdirectory(${SRC_DIR}/glad)
-include_directories(${SRC_DIR}/glad)
-
-add_subdirectory(${SRC_DIR}/glm)
-include_directories(${SRC_DIR}/glm)
 
 add_subdirectory(${SRC_DIR}/light)
 include_directories(${SRC_DIR}/light)
@@ -89,12 +90,12 @@ target_link_libraries(${PROJECT_NAME}
     camera
     util
     light
-    glm
-    glad
-    stb
     object_pool
     observer_subject
     exception
+    glm
+    glad
+    stb
     assimp
     glfw
     OpenGL::GL
