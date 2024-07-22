@@ -27,7 +27,7 @@ namespace skate
         static Camera instance;
         bool initialized = false;
 
-        const float lowSpeed = 0.8f; 
+        const float lowSpeed = 1.6f; 
         const float highSpeed = 3.0f * lowSpeed;
         const float maxPitch = M_PIf * 85.0f / 180.0f;
         const float minFOVradian = M_PIf / 90.0f;

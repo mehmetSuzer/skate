@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
 
-    //-------------------------------- TEXTURES, SHADERS, AND LIGHTS -------------------------------//
+    //-------------------------------- TEXTURES, LIGHTS, AND SHADERS -------------------------------//
 
     Texture::InitializeCommonTextures();
 
@@ -84,12 +84,7 @@ int main(int argc, char **argv)
         GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
     );
 
-    const Shader colorShader(util::COLOR_VERTEX);
-    const Shader materialShader(util::MATERIAL_VERTEX);
-    const Shader textureShader(util::TEXTURE_VERTEX);
-    const std::vector<Shader> shaders = { colorShader, materialShader, textureShader };
-
-    const DirectionalLight directionalLight(glm::vec3(0.0f, 0.0f, 1.0f), 0.6f, color::white);
+    const DirectionalLight directionalLight(glm::vec3(0.0f, -0.6f, 0.8f), 0.6f, color::white);
     const PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
     const SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
 
@@ -99,6 +94,17 @@ int main(int argc, char **argv)
         (LightCaster*)&pointLight,
         (LightCaster*)&spotLight,
     };
+
+    const Shader colorShader(util::COLOR_VERTEX);
+    const Shader materialShader(util::MATERIAL_VERTEX);
+    const Shader textureShader(util::TEXTURE_VERTEX);
+
+    // We are assuming that the light sources are constant 
+    colorShader.UpdateLightCasters(lightCasters);
+    materialShader.UpdateLightCasters(lightCasters);
+    textureShader.UpdateLightCasters(lightCasters);
+
+    const std::vector<Shader> shaders = { colorShader, materialShader, textureShader };
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
@@ -170,11 +176,11 @@ int main(int argc, char **argv)
 
     //------------------------------------- OBJECT MODEL ------------------------------------//
 
-    const glm::vec3 objectPosition = glm::vec3(0.0f, 1.0f, 2.5f);
-    const glm::quat objectRotation = glm::angleAxis(M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-    const glm::vec3 objectScalar = glm::vec3(1.0f, 1.0f, 1.0f);
+    const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, 20.0f);
+    const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+    const glm::vec3 objectScalar = glm::vec3(0.1f, 0.1f, 0.1f);
 
-    const AssimpModel object(util::modelsPath + "bunny/scene.gltf", objectPosition, objectRotation, objectScalar);
+    const AssimpModel object(util::modelsPath + "medieval_village/scene.gltf", objectPosition, objectRotation, objectScalar);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -214,7 +220,7 @@ int main(int argc, char **argv)
 
         // Update shaders
         for (uint32_t i = 0; i < shaders.size(); i++) 
-            shaders[i].Update(projectionView, cameraPosition, lightCasters);
+            shaders[i].UpdateView(projectionView, cameraPosition);
 
         container.Draw(textureShader);
         colorPyramid.Draw(colorShader);

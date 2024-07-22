@@ -66,7 +66,8 @@ namespace skate
             glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
         }
 
-        void Update(const glm::mat4& projectionView, const glm::vec3& cameraPosition, const std::vector<LightCaster*>& lightCasters) const noexcept;
+        void UpdateLightCasters(const std::vector<LightCaster*>& lightCasters) const noexcept;
+        void UpdateView(const glm::mat4& projectionView, const glm::vec3& cameraPosition) const noexcept;
     };
 }
 
