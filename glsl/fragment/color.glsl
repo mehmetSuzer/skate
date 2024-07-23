@@ -1,23 +1,7 @@
 
 #version 330 core
 
-#define MAX_LIGHT_CASTER_NUMBER 8
-
-#define DIRECTIONAL_LIGHT   0
-#define POINT_LIGHT         1
-#define SPOT_LIGHT          2
-
-struct Light {
-    int type;
-    vec3 color;             // all
-    vec3 position;          // point and spot
-    vec3 direction;         // directional and spot
-    float intensity;        // directional
-    float linear;           // point and spot
-    float quadratic;        // point and spot
-    float cosInnerCutOff;   // spot
-    float cosOuterCutOff;   // spot
-};
+#include <common/light.glsl>
 
 out vec4 FragColor;
 
@@ -26,10 +10,9 @@ in vec3 normal;
 in vec4 color;
 
 uniform vec3 cameraPosition;
-uniform int lightCasterNumber;
-uniform Light lights[MAX_LIGHT_CASTER_NUMBER];
 
-vec4 directionalLight(Light light) {
+vec4 directionalLight(Light light) 
+{
     float ambientPower = 0.2f;
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
     
@@ -40,7 +23,8 @@ vec4 directionalLight(Light light) {
     return light.intensity * (ambientPower + diffusePower + specularPower) * color * vec4(light.color, 1.0f);
 }
 
-vec4 pointLight(Light light) {
+vec4 pointLight(Light light) 
+{
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
@@ -57,7 +41,8 @@ vec4 pointLight(Light light) {
     return attenuation * (ambientPower + diffusePower + specularPower) * color * vec4(light.color, 1.0f);
 }
 
-vec4 spotLight(Light light) {
+vec4 spotLight(Light light) 
+{
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
@@ -69,9 +54,8 @@ vec4 spotLight(Light light) {
     float cosTheta = dot(-directionToLight, light.direction);
 
     // If out of the outer cone, use only ambient
-    if (cosTheta < light.cosOuterCutOff) {
+    if (cosTheta < light.cosOuterCutOff)
         return attenuation * ambientPower * color * vec4(light.color, 1.0f);
-    }
 
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
     
@@ -80,7 +64,8 @@ vec4 spotLight(Light light) {
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
 
     // If between the inner cone and the outer cone
-    if (cosTheta < light.cosInnerCutOff) {
+    if (cosTheta < light.cosInnerCutOff) 
+    {
         float epsilon = light.cosInnerCutOff - light.cosOuterCutOff;
         float intensity = clamp((cosTheta - light.cosOuterCutOff) / epsilon, 0.0f, 1.0f);
         diffusePower *= intensity;
@@ -90,16 +75,17 @@ vec4 spotLight(Light light) {
     return attenuation * (ambientPower + diffusePower + specularPower) * color * vec4(light.color, 1.0f);
 }
 
-void main() {
+void main() 
+{
     FragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-    for (int i = 0; i < lightCasterNumber; i++) {
-        if (lights[i].type == DIRECTIONAL_LIGHT) {
+    for (int i = 0; i < lightCasterNumber; i++) 
+    {
+        if (lights[i].type == DIRECTIONAL_LIGHT)
             FragColor += directionalLight(lights[i]);
-        } else if (lights[i].type == POINT_LIGHT) {
+        else if (lights[i].type == POINT_LIGHT)
             FragColor += pointLight(lights[i]);
-        } else if (lights[i].type == SPOT_LIGHT) {
+        else if (lights[i].type == SPOT_LIGHT)
             FragColor += spotLight(lights[i]);
-        }
     }
 }

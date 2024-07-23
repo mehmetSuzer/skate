@@ -3,6 +3,7 @@
 #define __UTIL_H__
 
 #include <fstream>
+#include <sstream>
 #include "exception.h"
 #include "glad.h"
 #include "glm.hpp"
@@ -24,18 +25,9 @@ namespace skate
             TEXTURE_VERTEX,
         };
 
-        extern const std::string glslPath;
-        extern const std::string vertexShaderPath;
-        extern const std::string fragmentShaderPath;
-
-        extern const std::string glslFileExtension;
-        extern const std::string colorVertexGLSL;
-        extern const std::string materialVertexGLSL;
-        extern const std::string textureVertexGLSL;
-
-        extern const std::string dataPath;
-        extern const std::string modelsPath;
-        extern const std::string texturesPath;
+        extern const std::string dataDir;
+        extern const std::string modelsDir;
+        extern const std::string texturesDir;
 
         extern const glm::vec4 backgroundColor;
 
@@ -45,6 +37,7 @@ namespace skate
 
         void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) noexcept;
         std::string ReadFile(const std::string& filePath);
+        std::string ReadShaderSource(const std::string& filename);
         const std::string GetShaderProgramPath(enum ShaderType shader, enum VertexType vertex) noexcept;
     }
 }

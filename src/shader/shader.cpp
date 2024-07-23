@@ -10,7 +10,7 @@ namespace skate
 
         const std::string vertexShaderPath = util::GetShaderProgramPath(util::VERTEX_SHADER, vertex);
         const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        const std::string vertexShaderCode = util::ReadFile(vertexShaderPath);
+        const std::string vertexShaderCode = util::ReadShaderSource(vertexShaderPath);
         const char* vertexShaderSource = vertexShaderCode.c_str();
         glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
         glCompileShader(vertexShader);
@@ -25,7 +25,7 @@ namespace skate
 
         const std::string fragmentShaderPath = util::GetShaderProgramPath(util::FRAGMENT_SHADER, vertex);
         const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        const std::string fragmentShaderCode = util::ReadFile(fragmentShaderPath);
+        const std::string fragmentShaderCode = util::ReadShaderSource(fragmentShaderPath);
         const char* fragmentShaderSource = fragmentShaderCode.c_str();
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
         glCompileShader(fragmentShader);

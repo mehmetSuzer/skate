@@ -71,17 +71,17 @@ int main(int argc, char **argv)
     Texture::InitializeCommonTextures();
 
     const Texture brickTexture(
-        util::texturesPath + "common/brick.png", 
+        util::texturesDir + "common/brick.png", 
         GL_REPEAT, GL_REPEAT, 
         GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
     );
     const Texture woodContainerDiffuseMap(
-        util::texturesPath + "container/albedo.png", 
+        util::texturesDir + "container/albedo.png", 
         GL_REPEAT, GL_REPEAT, 
         GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
     );
     const Texture woodContainerSpecularMap(
-        util::texturesPath + "container/metallic.png", 
+        util::texturesDir + "container/metallic.png", 
         GL_REPEAT, GL_REPEAT, 
         GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
     );
@@ -169,7 +169,7 @@ int main(int argc, char **argv)
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
     const glm::vec3 objectScalar = glm::vec3(0.1f, 0.1f, 0.1f);
-    const LoadableColorModel object(util::modelsPath + "medieval_village/scene.gltf", objectPosition, objectRotation, objectScalar);
+    const LoadableColorModel object(util::modelsDir + "medieval_village/scene.gltf", objectPosition, objectRotation, objectScalar);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
