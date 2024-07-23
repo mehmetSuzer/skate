@@ -18,7 +18,7 @@ namespace skate
 
     public:
         DirectionalLight(const glm::vec3& direction_, float intensity_, float red, float green, float blue);
-        DirectionalLight(const glm::vec3& direction_, float intensity_, const glm::vec3& color_);
+        DirectionalLight(const glm::vec3& direction_, float intensity_ = 0.8f, const glm::vec3& color_ = glm::vec3(1.0f, 1.0f, 1.0f));
 
         inline void SetDirection(const glm::vec3& direction_) 
         {

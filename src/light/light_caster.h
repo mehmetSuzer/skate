@@ -54,7 +54,7 @@ namespace skate
 
     public:
         LightCaster(float red, float green, float blue);
-        LightCaster(const glm::vec3& color_);
+        LightCaster(const glm::vec3& color_ = glm::vec3(1.0f, 1.0f, 1.0f));
 
         virtual ~LightCaster() {}
 

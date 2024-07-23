@@ -9,9 +9,6 @@
 // You may start the program in full screen.
 // #define __FULL_SCREEN__
 
-// It should be defined if you use MacOS.
-// #define __APPLE__
-
 // Disables VSYNC and prints FPS
 #define __FPS__
 

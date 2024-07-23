@@ -22,7 +22,8 @@ namespace skate
         static Texture gray;
         static Texture white;
 
-        Texture(const std::string path_, GLint wrapS, GLint wrapT, GLint minFilter, GLint magFilter);
+        Texture(const std::string path_, GLint wrapS = GL_REPEAT, GLint wrapT = GL_REPEAT, 
+            GLint minFilter = GL_NEAREST, GLint magFilter = GL_NEAREST);
 
         inline GLuint GetID(void) const noexcept 
         {

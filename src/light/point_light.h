@@ -18,10 +18,10 @@ namespace skate
 
     public:
         PointLight(const glm::vec3& position_, float linear_, float quadratic_, float red, float green, float blue);
-        PointLight(const glm::vec3& position_, float linear_, float quadratic_, const glm::vec3& color_);
+        PointLight(const glm::vec3& position_, float linear_ = 0.14f, float quadratic_ = 0.07f, const glm::vec3& color_ = glm::vec3(1.0f, 1.0f ,1.0f));
 
         PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, float red, float green, float blue);
-        PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& color_);
+        PointLight(const glm::vec3& position_, float dist1, float atten1, float dist2, float atten2, const glm::vec3& color_ = glm::vec3(1.0f, 1.0f, 1.0f));
 
         inline void SetPosition(const glm::vec3& position_) noexcept 
         {

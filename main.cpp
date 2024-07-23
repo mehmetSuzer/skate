@@ -33,9 +33,9 @@ int main(int argc, char **argv)
     if (!videoMode)
         throw Exception("Failed to Get the Video Mode of the Monitor!");
 
-    GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "Learn OpenGL", monitor, NULL);
+    GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "skate", monitor, NULL);
 #else
-    GLFWwindow *window = glfwCreateWindow(util::windowWidth, util::windowHeight, "Learn OpenGL", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(util::windowWidth, util::windowHeight, "skate", NULL, NULL);
 #endif
 
     if (window == NULL)
@@ -86,15 +86,15 @@ int main(int argc, char **argv)
         GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
     );
 
-    const DirectionalLight directionalLight(glm::vec3(0.0f, -0.8f, -0.6f), 0.8f, color::white);
-    // const PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f), 0.14f, 0.07f, color::white);
-    // const SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), 0.14f, 0.07f, glm::vec3(0.0f, -1.0f, 0.0f), M_PIf / 8.0f, M_PIf / 6.0f, color::white);
+    const DirectionalLight directionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
+    const PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f));
+    const SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
 
     const std::vector<LightCaster*> lightCasters = 
     {
         (LightCaster*)&directionalLight,
-        // (LightCaster*)&pointLight,
-        // (LightCaster*)&spotLight,
+        (LightCaster*)&pointLight,
+        (LightCaster*)&spotLight,
     };
 
     const Shader colorShader(util::COLOR_VERTEX);
