@@ -2,6 +2,7 @@
 #version 330 core
 
 #include <common/light.glsl>
+#include <common/color_uniforms.glsl>
 
 out vec4 FragColor;
 
@@ -17,7 +18,8 @@ vec4 DirectionalLight(Light light, vec3 directionToCamera)
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
     
     vec3 reflectionDirection = reflect(light.direction, normal);
-    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
+    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), DEFAULT_SHININESS) : 0.0f;
+    specularPower *= metalness;
 
     return light.intensity * (ambientPower + diffusePower + specularPower) * color * vec4(light.color, 1.0f);
 }
@@ -34,7 +36,8 @@ vec4 PointLight(Light light, vec3 directionToCamera)
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
     
     vec3 reflectionDirection = reflect(-directionToLight, normal);
-    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
+    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), DEFAULT_SHININESS) : 0.0f;
+    specularPower *= metalness;
 
     return attenuation * (ambientPower + diffusePower + specularPower) * color * vec4(light.color, 1.0f);
 }
@@ -58,7 +61,8 @@ vec4 SpotLight(Light light, vec3 directionToCamera)
     float diffusePower = max(dot(normal, directionToLight), 0.0f);
     
     vec3 reflectionDirection = reflect(-directionToLight, normal);
-    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), 16) : 0.0f;
+    float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), DEFAULT_SHININESS) : 0.0f;
+    specularPower *= metalness;
 
     // If between the inner cone and the outer cone
     if (cosTheta < light.cosInnerCutOff) 

@@ -60,15 +60,17 @@ namespace skate
         std::vector<ColorVertex> vertices;
         std::vector<GLuint> indices;
 
+        // Default values
         aiColor4D vertexColor(1.0f);
-        float metallicFactor = 0.0f;
-        float roughnessFactor = 0.0f;
+        float metalness = 0.0f;
+        float roughness = 0.0f;
 
         if (mesh->mMaterialIndex >= 0) 
         {
+            // Values are not affected if Get does not return aiReturn_SUCCESS
             scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, vertexColor);
-            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_METALLIC_FACTOR, metallicFactor);
-            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughnessFactor);
+            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_METALLIC_FACTOR, metalness);
+            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughness);
         }
 
         for (uint32_t i = 0; i < mesh->mNumVertices; i++) 
@@ -87,7 +89,7 @@ namespace skate
                 indices.push_back(face.mIndices[j]);
         }
 
-        return ColorMesh(vertices, indices, GL_STATIC_DRAW);
+        return ColorMesh(vertices, indices, metalness, roughness, GL_STATIC_DRAW);
     }
 
     void LoadableColorModel::Draw(const Shader& shader) const noexcept 

@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 
     const std::vector<ColorMesh> colorPyramidMeshes = 
     {
-        ColorMesh(pyramidColorVertices, pyramidIndices, GL_STATIC_DRAW),
+        ColorMesh(pyramidColorVertices, pyramidIndices, 1.0f, 0.0f, GL_STATIC_DRAW),
     };
 
     const glm::vec3 colorPyramidPosition = glm::vec3(0.0f, 0.0f, -2.5f);
