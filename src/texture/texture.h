@@ -9,6 +9,8 @@
 
 namespace skate 
 {
+    // An image used to add details to an object.
+    // Currently, only 2D textures are supported.
     class Texture
     {
     private:

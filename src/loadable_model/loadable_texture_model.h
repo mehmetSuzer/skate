@@ -11,6 +11,9 @@
 
 namespace skate 
 {
+    // Models that have more than one material map for a type is not supported. 
+    // For instance, a model having 2 albedo maps cannot be loaded fully. One of the albedo maps is discarded.
+    // In such cases, either combine the textures in one image, or split the model into several models.
     class LoadableTextureModel 
     {
     private:
@@ -21,7 +24,7 @@ namespace skate
         void LoadModel(const std::string& path);
         void ProcessNode(aiNode* node, const aiScene* scene) noexcept;
         TextureMesh ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept;
-        std::vector<Texture> LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept;
+        const Texture& LoadMaterialTexture(aiMaterial *mat, aiTextureType type) noexcept;
         
     public:
         Transform transform;

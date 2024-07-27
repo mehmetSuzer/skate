@@ -7,14 +7,12 @@
 
 namespace skate 
 {
+    // A light source that is modeled to be infinitely far away and sends parallel light rays
     class DirectionalLight : public LightCaster 
     {
     private:
         glm::vec3 direction;
         float intensity;
-
-        void AssertDirection(const glm::vec3& direction) const;
-        void AssertIntensity(float intensity) const;
 
     public:
         DirectionalLight(const glm::vec3& direction_, float intensity_, float red, float green, float blue);
@@ -22,13 +20,13 @@ namespace skate
 
         inline void SetDirection(const glm::vec3& direction_) 
         {
-            AssertDirection(direction_);
+            assert(glm::epsilonEqual(glm::length(direction_), 1.0f, 1E-6f));
             direction = direction_;
         }
 
         inline void SetIntensity(float intensity_) 
         {
-            AssertIntensity(intensity_);
+            assert(0.0f < intensity_ && intensity_ <= 1.0f);
             intensity = intensity_;
         }
 

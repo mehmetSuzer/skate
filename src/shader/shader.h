@@ -13,6 +13,7 @@
 
 namespace skate 
 {
+    // Programs that rest on the GPU and run for each specific section of the graphics pipeline
     class Shader 
     {
     private:

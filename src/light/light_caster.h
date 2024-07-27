@@ -2,7 +2,7 @@
 #ifndef __LIGHT_CASTER_H__
 #define __LIGHT_CASTER_H__
 
-#include "exception.h"
+#include <assert.h>
 #include "glm.hpp"
 
 namespace skate 
@@ -44,13 +44,12 @@ namespace skate
         const float cosOuterCutOff;   // spot
     } Light;
 
+    // Abstract class for light sources
     class LightCaster 
     {
     private:
         glm::vec3 color;
         bool active = true;
-
-        void AssertColorValidity(float red, float green, float blue) const;
 
     public:
         LightCaster(float red, float green, float blue);
@@ -65,7 +64,7 @@ namespace skate
 
         inline void SetColor(float red, float green, float blue) 
         {
-            AssertColorValidity(red, green, blue);
+            assert(0.0f <= red && red <= 1.0f && 0.0f <= green && green <= 1.0f && 0.0f <= blue && blue <= 1.0f);
             color = glm::vec3(red, green, blue);
         }
 

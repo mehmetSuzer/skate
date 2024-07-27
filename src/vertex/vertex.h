@@ -8,7 +8,7 @@
 
 namespace skate 
 {
-    // Just Position
+    // A vertex that has only position
     struct LightVertex
     {
         glm::vec3 position;
@@ -21,7 +21,7 @@ namespace skate
         }
     };
 
-    // Position + Normal
+    // A vertex that has position and normal
     struct MaterialVertex 
     {
         glm::vec3 position;
@@ -38,7 +38,7 @@ namespace skate
         }
     };
 
-    // Position + Normal + Texture
+    // A vertex that has position, normal, and texture
     struct TextureVertex 
     {
         glm::vec3 position;
@@ -59,7 +59,7 @@ namespace skate
         }
     };
 
-    // Position + Normal + Color
+    // A vertex that has position, normal, and color
     struct ColorVertex 
     {
         glm::vec3 position;

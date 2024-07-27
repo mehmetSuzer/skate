@@ -5,11 +5,11 @@
 #include <type_traits>
 #include <stddef.h>
 #include <stdint.h>
-#include "exception.h"
 #include "object.h"
 
 namespace skate 
 {
+    // Template class for classes that needs object pooling
     template<typename T>
     class ObjectPool 
     {

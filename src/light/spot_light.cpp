@@ -3,26 +3,6 @@
 
 namespace skate 
 {
-    void SpotLight::AssertCutOffRadian(float cutOffRadian) const 
-    {
-        if (cutOffRadian <= 0.0f || cutOffRadian >= M_PIf) 
-            throw Exception("Cut-Off Radian Must Be In (0, pi)! Given: " + std::to_string(cutOffRadian));
-    }
-
-    void SpotLight::AssertInnerLessThanOuter(float innerCutOffRadian, float outerCutOffRadian) const 
-    {
-        if (innerCutOffRadian >= outerCutOffRadian) 
-            throw Exception("Inner Cut-Off Radian Must Be Less Than Outer Cut-Off Radian! Given Values --> Inner: " 
-                + std::to_string(innerCutOffRadian) + ", Outer: " + std::to_string(outerCutOffRadian));
-    }
-
-    void SpotLight::AssertDirection(const glm::vec3& direction) const 
-    {
-        const float length = glm::length(direction);
-        if (glm::epsilonNotEqual(length, 1.0f, 1E-6f)) 
-            throw Exception("Direction Vector Is Not a Unit Vector!");
-    }
-
     SpotLight::SpotLight(const glm::vec3& position_, const glm::vec3& direction_, float linear_, float quadratic_,
         float innerCutOffRadian, float outerCutOffRadian, float red, float green, float blue)
         : PointLight(position_, linear_, quadratic_, red, green, blue) 

@@ -6,7 +6,7 @@
 // If you prefer the linked list implementation, comment out.
 #define __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__
 
-// You may start the program in full screen.
+// Starts the program in full screen
 // #define __FULL_SCREEN__
 
 // Disables VSYNC and prints FPS

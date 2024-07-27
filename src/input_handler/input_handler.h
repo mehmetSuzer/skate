@@ -21,6 +21,7 @@ namespace skate
         SPEED_UP_BUTTON,
     };
 
+    // Singleton input handler which sets the proper callback functions for the mouse and the keyboard
     class InputHandler 
     {
     private:
@@ -60,14 +61,14 @@ namespace skate
             scrollSensitivity = sensitivity;
         }
 
-        inline bool GetFirstMouse(void) const noexcept 
+        inline bool IsFirstMouse(void) const noexcept 
         {
             return firstMouse;
         }
 
-        inline void SetFirstMouse(bool boolean) noexcept 
+        inline void ClearFirstMouse(void) noexcept 
         {
-            firstMouse = boolean;
+            firstMouse = false;
         }
 
         inline enum Button GetButton(GLuint key) const noexcept 

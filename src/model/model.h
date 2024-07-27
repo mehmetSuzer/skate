@@ -9,6 +9,7 @@
 
 namespace skate 
 {
+    // A model contains a set of meshes of the same type.
     template<typename Mesh>
     class Model 
     {

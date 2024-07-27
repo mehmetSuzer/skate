@@ -24,6 +24,8 @@ namespace skate
 
     #ifdef __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__
 
+    // Observer class for Subject-Observer Design Pattern.
+    // Subjects are stored in arrays.
     template<typename T>
     class Observer 
     {
@@ -42,6 +44,8 @@ namespace skate
         virtual void OnNotify(const T& t, enum Event event) noexcept = 0;
     };
 
+    // Subject class for Subject-Observer Design Pattern.
+    // Observers are stored in arrays.
     template<typename T>
     class Subject 
     {
@@ -61,6 +65,8 @@ namespace skate
 
     #else
 
+    // Observer class for Subject-Observer Design Pattern.
+    // Observers are link-listed. 
     template<typename T>
     class Observer 
     {
@@ -75,6 +81,8 @@ namespace skate
         virtual void OnNotify(const T& t, enum Event event) noexcept = 0;
     };
 
+    // Subject class for Subject-Observer Design Pattern.
+    // Observers are link-listed. 
     template<typename T>
     class Subject 
     {

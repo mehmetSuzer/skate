@@ -4,6 +4,7 @@
 
 namespace skate 
 {
+    // An abstract class which must be inherited by all classes that are object-pooled
     class Object 
     {
     private:

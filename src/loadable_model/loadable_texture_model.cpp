@@ -60,9 +60,6 @@ namespace skate
     {
         std::vector<TextureVertex> vertices;
         std::vector<GLuint> indices;
-        std::vector<Texture> diffuseMaps;
-        std::vector<Texture> specularMaps;
-        std::vector<Texture> emissionMaps;
 
         for (uint32_t i = 0; i < mesh->mNumVertices; i++) 
         {
@@ -84,48 +81,38 @@ namespace skate
                 indices.push_back(face.mIndices[j]);
         }
 
-        if (mesh->mMaterialIndex >= 0) 
-        {
-            aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-            diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE);
-            specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR);
-            emissionMaps = LoadMaterialTextures(material, aiTextureType_EMISSION_COLOR);
-        }
+        aiMaterial* mat = (mesh->mMaterialIndex >= 0) ? scene->mMaterials[mesh->mMaterialIndex] : NULL;
 
-        const Texture& diffuse  = (diffuseMaps.empty())  ? Texture::white : diffuseMaps[0];
-        const Texture& specular = (specularMaps.empty()) ? Texture::white : specularMaps[0];
-        const Texture& emission = (emissionMaps.empty()) ? Texture::black : emissionMaps[0];
+        const Texture& diffuse  = LoadMaterialTexture(mat, aiTextureType_DIFFUSE);
+        const Texture& specular = LoadMaterialTexture(mat, aiTextureType_SPECULAR);
+        const Texture& emission = LoadMaterialTexture(mat, aiTextureType_EMISSION_COLOR);
 
         return TextureMesh(vertices, indices, diffuse, specular, emission, 16.0f, GL_STATIC_DRAW);
     }
 
-    std::vector<Texture> LoadableTextureModel::LoadMaterialTextures(aiMaterial *mat, aiTextureType type) noexcept 
+    const Texture& LoadableTextureModel::LoadMaterialTexture(aiMaterial *mat, aiTextureType type) noexcept 
     {
-        std::vector<Texture> textures;
-        for (uint32_t i = 0; i < mat->GetTextureCount(type); i++) 
+        if (mat == NULL || mat->GetTextureCount(type) == 0)
         {
-            aiString path;
-            mat->GetTexture(type, i, &path);
-            bool skip = false;
-
-            for (uint32_t j = 0; j < texturesLoaded.size(); j++) 
-            {
-                if (texturesLoaded[j].GetPath() == directory + std::string(path.C_Str())) 
-                {
-                    textures.push_back(texturesLoaded[j]);
-                    skip = true;
-                    break;
-                }
-            }
-
-            if (!skip) 
-            {
-                Texture texture = Texture(directory + path.C_Str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
-                textures.push_back(texture);
-                texturesLoaded.push_back(texture);
-            }
+            if (type == aiTextureType_DIFFUSE || type == aiTextureType_SPECULAR)
+                return Texture::white;
+            if (type == aiTextureType_EMISSION_COLOR)
+                return Texture::black;
         }
-        return textures;
+        
+        aiString path;
+        mat->GetTexture(type, 0, &path);
+
+        for (uint32_t i = 0; i < texturesLoaded.size(); i++) 
+        {
+            if (texturesLoaded[i].GetPath() == directory + path.C_Str())
+                return texturesLoaded[i];
+        }
+
+        Texture texture = Texture(directory + path.C_Str(), GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+        texturesLoaded.push_back(texture);
+
+        return texturesLoaded.back();
     }
 
     void LoadableTextureModel::Draw(const Shader& shader) const noexcept 

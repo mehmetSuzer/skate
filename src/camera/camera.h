@@ -21,6 +21,7 @@ namespace skate
         enum AxisDirection forward;
     } CameraDirection;
 
+    // Singleton first person camera where vertical roll is prevented
     class Camera 
     {
     private:
@@ -51,8 +52,12 @@ namespace skate
         glm::mat4 view;
         glm::mat4 projection;
 
-        bool updateViewFlag;
-        bool updateProjectionFlag;
+        void UpdateVectors(void) noexcept;
+
+        inline void UpdateView(void) noexcept 
+        {
+            view = glm::lookAt(position, position + forward, up);
+        }
 
     public:
         inline static Camera& Instance(void) noexcept 
@@ -100,17 +105,11 @@ namespace skate
             speed = highSpeed;
         }
 
-        inline void UpdateView(void) noexcept 
-        {
-            view = glm::lookAt(position, position + forward, up);
-        }
-
         inline void UpdateProjection(void) noexcept 
         {
             projection = glm::perspective(FOVradian, util::aspectRatio, near, far);
         }
 
-        void UpdateVectors(void) noexcept;
         void Initialize(void) noexcept;
 
         // Use this function in mouse scroll callback

@@ -96,22 +96,25 @@ namespace skate
     void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) noexcept 
     {
         // Last positions from the last mouse callback
-        static double lastX = util::windowWidth / 2.0; 
-        static double lastY = util::windowWidth / 2.0;
+        static float lastX = util::windowWidth / 2.0f; 
+        static float lastY = util::windowWidth / 2.0f;
+
+        float xPosf = static_cast<float>(xPos);
+        float yPosf = static_cast<float>(yPos);
 
         // Prevent mouse to overshoot the scene in the first mouse callback
-        if (InputHandler::Instance().GetFirstMouse()) 
+        if (InputHandler::Instance().IsFirstMouse()) 
         {
-            lastX = xPos;
-            lastY = yPos;
-            InputHandler::Instance().SetFirstMouse(false);
+            lastX = xPosf;
+            lastY = yPosf;
+            InputHandler::Instance().ClearFirstMouse();
         }
     
         // Update the last positions
-        const float xOffset = static_cast<float>(xPos - lastX) * InputHandler::Instance().GetCursorPosSensitivity();
-        const float yOffset = static_cast<float>(lastY - yPos) * InputHandler::Instance().GetCursorPosSensitivity(); 
-        lastX = xPos;
-        lastY = yPos;
+        const float xOffset = (xPosf - lastX) * InputHandler::Instance().GetCursorPosSensitivity();
+        const float yOffset = (lastY - yPosf) * InputHandler::Instance().GetCursorPosSensitivity(); 
+        lastX = xPosf;
+        lastY = yPosf;
 
         Camera::Instance().UpdateOrientation(xOffset, yOffset);
     }
@@ -169,7 +172,7 @@ namespace skate
         glfwSetCursorPosCallback(window, cursorPosCallback);
         glfwSetKeyCallback(window, activeKeyCallback);
         glfwSetScrollCallback(window, scrollCallback);
-        SetFirstMouse(true);
+        firstMouse = true;
     }
         
     void InputHandler::DeactivateInputs(GLFWwindow* window) noexcept 

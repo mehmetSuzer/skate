@@ -7,16 +7,15 @@
 
 namespace skate 
 {
+    // A light source that is located somewhere in the environment that, 
+    // instead of shooting light rays in all directions, 
+    // only shoots them in a specific direction
     class SpotLight : public PointLight 
     {
     private:
         glm::vec3 direction;
         float cosInnerCutOff;
         float cosOuterCutOff;
-
-        void AssertCutOffRadian(float cutOffRadian) const;
-        void AssertInnerLessThanOuter(float innerCutOffRadian, float outerCutOffRadian) const;
-        void AssertDirection(const glm::vec3& direction) const;
 
     public:
         SpotLight(const glm::vec3& position_, const glm::vec3& direction_, float linear_, float quadratic_,
@@ -31,15 +30,15 @@ namespace skate
 
         inline void SetDirection(const glm::vec3& direction_) 
         {
-            AssertDirection(direction_);
+            assert(glm::epsilonEqual(glm::length(direction_), 1.0f, 1E-6f));
             direction = direction_;
         }
 
         inline void SetCutOffRadians(float innerCutOffRadian, float outerCutOffRadian) 
         {
-            AssertCutOffRadian(innerCutOffRadian);
-            AssertCutOffRadian(outerCutOffRadian);
-            AssertInnerLessThanOuter(innerCutOffRadian, outerCutOffRadian);
+            assert(0.0f < innerCutOffRadian && innerCutOffRadian < M_PIf);
+            assert(0.0f < outerCutOffRadian && outerCutOffRadian < M_PIf);
+            assert(innerCutOffRadian < outerCutOffRadian);
             cosInnerCutOff = glm::cos(innerCutOffRadian);
             cosOuterCutOff = glm::cos(outerCutOffRadian);
         }

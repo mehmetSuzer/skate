@@ -7,6 +7,7 @@
 
 namespace skate
 {
+    // For all position, rotation, and scalar related calculations of models
     class Transform
     {
     private:

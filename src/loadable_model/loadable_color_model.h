@@ -11,6 +11,7 @@
 
 namespace skate 
 {
+    // For models that have vertex colors but not material maps.
     class LoadableColorModel 
     {
     private:

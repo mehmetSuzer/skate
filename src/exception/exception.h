@@ -8,6 +8,7 @@
 
 namespace skate 
 {
+    // Custom exception class to detect bugs
     class Exception : public std::exception 
     {
     private:

@@ -6,6 +6,7 @@
 
 namespace skate 
 {
+    // Defines how an object made of a certain material interacts with the light
     typedef struct 
     {
         const glm::vec3 ambient;

@@ -10,6 +10,7 @@
 
 namespace skate 
 {
+    // Contains utility variables and functions
     namespace util 
     {
         enum ShaderType 

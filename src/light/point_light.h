@@ -6,11 +6,9 @@
 
 namespace skate 
 {
+    // A light source with a given position somewhere in a world that illuminates in all directions, where the light rays fade out over distance
     class PointLight : public LightCaster 
     {
-    private:
-        void AssertAttenuationCoefficients(float linear_, float quadratic_) const;
-
     protected:
         glm::vec3 position;
         float linear;
@@ -30,7 +28,7 @@ namespace skate
 
         inline void SetAttenuationCoefficients(float linear_, float quadratic_) 
         {
-            AssertAttenuationCoefficients(linear_, quadratic_);
+            assert(0.0f <= linear_ && 0.0f <= quadratic_);
             linear = linear_;
             quadratic = quadratic_;
         }
