@@ -11,7 +11,10 @@ namespace skate
     template<typename Vertex>
     class Mesh 
     {
-        static_assert(isAValidVertex<Vertex>::value, "Vertex must be one of ColorVertex, MaterialVertex, and TextureVertex!");
+        static_assert(
+            isAValidVertex<Vertex>::value, 
+            "Vertex must be one of LightVertex, ColorVertex, MaterialVertex, and TextureVertex!"
+        );
 
     protected:
         GLuint VAO;

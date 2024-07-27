@@ -23,6 +23,7 @@ namespace skate
             COLOR_VERTEX = 0,
             MATERIAL_VERTEX,
             TEXTURE_VERTEX,
+            LIGHT_VERTEX,
         };
 
         extern const std::string dataDir;

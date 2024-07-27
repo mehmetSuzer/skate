@@ -23,12 +23,12 @@ namespace skate
     public:
         Transform transform;
 
-        LoadableColorModel(const std::string& path, const glm::vec3& position_, 
-            const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f));
+        LoadableColorModel(const std::string& path, const glm::vec3& position, 
+            const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar = glm::vec3(1.0f));
         
-        LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, float scale);
-        LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_);
-        LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale);
+        LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::quat& quaternion, float scale);
+        LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar);
+        LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale);
 
         void Draw(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;

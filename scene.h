@@ -4,9 +4,6 @@
 
 #include <vector>
 #include "vertex.h"
-#include "point_light.h"
-#include "directional_light.h"
-#include "spot_light.h"
 
 namespace skate 
 {

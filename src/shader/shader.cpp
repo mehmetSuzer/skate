@@ -19,8 +19,7 @@ namespace skate
         if (!success) 
         {
             glGetShaderInfoLog(vertexShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
-            const std::string message = "SHADER::VERTEX::COMPILATION_FAILED\nFile Path: " + vertexShaderPath + "\n" + shaderInfoLog;
-            throw Exception(message);
+            throw Exception("SHADER::VERTEX::COMPILATION_FAILED\nFile Path: " + vertexShaderPath + "\n" + shaderInfoLog);
         }
 
         const std::string fragmentShaderPath = util::GetShaderProgramPath(util::FRAGMENT_SHADER, vertex);
@@ -34,8 +33,7 @@ namespace skate
         if (!success) 
         {
             glGetShaderInfoLog(fragmentShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
-            const std::string message = "SHADER::FRAGMENT::COMPILATION_FAILED\nFile Path: " + fragmentShaderPath + "\n" + shaderInfoLog;
-            throw Exception(message);
+            throw Exception("SHADER::FRAGMENT::COMPILATION_FAILED\nFile Path: " + fragmentShaderPath + "\n" + shaderInfoLog);
         }
 
         ID = glCreateProgram();
@@ -47,8 +45,7 @@ namespace skate
         if (!success) 
         {
             glGetProgramInfoLog(ID, sizeof(shaderInfoLog), NULL, shaderInfoLog);
-            const std::string message = "SHADER::PROGRAM::LINKING_FAILED\n" + std::string(shaderInfoLog);
-            throw Exception(message);
+            throw Exception("SHADER::PROGRAM::LINKING_FAILED\n" + std::string(shaderInfoLog));
         }
 
         glDeleteShader(vertexShader);

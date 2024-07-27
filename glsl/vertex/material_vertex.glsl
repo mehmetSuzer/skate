@@ -11,7 +11,8 @@ uniform mat4 model;
 uniform mat4 projectionView;
 uniform mat3 normalMatrix;
 
-void main() {
+void main() 
+{
     position = vec3(model * vec4(aPosition, 1.0f));
     gl_Position = projectionView * vec4(position, 1.0f);
     normal = normalize(normalMatrix * aNormal);

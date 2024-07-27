@@ -7,6 +7,10 @@
 #include "loadable_color_model.h"
 #include "loadable_texture_model.h"
 
+#include "point_light.h"
+#include "directional_light.h"
+#include "spot_light.h"
+
 using namespace skate;
 
 int main(int argc, char **argv)

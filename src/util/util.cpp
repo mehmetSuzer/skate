@@ -9,10 +9,10 @@ namespace skate
         const std::string vertexShaderDir = "vertex/";
         const std::string fragmentShaderDir = "fragment/";
 
-        const std::string glslFileExtension = ".glsl";
-        const std::string colorVertexGLSL = "color" + glslFileExtension;
-        const std::string materialVertexGLSL = "material" + glslFileExtension;
-        const std::string textureVertexGLSL = "texture" + glslFileExtension;
+        const std::string colorVertexGLSL = "color_vertex.glsl";
+        const std::string materialVertexGLSL = "material_vertex.glsl";
+        const std::string textureVertexGLSL = "texture_vertex.glsl";
+        const std::string lightVertexGLSL = "light_vertex.glsl";
 
         const std::string dataDir = "data/";
         const std::string modelsDir = dataDir + "models/";
@@ -37,7 +37,7 @@ namespace skate
             const std::string path = glslPath + filename;
             std::ifstream file(path);
             if (!file.is_open())
-                throw Exception("File " + path + "couldn't be found!");
+                throw Exception("File " + path + " couldn't be found!");
 
             std::stringstream buffer;
             std::string line;
@@ -69,7 +69,8 @@ namespace skate
 
             const std::string& filename = (vertex == COLOR_VERTEX)    ? colorVertexGLSL : 
                                           (vertex == MATERIAL_VERTEX) ? materialVertexGLSL :
-                                                                        textureVertexGLSL;
+                                          (vertex == TEXTURE_VERTEX)  ? textureVertexGLSL :
+                                                                        lightVertexGLSL;
             return shaderDir + filename;
         }
     }

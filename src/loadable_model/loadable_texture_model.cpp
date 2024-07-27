@@ -3,26 +3,26 @@
 
 namespace skate 
 {
-    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, const glm::vec3& scalar_)
-        : transform(Transform(position_, quaternion, scalar_)) 
+    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::quat& quaternion, const glm::vec3& scalar)
+        : transform(Transform(position, quaternion, scalar)) 
     { 
         LoadModel(path); 
     }
     
-    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, float scale)
-        : transform(Transform(position_, quaternion, scale)) 
+    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::quat& quaternion, float scale)
+        : transform(Transform(position, quaternion, scale)) 
     { 
         LoadModel(path); 
     }
     
-    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_)
-        : transform(Transform(position_, eulerAngles, scalar_)) 
+    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar)
+        : transform(Transform(position, eulerAngles, scalar)) 
     { 
         LoadModel(path); 
     }
 
-    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale)
-        : transform(Transform(position_, eulerAngles, scale)) 
+    LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale)
+        : transform(Transform(position, eulerAngles, scale)) 
     { 
         LoadModel(path); 
     }

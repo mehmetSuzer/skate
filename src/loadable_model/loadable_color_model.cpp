@@ -3,26 +3,26 @@
 
 namespace skate 
 {
-    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, const glm::vec3& scalar_)
-        : transform(Transform(position_, quaternion, scalar_)) 
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::quat& quaternion, const glm::vec3& scalar)
+        : transform(Transform(position, quaternion, scalar)) 
     { 
         LoadModel(path); 
     }
     
-    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::quat& quaternion, float scale)
-        : transform(Transform(position_, quaternion, scale)) 
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::quat& quaternion, float scale)
+        : transform(Transform(position, quaternion, scale)) 
     { 
         LoadModel(path); 
     }
     
-    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_)
-        : transform(Transform(position_, eulerAngles, scalar_)) 
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar)
+        : transform(Transform(position, eulerAngles, scalar)) 
     { 
         LoadModel(path); 
     }
 
-    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale)
-        : transform(Transform(position_, eulerAngles, scale)) 
+    LoadableColorModel::LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale)
+        : transform(Transform(position, eulerAngles, scale)) 
     { 
         LoadModel(path); 
     }

@@ -34,6 +34,9 @@ include_directories(${LIB_DIR}/glm)
 add_subdirectory(${SRC_DIR}/transform)
 include_directories(${SRC_DIR}/transform)
 
+add_subdirectory(${SRC_DIR}/material)
+include_directories(${SRC_DIR}/material)
+
 add_subdirectory(${SRC_DIR}/config)
 include_directories(${SRC_DIR}/config)
 
@@ -48,9 +51,6 @@ include_directories(${SRC_DIR}/object_pool)
 
 add_subdirectory(${SRC_DIR}/light)
 include_directories(${SRC_DIR}/light)
-
-add_subdirectory(${SRC_DIR}/material)
-include_directories(${SRC_DIR}/material)
 
 add_subdirectory(${SRC_DIR}/util)
 include_directories(${SRC_DIR}/util)
