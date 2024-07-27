@@ -33,15 +33,15 @@ namespace skate
 
     typedef struct 
     {
-        enum LightCasterType type;
-        glm::vec3 color;        // all
-        glm::vec3 position;     // point and spot
-        glm::vec3 direction;    // directional and spot
-        float intensity;        // directional
-        float linear;           // point and spot
-        float quadratic;        // point and spot
-        float cosInnerCutOff;   // spot
-        float cosOuterCutOff;   // spot
+        const enum LightCasterType type;
+        const glm::vec3 color;        // all
+        const glm::vec3 position;     // point and spot
+        const glm::vec3 direction;    // directional and spot
+        const float intensity;        // directional
+        const float linear;           // point and spot
+        const float quadratic;        // point and spot
+        const float cosInnerCutOff;   // spot
+        const float cosOuterCutOff;   // spot
     } Light;
 
     class LightCaster 
@@ -54,7 +54,7 @@ namespace skate
 
     public:
         LightCaster(float red, float green, float blue);
-        LightCaster(const glm::vec3& color_ = glm::vec3(1.0f, 1.0f, 1.0f));
+        LightCaster(const glm::vec3& color_ = glm::vec3(1.0f));
 
         virtual ~LightCaster() {}
 

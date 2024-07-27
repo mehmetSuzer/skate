@@ -92,8 +92,8 @@ namespace skate
 		13, 15, 14, // Facing side
 	};
 
-	const std::vector<TextureVertex> containerTextureVertices = {
-					//         positions          /             normals           /        textures       //
+	const std::vector<TextureVertex> containerTextureVertices = 
+	{  				 //         positions          /             normals           /        textures       //
 		TextureVertex{glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(0.0f,  0.0f)},
 		TextureVertex{glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(0.0f,  1.0f)},
 		TextureVertex{glm::vec3( 0.5f,  0.5f, -0.5f), glm::vec3( 0.0f,  0.0f, -1.0f), glm::vec2(1.0f,  1.0f)},

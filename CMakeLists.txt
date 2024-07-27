@@ -79,10 +79,7 @@ include_directories(${SRC_DIR}/model)
 add_subdirectory(${SRC_DIR}/loadable_model)
 include_directories(${SRC_DIR}/loadable_model)
 
-add_subdirectory(${SRC_DIR}/scene)
-include_directories(${SRC_DIR}/scene)
-
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp scene.h)
 
 target_link_libraries(${PROJECT_NAME} 
     loadable_model

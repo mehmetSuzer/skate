@@ -44,7 +44,7 @@ namespace skate
 
     void Camera::UpdatePosition(float elapsedTimeSinceLastFrame) noexcept 
     {
-        glm::vec3 velocityDirection = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 velocityDirection = glm::vec3(0.0f);
         uint32_t activeDirection = 0;
 
         if (direction.forward == AXIS_POSITIVE) 

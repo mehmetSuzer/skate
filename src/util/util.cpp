@@ -31,21 +31,6 @@ namespace skate
             aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
         }
 
-        std::string ReadFile(const std::string& filename) 
-        {
-            std::ifstream file(filename, std::ios::binary);
-            if (!file.is_open()) 
-                throw Exception("File " + filename + " couldn't be found!");
-            
-            std::string contents;
-            file.seekg(0, std::ios::end);
-            contents.resize(file.tellg());
-            file.seekg(0, std::ios::beg);
-            file.read(&contents[0], contents.size());
-            file.close();
-            return contents;
-        }
-
         // filename must be with respect to glsl/
         std::string ReadShaderSource(const std::string& filename) 
         {

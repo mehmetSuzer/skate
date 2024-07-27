@@ -36,7 +36,6 @@ namespace skate
         extern float aspectRatio;
 
         void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) noexcept;
-        std::string ReadFile(const std::string& filePath);
         std::string ReadShaderSource(const std::string& filename);
         const std::string GetShaderProgramPath(enum ShaderType shader, enum VertexType vertex) noexcept;
     }

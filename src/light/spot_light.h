@@ -22,7 +22,7 @@ namespace skate
         SpotLight(const glm::vec3& position_, const glm::vec3& direction_, float linear_, float quadratic_,
             float innerCutOffRadian, float outerCutOffRadian, float red, float green, float blue);
         SpotLight(const glm::vec3& position_, const glm::vec3& direction_, float linear_ = 0.14f, float quadratic_ = 0.07f,
-            float innerCutOffRadian = M_PIf/8.0f, float outerCutOffRadian = M_PIf/6.0f, const glm::vec3& color_ = glm::vec3(1.0f, 1.0f, 1.0f));
+            float innerCutOffRadian = M_PIf/8.0f, float outerCutOffRadian = M_PIf/6.0f, const glm::vec3& color_ = glm::vec3(1.0f));
 
         SpotLight(const glm::vec3& position_, const glm::vec3& direction_, float dist1, float atten1, float dist2, float atten2,
             float innerCutOffRadian, float outerCutOffRadian, float red, float green, float blue);

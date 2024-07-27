@@ -12,7 +12,6 @@ namespace skate
     LightCaster::LightCaster(float red, float green, float blue) 
     {
         SetColor(red, green, blue);
-        Activate();
     }
 
     LightCaster::LightCaster(const glm::vec3& color_) 

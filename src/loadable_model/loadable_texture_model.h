@@ -18,7 +18,6 @@ namespace skate
         std::vector<Texture> texturesLoaded;
         std::string directory;
 
-
         void LoadModel(const std::string& path);
         void ProcessNode(aiNode* node, const aiScene* scene) noexcept;
         TextureMesh ProcessMesh(aiMesh *mesh, const aiScene *scene) noexcept;

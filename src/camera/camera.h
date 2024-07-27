@@ -44,7 +44,7 @@ namespace skate
         CameraDirection direction = {AXIS_NONE, AXIS_NONE, AXIS_NONE};
         float speed = lowSpeed;
 
-        glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 position = glm::vec3(0.0f);
         glm::vec3 right;
         glm::vec3 forward;
 

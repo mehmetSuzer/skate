@@ -12,7 +12,7 @@ in vec2 tex;
 
 uniform vec3 cameraPosition;
 
-vec4 directionalLight(Light light) 
+vec4 DirectionalLight(Light light) 
 {
     float ambientPower = 0.2f;
     float diffusePower = max(dot(normal, -light.direction), 0.0f);
@@ -28,7 +28,7 @@ vec4 directionalLight(Light light)
     return emission + light.intensity * (ambientPower + diffusePower + specularPower) * texture(materialMap.diffuse, tex) * vec4(light.color, 1.0f);
 }
 
-vec4 pointLight(Light light) 
+vec4 PointLight(Light light) 
 {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
@@ -50,7 +50,7 @@ vec4 pointLight(Light light)
     return emission + attenuation * (ambientPower + diffusePower + specularPower) * texture(materialMap.diffuse, tex) * vec4(light.color, 1.0f);
 }
 
-vec4 spotLight(Light light) 
+vec4 SpotLight(Light light) 
 {
     vec3 positionToLightPosition = light.position - position;
     float distanceToLight = length(positionToLightPosition);
@@ -94,10 +94,10 @@ void main()
     for (int i = 0; i < lightCasterNumber; i++) 
     {
         if (lights[i].type == DIRECTIONAL_LIGHT)
-            FragColor += directionalLight(lights[i]);
+            FragColor += DirectionalLight(lights[i]);
         else if (lights[i].type == POINT_LIGHT)
-            FragColor += pointLight(lights[i]);
+            FragColor += PointLight(lights[i]);
         else if (lights[i].type == SPOT_LIGHT)
-            FragColor += spotLight(lights[i]);
+            FragColor += SpotLight(lights[i]);
     }
 }
