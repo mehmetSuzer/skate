@@ -5,16 +5,23 @@ namespace skate
 {
     // ------------------------------------------ CALLBACKS ------------------------------------------ //
 
-    void framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept 
+    static void framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept 
     {
         glViewport(0, 0, width, height);
         util::SetWindowWidthAndHeight(width, height);
-        Camera::Instance().UpdateProjection();
+        Camera* selectedCamera = InputHandler::Instance().GetSelectedCamera();
+        if (selectedCamera != NULL)
+            selectedCamera->UpdateProjection();
     }
 
-    void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept 
+    static void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept 
     {
+        Camera* selectedCamera = InputHandler::Instance().GetSelectedCamera();
         const enum Button button = InputHandler::Instance().GetButton(key);
+
+        if (selectedCamera == NULL && button != ESCAPE_BUTTON && button != INPUT_ACTIVATION_BUTTON)
+            return;
+
         if (action == GLFW_PRESS) 
         {
             switch (button)
@@ -26,25 +33,25 @@ namespace skate
                 InputHandler::Instance().DeactivateInputs(window);
                 break;
             case FORWARD_BUTTON:
-                Camera::Instance().SetForwardDirection(AXIS_POSITIVE);
+                selectedCamera->SetForwardDirection(AXIS_POSITIVE);
                 break;
             case BACKWARD_BUTTON:
-                Camera::Instance().SetForwardDirection(AXIS_NEGATIVE);
+                selectedCamera->SetForwardDirection(AXIS_NEGATIVE);
                 break;
             case RIGHT_BUTTON:
-                Camera::Instance().SetRightDirection(AXIS_POSITIVE);
+                selectedCamera->SetRightDirection(AXIS_POSITIVE);
                 break;
             case LEFT_BUTTON:
-                Camera::Instance().SetRightDirection(AXIS_NEGATIVE);
+                selectedCamera->SetRightDirection(AXIS_NEGATIVE);
                 break;
             case UP_BUTTON:
-                Camera::Instance().SetUpDirection(AXIS_POSITIVE);
+                selectedCamera->SetUpDirection(AXIS_POSITIVE);
                 break;
             case DOWN_BUTTON:
-                Camera::Instance().SetUpDirection(AXIS_NEGATIVE);
+                selectedCamera->SetUpDirection(AXIS_NEGATIVE);
                 break;
             case SPEED_UP_BUTTON:
-                Camera::Instance().SetHighSpeed();
+                selectedCamera->SetHighSpeed();
                 break;
             default:
                 break;
@@ -58,18 +65,18 @@ namespace skate
                 break;
             case FORWARD_BUTTON:
             case BACKWARD_BUTTON:
-                Camera::Instance().SetForwardDirection(AXIS_NONE);
+                selectedCamera->SetForwardDirection(AXIS_NONE);
                 break;
             case RIGHT_BUTTON:
             case LEFT_BUTTON:
-                Camera::Instance().SetRightDirection(AXIS_NONE);
+                selectedCamera->SetRightDirection(AXIS_NONE);
                 break;
             case UP_BUTTON:
             case DOWN_BUTTON:
-                Camera::Instance().SetUpDirection(AXIS_NONE);
+                selectedCamera->SetUpDirection(AXIS_NONE);
                 break;
             case SPEED_UP_BUTTON:
-                Camera::Instance().SetLowSpeed();
+                selectedCamera->SetLowSpeed();
                 break;
             default:
                 break;
@@ -77,7 +84,7 @@ namespace skate
         }
     }
 
-    void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept 
+    static void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept 
     {
         const enum Button button = InputHandler::Instance().GetButton(key);
         if (action == GLFW_PRESS) 
@@ -93,7 +100,7 @@ namespace skate
         }
     }
 
-    void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) noexcept 
+    static void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) noexcept 
     {
         // Last positions from the last mouse callback
         static float lastX = util::windowWidth / 2.0f; 
@@ -116,13 +123,17 @@ namespace skate
         lastX = xPosf;
         lastY = yPosf;
 
-        Camera::Instance().UpdateOrientation(xOffset, yOffset);
+        Camera* selectedCamera = InputHandler::Instance().GetSelectedCamera();
+        if (selectedCamera != NULL)    
+            selectedCamera->UpdateOrientation(xOffset, yOffset);
     }
 
-    void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) noexcept 
+    static void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) noexcept 
     {
-        const float deltaFOVradian = yOffset * InputHandler::Instance().GetScrollSensitivity();
-        Camera::Instance().UpdateFOVradian(deltaFOVradian);
+        const float deltaFOVRadian = yOffset * InputHandler::Instance().GetScrollSensitivity();
+        Camera* selectedCamera = InputHandler::Instance().GetSelectedCamera();
+        if (selectedCamera != NULL)    
+            selectedCamera->UpdateFOVRadian(deltaFOVRadian);
     }
 
     // ---------------------------------------------------------------------------------------------- //

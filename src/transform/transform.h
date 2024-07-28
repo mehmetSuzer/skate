@@ -8,7 +8,7 @@
 
 namespace skate
 {
-    // For all position, rotation, and scalar related calculations of models
+    // For calculations related to position, rotation, and scalar
     class Transform
     {
     private:
@@ -35,7 +35,8 @@ namespace skate
         static const glm::vec3 WorldUp;
         static const glm::vec3 WorldDown;
 
-        Transform(const glm::vec3& position_, const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f));
+        Transform(const glm::vec3& position_ = glm::vec3(0.0f), const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), 
+            const glm::vec3& scalar_ = glm::vec3(1.0f));
         Transform(const glm::vec3& position_, const glm::quat& quaternion, float scale);
         Transform(const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_);
         Transform(const glm::vec3& position_, const glm::vec3& eulerAngles, float scale);
@@ -87,6 +88,8 @@ namespace skate
         void SetRotation(const glm::vec3& eulerAngles) noexcept;
         // axis must be normalized
         void Rotate(float radian, const glm::vec3& axis);
+        void Rotate(const glm::vec3& eulerAngles) noexcept;
+        void Rotate(const glm::quat& quaternion) noexcept;
 
         // scalar_ cannot be negative
         void SetScalar(const glm::vec3& scalar_);

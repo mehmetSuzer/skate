@@ -21,7 +21,7 @@ namespace skate
         SPEED_UP_BUTTON,
     };
 
-    // Singleton input handler which sets the proper callback functions for the mouse and the keyboard
+    // Singleton input handler which handles the mouse and the keyboard inputs
     class InputHandler 
     {
     private:
@@ -35,10 +35,22 @@ namespace skate
         static const uint32_t buttonMapSize = GLFW_KEY_LAST+1;
         enum Button buttonMap[buttonMapSize];
 
+        Camera* selectedCamera = NULL;
+
     public:
         inline static InputHandler& Instance(void) noexcept 
         {
             return instance;
+        }
+
+        inline Camera* GetSelectedCamera(void) const noexcept
+        {
+            return selectedCamera;
+        }
+
+        inline void SelectCamera(Camera* camera) noexcept
+        {
+            selectedCamera = camera;
         }
 
         inline float GetCursorPosSensitivity(void) const noexcept 

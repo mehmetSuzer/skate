@@ -3,8 +3,8 @@
 
 namespace skate
 {                
-    const glm::vec3 Transform::WorldForward  = glm::vec3( 0.0f,  0.0f,  1.0f);
-    const glm::vec3 Transform::WorldBackward = glm::vec3( 0.0f,  0.0f, -1.0f);
+    const glm::vec3 Transform::WorldForward  = glm::vec3( 0.0f,  0.0f, -1.0f);
+    const glm::vec3 Transform::WorldBackward = glm::vec3( 0.0f,  0.0f,  1.0f);
     const glm::vec3 Transform::WorldRight    = glm::vec3( 1.0f,  0.0f,  0.0f);
     const glm::vec3 Transform::WorldLeft     = glm::vec3(-1.0f,  0.0f,  0.0f);
     const glm::vec3 Transform::WorldUp       = glm::vec3( 0.0f,  1.0f,  0.0f);
@@ -58,6 +58,20 @@ namespace skate
         UpdateVectors();
         UpdateModelAndNormalMatrices();
     }
+
+    void Transform::Rotate(const glm::vec3& eulerAngles) noexcept
+    {
+        rotation = glm::quat(eulerAngles) * rotation;
+        UpdateVectors();
+        UpdateModelAndNormalMatrices();
+    }
+
+    void Transform::Rotate(const glm::quat& quaternion) noexcept
+    {
+        rotation = quaternion * rotation;
+        UpdateVectors();
+        UpdateModelAndNormalMatrices();
+    }
         
     void Transform::SetScalar(const glm::vec3& scalar_)
     {
@@ -87,9 +101,9 @@ namespace skate
 
     void Transform::UpdateVectors(void) noexcept
     {
-        forward = rotation * WorldForward;
-        right = rotation * WorldRight;
-        up = rotation * WorldUp;
+        forward = glm::normalize(rotation * WorldForward);
+        right = glm::normalize(rotation * WorldRight);
+        up = glm::normalize(rotation * WorldUp);
     }
 
     void Transform::UpdateModelMatrix(void) noexcept

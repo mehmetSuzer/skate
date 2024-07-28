@@ -49,8 +49,9 @@ int main(int argc, char **argv)
     }
     glfwMakeContextCurrent(window);
 
-    Camera::Instance().Initialize();
+    Camera camera(glm::vec3(0.0f));
     InputHandler::Instance().Initialize(window);
+    InputHandler::Instance().SelectCamera(&camera);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -203,9 +204,9 @@ int main(int argc, char **argv)
         }
 #endif
 
-        Camera::Instance().UpdatePosition(elapsedTimeSinceLastFrame);
-        const glm::mat4 projectionView = Camera::Instance().GetProjection() * Camera::Instance().GetView();
-        const glm::vec3 &cameraPosition = Camera::Instance().GetPosition();
+        camera.UpdatePosition(elapsedTimeSinceLastFrame);
+        const glm::mat4 projectionView = camera.GetProjection() * camera.GetView();
+        const glm::vec3 &cameraPosition = camera.transform.GetPosition();
 
         glClearColor(util::backgroundColor.r, util::backgroundColor.g, util::backgroundColor.b, util::backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
