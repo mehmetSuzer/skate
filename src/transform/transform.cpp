@@ -3,9 +3,18 @@
 
 namespace skate
 {                
+    const glm::vec3 Transform::WorldForward  = glm::vec3( 0.0f,  0.0f,  1.0f);
+    const glm::vec3 Transform::WorldBackward = glm::vec3( 0.0f,  0.0f, -1.0f);
+    const glm::vec3 Transform::WorldRight    = glm::vec3( 1.0f,  0.0f,  0.0f);
+    const glm::vec3 Transform::WorldLeft     = glm::vec3(-1.0f,  0.0f,  0.0f);
+    const glm::vec3 Transform::WorldUp       = glm::vec3( 0.0f,  1.0f,  0.0f);
+    const glm::vec3 Transform::WorldDown     = glm::vec3( 0.0f, -1.0f,  0.0f);
+
     Transform::Transform(const glm::vec3& position_, const glm::quat& quaternion, const glm::vec3& scalar_)
         : position(position_), rotation(quaternion), scalar(scalar_)
     {
+        assert(scalar.x >= 0.0f && scalar.y >= 0.0f && scalar.z >= 0.0f);
+        UpdateVectors();
         UpdateModelAndNormalMatrices();
     }
 
@@ -23,35 +32,64 @@ namespace skate
         position = position_;
         UpdateModelMatrix();
     }
+
+    void Transform::Translate(const glm::vec3& translation) noexcept
+    {
+        position += translation;
+        UpdateModelMatrix();
+    }
         
     void Transform::SetRotation(const glm::quat& quaternion) noexcept
     {
         rotation = quaternion;
+        UpdateVectors();
         UpdateModelAndNormalMatrices();
     }
 
     void Transform::SetRotation(const glm::vec3& eulerAngles) noexcept
     {
-        rotation = glm::quat(eulerAngles);
+        SetRotation(glm::quat(eulerAngles));
+    }
+
+    void Transform::Rotate(float radian, const glm::vec3& axis)
+    {
+        assert(glm::epsilonEqual(glm::length(axis), 1.0f, 1E-6f));
+        rotation = glm::angleAxis(radian, axis) * rotation;
+        UpdateVectors();
         UpdateModelAndNormalMatrices();
     }
         
-    void Transform::SetScalar(const glm::vec3& scalar_) noexcept
+    void Transform::SetScalar(const glm::vec3& scalar_)
     {
+        assert(scalar_.x >= 0.0f && scalar_.y >= 0.0f && scalar_.z >= 0.0f);
         scalar = scalar_;
         UpdateModelAndNormalMatrices();
     }
         
-    void Transform::SetScalar(float scale) noexcept
+    void Transform::SetScalar(float scale)
     {
-        scalar = glm::vec3(scale);
+        SetScalar(glm::vec3(scale));
+    }
+
+    void Transform::Scale(const glm::vec3& scalar_)
+    {
+        assert(scalar_.x >= 0.0f && scalar_.y >= 0.0f && scalar_.z >= 0.0f);
+        scalar *= scalar_;
+        UpdateModelAndNormalMatrices();
+    }
+        
+    void Transform::Scale(float scale)
+    {
+        assert(scale >= 0.0f);
+        scalar *= scale;
         UpdateModelAndNormalMatrices();
     }
 
-    void Transform::UpdatePosition(const glm::vec3& deltaPosition) noexcept
+    void Transform::UpdateVectors(void) noexcept
     {
-        position += deltaPosition;
-        UpdateModelMatrix();
+        forward = rotation * WorldForward;
+        right = rotation * WorldRight;
+        up = rotation * WorldUp;
     }
 
     void Transform::UpdateModelMatrix(void) noexcept

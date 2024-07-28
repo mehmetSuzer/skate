@@ -166,14 +166,13 @@ int main(int argc, char **argv)
     };
 
     const glm::vec3 texturePyramidPosition = glm::vec3(0.0f, 0.0f, 2.5f);
-    const Model texturePyramid(texturePyramidMeshes, texturePyramidPosition);
+    Model texturePyramid(texturePyramidMeshes, texturePyramidPosition);
 
     //------------------------------------- OBJECT MODEL ------------------------------------//
 
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-    const glm::vec3 objectScalar = glm::vec3(0.1f, 0.1f, 0.1f);
-    const LoadableColorModel object(util::modelsDir + "medieval_village/scene.gltf", objectPosition, objectRotation, objectScalar);
+    const LoadableColorModel object(util::modelsDir + "medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -218,6 +217,7 @@ int main(int argc, char **argv)
         container.Draw(textureShader);
         colorPyramid.Draw(colorShader);
         materialPyramid.Draw(materialShader);
+        texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, glm::sqrt(1.0f/3.0f) * glm::vec3(1.0f));
         texturePyramid.Draw(textureShader);
         object.Draw(colorShader);
 
