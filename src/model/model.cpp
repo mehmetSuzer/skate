@@ -31,6 +31,13 @@ namespace skate
     }
 
     template<typename Mesh>
+    void Model<Mesh>::DrawBorder(const Shader& shader) const noexcept
+    {
+        if (selected)
+            Draw(shader);
+    }
+
+    template<typename Mesh>
     void Model<Mesh>::Delete(void) const noexcept 
     {
         for (uint32_t i = 0; i < meshes.size(); i++) 

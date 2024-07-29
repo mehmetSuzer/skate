@@ -65,8 +65,13 @@ int main(int argc, char **argv)
     glViewport(0, 0, util::windowWidth, util::windowHeight);
 #endif
 
-    // Enable the depth buffer and face culling
+    // Global OpenGL settings
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    glEnable(GL_STENCIL_TEST);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
@@ -101,9 +106,9 @@ int main(int argc, char **argv)
         // (LightCaster*)&spotLight,
     };
 
-    const Shader colorShader(util::COLOR_VERTEX);
-    const Shader materialShader(util::MATERIAL_VERTEX);
-    const Shader textureShader(util::TEXTURE_VERTEX);
+    const Shader colorShader(util::COLOR_SHADER);
+    const Shader materialShader(util::MATERIAL_SHADER);
+    const Shader textureShader(util::TEXTURE_SHADER);
 
     const std::vector<Shader> shaders = { colorShader, materialShader, textureShader };
 
@@ -121,7 +126,7 @@ int main(int argc, char **argv)
             GL_STATIC_DRAW
         ),
     };
-    const Model container(containerMeshes, glm::vec3(2.5f, 0.0f, 0.0f));
+    Model container(containerMeshes, glm::vec3(2.5f, 0.0f, 0.0f));
 
     //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
 
@@ -159,7 +164,8 @@ int main(int argc, char **argv)
 
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-    const LoadableColorModel object(util::modelsDir + "medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
+    LoadableColorModel object(util::modelsDir + "medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
+    object.Select();
 
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -194,9 +200,6 @@ int main(int argc, char **argv)
         const glm::mat4 projectionView = camera.GetProjection() * camera.GetView();
         const glm::vec3& cameraPosition = camera.transform.GetPosition();
 
-        glClearColor(util::backgroundColor.r, util::backgroundColor.g, util::backgroundColor.b, util::backgroundColor.a);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         colorShader.UpdateLightCasters(lightCasters);
         materialShader.UpdateLightCasters(lightCasters);
         textureShader.UpdateLightCasters(lightCasters);
@@ -205,14 +208,46 @@ int main(int argc, char **argv)
         for (uint32_t i = 0; i < shaders.size(); i++) 
             shaders[i].UpdateView(projectionView, cameraPosition);
 
+        glStencilMask(0xFF);
+        glClearColor(util::backgroundColor.r, util::backgroundColor.g, util::backgroundColor.b, util::backgroundColor.a);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+        // Draw models
+        glStencilMask(0xFF);
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        glEnable(GL_DEPTH_TEST);
+
+        for (uint32_t i = 0; i < shaders.size(); i++) 
+        {
+            shaders[i].Use();
+            shaders[i].SetUniformBool(false, "drawBorder");
+        }
+
         container.Draw(textureShader);
+        object.Draw(colorShader);
         colorPyramid.Draw(colorShader);
         materialPyramid.Draw(materialShader);
         texturePyramid.Draw(textureShader);
-        object.Draw(colorShader);
 
-        texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
-        directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());
+        // Draw models' borders if they are selected
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        glStencilMask(0x00);
+        glDisable(GL_DEPTH_TEST);
+
+        for (uint32_t i = 0; i < shaders.size(); i++) 
+        {
+            shaders[i].Use();
+            shaders[i].SetUniformBool(true, "drawBorder");
+        }
+
+        container.DrawBorder(textureShader);
+        object.DrawBorder(colorShader);
+        colorPyramid.DrawBorder(colorShader);
+        materialPyramid.DrawBorder(materialShader);
+        texturePyramid.DrawBorder(textureShader);
+
+        // texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
+        // directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());
 
         glfwSwapBuffers(window);
         glfwPollEvents();

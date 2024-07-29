@@ -15,6 +15,7 @@ namespace skate
     class LoadableColorModel 
     {
     private:
+        bool selected = false;
         std::vector<ColorMesh> meshes;
 
         void LoadModel(const std::string& path);
@@ -31,7 +32,18 @@ namespace skate
         LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar);
         LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale);
 
+        inline void Select(void) noexcept
+        {
+            selected = true;
+        }
+
+        inline void Unselected(void) noexcept
+        {
+            selected = false;
+        }
+        
         void Draw(const Shader& shader) const noexcept;
+        void DrawBorder(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;
     };
 }

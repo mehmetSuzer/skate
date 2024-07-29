@@ -6,7 +6,6 @@
 #include "exception.h"
 #include "util.h"
 #include "light_caster.h"
-#include "gtc/type_ptr.hpp"
 
 // Update shaders as well when you update this
 #define MAX_LIGHT_CASTER_NUMBER 8
@@ -20,7 +19,7 @@ namespace skate
         GLuint ID;
         
     public:
-        explicit Shader(util::VertexType vertex);
+        explicit Shader(util::ShaderType type);
 
         inline GLuint GetID(void) const noexcept 
         {
@@ -35,6 +34,11 @@ namespace skate
         inline void Delete(void) const noexcept 
         {
             glDeleteProgram(ID);
+        }
+
+        inline void SetUniformBool(bool value, const char* uniform) const noexcept 
+        {
+            glUniform1i(glGetUniformLocation(ID, uniform), (GLint)value);
         }
 
         inline void SetUniformInt(GLint value, const char* uniform) const noexcept 

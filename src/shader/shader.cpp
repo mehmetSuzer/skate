@@ -3,12 +3,12 @@
 
 namespace skate 
 {
-    Shader::Shader(util::VertexType vertex) 
+    Shader::Shader(util::ShaderType type) 
     {
         GLint success;
         GLchar shaderInfoLog[1024];
 
-        const std::string vertexShaderPath = util::GetShaderProgramPath(util::VERTEX_SHADER, vertex);
+        const std::string vertexShaderPath = util::GetShaderProgramPath(util::VERTEX_SHADER_PROGRAM, type);
         const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
         const std::string vertexShaderCode = util::ReadShaderSource(vertexShaderPath);
         const char* vertexShaderSource = vertexShaderCode.c_str();
@@ -22,7 +22,7 @@ namespace skate
             throw Exception("SHADER::VERTEX::COMPILATION_FAILED\nFile Path: " + vertexShaderPath + "\n" + shaderInfoLog);
         }
 
-        const std::string fragmentShaderPath = util::GetShaderProgramPath(util::FRAGMENT_SHADER, vertex);
+        const std::string fragmentShaderPath = util::GetShaderProgramPath(util::FRAGMENT_SHADER_PROGRAM, type);
         const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         const std::string fragmentShaderCode = util::ReadShaderSource(fragmentShaderPath);
         const char* fragmentShaderSource = fragmentShaderCode.c_str();

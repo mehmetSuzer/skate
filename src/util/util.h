@@ -13,18 +13,18 @@ namespace skate
     // Contains utility variables and functions
     namespace util 
     {
-        enum ShaderType 
+        enum ShaderProgramType 
         {
-            VERTEX_SHADER = 0,
-            FRAGMENT_SHADER,
+            VERTEX_SHADER_PROGRAM = 0,
+            FRAGMENT_SHADER_PROGRAM,
         };
 
-        enum VertexType 
+        enum ShaderType 
         {
-            COLOR_VERTEX = 0,
-            MATERIAL_VERTEX,
-            TEXTURE_VERTEX,
-            LIGHT_VERTEX,
+            COLOR_SHADER = 0,
+            MATERIAL_SHADER,
+            TEXTURE_SHADER,
+            LIGHT_SHADER,
         };
 
         extern const std::string dataDir;
@@ -39,7 +39,7 @@ namespace skate
 
         void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) noexcept;
         std::string ReadShaderSource(const std::string& filename);
-        const std::string GetShaderProgramPath(enum ShaderType shader, enum VertexType vertex) noexcept;
+        const std::string GetShaderProgramPath(enum ShaderProgramType shaderProgram, enum ShaderType shader) noexcept;
     }
 }
 

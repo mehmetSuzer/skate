@@ -125,6 +125,12 @@ namespace skate
             meshes[i].Draw(shader);
     }
 
+    void LoadableTextureModel::DrawBorder(const Shader& shader) const noexcept
+    {
+        if (selected)
+            Draw(shader);
+    }
+
     void LoadableTextureModel::Delete(void) const noexcept 
     {
         for (uint32_t i = 0; i < meshes.size(); i++) 

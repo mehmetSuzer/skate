@@ -14,6 +14,7 @@ namespace skate
     class Model 
     {
     private:
+        bool selected = false;
         const std::vector<Mesh>& meshes;
 
     public:
@@ -26,7 +27,18 @@ namespace skate
         Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_) noexcept;
         Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale) noexcept;
 
+        inline void Select(void) noexcept
+        {
+            selected = true;
+        }
+
+        inline void Unselected(void) noexcept
+        {
+            selected = false;
+        }
+        
         void Draw(const Shader& shader) const noexcept;
+        void DrawBorder(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;
     };
 }

@@ -9,10 +9,10 @@ namespace skate
         const std::string vertexShaderDir = "vertex/";
         const std::string fragmentShaderDir = "fragment/";
 
-        const std::string colorVertexGLSL = "color_vertex.glsl";
-        const std::string materialVertexGLSL = "material_vertex.glsl";
-        const std::string textureVertexGLSL = "texture_vertex.glsl";
-        const std::string lightVertexGLSL = "light_vertex.glsl";
+        const std::string colorShaderGLSL = "color_shader.glsl";
+        const std::string materialShaderGLSL = "material_shader.glsl";
+        const std::string textureShaderGLSL = "texture_shader.glsl";
+        const std::string lightShaderGLSL = "light_shader.glsl";
 
         const std::string dataDir = "data/";
         const std::string modelsDir = dataDir + "models/";
@@ -62,16 +62,16 @@ namespace skate
             return buffer.str();
         }
 
-        const std::string GetShaderProgramPath(enum ShaderType shader, enum VertexType vertex) noexcept 
+        const std::string GetShaderProgramPath(enum ShaderProgramType shaderProgram, enum ShaderType shader) noexcept 
         {
-            const std::string& shaderDir = (shader == VERTEX_SHADER) ? vertexShaderDir : 
-                                                                       fragmentShaderDir;
+            const std::string& shaderProgramDir = (shaderProgram == VERTEX_SHADER_PROGRAM) ? vertexShaderDir : 
+                                                                                             fragmentShaderDir;
 
-            const std::string& filename = (vertex == COLOR_VERTEX)    ? colorVertexGLSL : 
-                                          (vertex == MATERIAL_VERTEX) ? materialVertexGLSL :
-                                          (vertex == TEXTURE_VERTEX)  ? textureVertexGLSL :
-                                                                        lightVertexGLSL;
-            return shaderDir + filename;
+            const std::string& filename = (shader == COLOR_SHADER)    ? colorShaderGLSL : 
+                                          (shader == MATERIAL_SHADER) ? materialShaderGLSL :
+                                          (shader == TEXTURE_SHADER)  ? textureShaderGLSL :
+                                                                        lightShaderGLSL;
+            return shaderProgramDir + filename;
         }
     }
 }

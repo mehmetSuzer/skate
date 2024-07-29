@@ -17,6 +17,7 @@ namespace skate
     class LoadableTextureModel 
     {
     private:
+        bool selected = false;
         std::vector<TextureMesh> meshes;
         std::vector<Texture> texturesLoaded;
         std::string directory;
@@ -36,7 +37,18 @@ namespace skate
         LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar);
         LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale);
 
+        inline void Select(void) noexcept
+        {
+            selected = true;
+        }
+
+        inline void Unselected(void) noexcept
+        {
+            selected = false;
+        }
+
         void Draw(const Shader& shader) const noexcept;
+        void DrawBorder(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;
     };
 }
