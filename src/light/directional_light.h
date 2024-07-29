@@ -3,7 +3,6 @@
 #define __DIRECTIONAL_LIGHT_H__
 
 #include "light_caster.h"
-#include "gtc/epsilon.hpp"
 
 namespace skate 
 {
@@ -11,18 +10,11 @@ namespace skate
     class DirectionalLight : public LightCaster 
     {
     private:
-        glm::vec3 direction;
         float intensity;
 
     public:
-        DirectionalLight(const glm::vec3& direction_, float intensity_, float red, float green, float blue);
-        DirectionalLight(const glm::vec3& direction_, float intensity_ = 0.8f, const glm::vec3& color_ = glm::vec3(1.0f));
-
-        inline void SetDirection(const glm::vec3& direction_) 
-        {
-            assert(glm::epsilonEqual(glm::length(direction_), 1.0f, 1E-6f));
-            direction = direction_;
-        }
+        DirectionalLight(const glm::quat& quaternion, float intensity_ = 0.8f, const glm::vec3& color_ = glm::vec3(1.0f));
+        DirectionalLight(const glm::vec3& direction, float intensity_ = 0.8f, const glm::vec3& color_ = glm::vec3(1.0f));
 
         inline void SetIntensity(float intensity_) 
         {
@@ -36,7 +28,7 @@ namespace skate
             {
                 .type = DIRECTIONAL_LIGHT,
                 .color = GetColor(),
-                .direction = direction,
+                .direction = transform.GetForward(),
                 .intensity = intensity,
             };
         }

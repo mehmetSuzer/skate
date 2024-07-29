@@ -3,7 +3,7 @@
 #define __LIGHT_CASTER_H__
 
 #include <assert.h>
-#include "glm.hpp"
+#include "transform.h"
 
 namespace skate 
 {
@@ -52,8 +52,12 @@ namespace skate
         bool active = true;
 
     public:
-        LightCaster(float red, float green, float blue);
-        LightCaster(const glm::vec3& color_ = glm::vec3(1.0f));
+        Transform transform;
+
+        LightCaster(const glm::vec3& color_)
+        {
+            SetColor(color_);
+        }
 
         virtual ~LightCaster() {}
 
@@ -62,15 +66,14 @@ namespace skate
             return (active) ? color : color::black;
         }
 
-        inline void SetColor(float red, float green, float blue) 
-        {
-            assert(0.0f <= red && red <= 1.0f && 0.0f <= green && green <= 1.0f && 0.0f <= blue && blue <= 1.0f);
-            color = glm::vec3(red, green, blue);
-        }
-
         inline void SetColor(const glm::vec3& color_) 
         {
-            SetColor(color_.r, color_.g, color_.b);
+            assert(
+                0.0f <= color_.r && color_.r <= 1.0f && 
+                0.0f <= color_.g && color_.g <= 1.0f && 
+                0.0f <= color_.b && color_.b <= 1.0f
+            );
+            color = color_;
         }
 
         inline bool IsActive(void) const noexcept 

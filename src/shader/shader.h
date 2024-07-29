@@ -20,7 +20,7 @@ namespace skate
         GLuint ID;
         
     public:
-        Shader(util::VertexType vertex);
+        explicit Shader(util::VertexType vertex);
 
         inline GLuint GetID(void) const noexcept 
         {

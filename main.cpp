@@ -74,7 +74,6 @@ int main(int argc, char **argv)
     //-------------------------------- TEXTURES, LIGHTS, AND SHADERS -------------------------------//
 
     Texture::InitializeCommonTextures();
-
     const Texture brickTexture(
         util::texturesDir + "common/brick.png", 
         GL_REPEAT, GL_REPEAT, 
@@ -91,25 +90,20 @@ int main(int argc, char **argv)
         GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
     );
 
-    const DirectionalLight directionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
-    const PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f));
-    const SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+    DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
+    PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f));
+    SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), Transform::WorldDown);
 
     const std::vector<LightCaster*> lightCasters = 
     {
         (LightCaster*)&directionalLight,
-        (LightCaster*)&pointLight,
-        (LightCaster*)&spotLight,
+        // (LightCaster*)&pointLight,
+        // (LightCaster*)&spotLight,
     };
 
     const Shader colorShader(util::COLOR_VERTEX);
     const Shader materialShader(util::MATERIAL_VERTEX);
     const Shader textureShader(util::TEXTURE_VERTEX);
-
-    // We are assuming that the light sources are constant 
-    colorShader.UpdateLightCasters(lightCasters);
-    materialShader.UpdateLightCasters(lightCasters);
-    textureShader.UpdateLightCasters(lightCasters);
 
     const std::vector<Shader> shaders = { colorShader, materialShader, textureShader };
 
@@ -127,9 +121,7 @@ int main(int argc, char **argv)
             GL_STATIC_DRAW
         ),
     };
-
-    const glm::vec3 containerPosition = glm::vec3(2.5f, 0.0f, 0.0f);
-    const Model container(containerMeshes, containerPosition);
+    const Model container(containerMeshes, glm::vec3(2.5f, 0.0f, 0.0f));
 
     //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
 
@@ -137,9 +129,7 @@ int main(int argc, char **argv)
     {
         ColorMesh(pyramidColorVertices, pyramidIndices, 1.0f, 0.0f, GL_STATIC_DRAW),
     };
-
-    const glm::vec3 colorPyramidPosition = glm::vec3(0.0f, 0.0f, -2.5f);
-    const Model colorPyramid(colorPyramidMeshes, colorPyramidPosition);
+    const Model colorPyramid(colorPyramidMeshes, glm::vec3(0.0f, 0.0f, -2.5f));
 
     //---------------------------------- MATERIAL PYRAMID MODEL ---------------------------------//
 
@@ -147,9 +137,7 @@ int main(int argc, char **argv)
     {
         MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::bronze, GL_STATIC_DRAW),
     };
-
-    const glm::vec3 materialPyramidPosition = glm::vec3(-2.5f, 0.0f, 0.0f);
-    const Model materialPyramid(materialPyramidMeshes, materialPyramidPosition);
+    const Model materialPyramid(materialPyramidMeshes, glm::vec3(-2.5f, 0.0f, 0.0f));
 
     //---------------------------------- TEXTURE PYRAMID MODEL ---------------------------------//
 
@@ -165,9 +153,7 @@ int main(int argc, char **argv)
             GL_STATIC_DRAW
         ),
     };
-
-    const glm::vec3 texturePyramidPosition = glm::vec3(0.0f, 0.0f, 2.5f);
-    Model texturePyramid(texturePyramidMeshes, texturePyramidPosition);
+    Model texturePyramid(texturePyramidMeshes, glm::vec3(0.0f, 0.0f, 2.5f));
 
     //------------------------------------- OBJECT MODEL ------------------------------------//
 
@@ -206,10 +192,14 @@ int main(int argc, char **argv)
 
         camera.UpdatePosition(elapsedTimeSinceLastFrame);
         const glm::mat4 projectionView = camera.GetProjection() * camera.GetView();
-        const glm::vec3 &cameraPosition = camera.transform.GetPosition();
+        const glm::vec3& cameraPosition = camera.transform.GetPosition();
 
         glClearColor(util::backgroundColor.r, util::backgroundColor.g, util::backgroundColor.b, util::backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        colorShader.UpdateLightCasters(lightCasters);
+        materialShader.UpdateLightCasters(lightCasters);
+        textureShader.UpdateLightCasters(lightCasters);
 
         // Update shaders
         for (uint32_t i = 0; i < shaders.size(); i++) 
@@ -218,9 +208,11 @@ int main(int argc, char **argv)
         container.Draw(textureShader);
         colorPyramid.Draw(colorShader);
         materialPyramid.Draw(materialShader);
-        texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, glm::sqrt(1.0f/3.0f) * glm::vec3(1.0f));
         texturePyramid.Draw(textureShader);
         object.Draw(colorShader);
+
+        texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
+        directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());
 
         glfwSwapBuffers(window);
         glfwPollEvents();

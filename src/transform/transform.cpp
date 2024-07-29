@@ -51,6 +51,29 @@ namespace skate
         SetRotation(glm::quat(eulerAngles));
     }
 
+    void Transform::SetForward(const glm::vec3& forward_) noexcept
+    {
+        glm::highp_bvec3 equal = glm::epsilonEqual(forward, forward_, 1E-6f);
+        if (equal.x && equal.y && equal.z)
+            return;
+
+        glm::highp_bvec3 opposite = glm::epsilonEqual(forward, -forward_, 1E-6f);
+        if (opposite.x && opposite.y && opposite.z)
+        {
+            Rotate(M_PIf, up);
+            return;
+        }
+
+        const glm::vec3 axis = glm::normalize(glm::cross(forward, forward_)); 
+        const float angle = glm::acos(glm::dot(forward, forward_));
+        
+        const float cosHalfAngle = glm::cos(angle/2.0f);
+        const float sinHalfAngle = glm::sin(angle/2.0f);
+
+        const glm::quat quaternion = glm::quat(cosHalfAngle, sinHalfAngle * axis);
+        Rotate(quaternion);
+    }
+
     void Transform::Rotate(float radian, const glm::vec3& axis)
     {
         assert(glm::epsilonEqual(glm::length(axis), 1.0f, 1E-6f));

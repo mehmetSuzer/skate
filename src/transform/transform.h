@@ -86,6 +86,7 @@ namespace skate
 
         void SetRotation(const glm::quat& quaternion) noexcept;
         void SetRotation(const glm::vec3& eulerAngles) noexcept;
+        void SetForward(const glm::vec3& forward_) noexcept;
         // axis must be normalized
         void Rotate(float radian, const glm::vec3& axis);
         void Rotate(const glm::vec3& eulerAngles) noexcept;
