@@ -3,18 +3,7 @@
 
 #include <common/light.glsl>
 #include <common/material_map.glsl>
-
-out vec4 FragColor;
-
-in VS_OUT
-{
-    vec3 position;
-    vec3 normal;
-    vec4 color;
-    vec2 texCoord;
-} fsIn;
-
-uniform vec3 cameraPosition;
+#include <common/fragment.glsl>
 
 vec4 DirectionalLight(Light light, vec3 directionToCamera) 
 {

@@ -4,21 +4,7 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
-in VS_OUT
-{
-    vec3 position;
-    vec3 normal;
-    vec4 color;
-    vec2 texCoord;
-} gsIn[];
-
-out VS_OUT
-{
-    vec3 position;
-    vec3 normal;
-    vec4 color;
-    vec2 texCoord;
-} gsOut;
+#include <common/geometry.glsl>
 
 void main() 
 {

@@ -5,17 +5,7 @@ layout (location = 0) in vec3 aPosition;
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec4 aColor;
 
-out VS_OUT
-{
-    vec3 position;
-    vec3 normal;
-    vec4 color;
-    vec2 texCoord;
-} vsOut;
-
-uniform mat4 model;
-uniform mat4 projectionView;
-uniform mat3 normalMatrix;
+#include <common/vertex.glsl>
 
 void main() 
 {

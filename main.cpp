@@ -114,7 +114,7 @@ int main()
 
     const std::vector<MaterialMesh> materialPyramidMeshes = 
     {
-        MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::bronze, GL_STATIC_DRAW),
+        MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::cyanPlastic, GL_STATIC_DRAW),
     };
     Model materialPyramid(materialPyramidMeshes, glm::vec3(-2.5f, 0.0f, 0.0f));
 
