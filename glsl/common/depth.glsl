@@ -2,8 +2,8 @@
 #ifndef __DEPTH_GLSL__
 #define __DEPTH_GLSL__
 
-float near = 0.1f; 
-float far  = 100.0f; 
+const float near = 0.1f; 
+const float far  = 100.0f; 
   
 vec4 LinearizeDepth(float depth) 
 {
