@@ -2,7 +2,6 @@
 #ifndef __CAMERA_H__
 #define __CAMERA_H__
 
-#include "util.h"
 #include "transform.h"
 
 namespace skate 
@@ -17,6 +16,12 @@ namespace skate
             AXIS_POSITIVE,
             AXIS_NEGATIVE,
         };
+
+        static int windowWidth;
+        static int windowHeight;
+        static float aspectRatio;
+        
+        static void SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) noexcept;
 
     private:
         typedef struct 
@@ -93,7 +98,7 @@ namespace skate
 
         inline void UpdateProjection(void) noexcept 
         {
-            projection = glm::perspective(FOVRadian, util::aspectRatio, near, far);
+            projection = glm::perspective(FOVRadian, aspectRatio, near, far);
         }
 
         // Use this function in mouse scroll callback

@@ -3,6 +3,17 @@
 
 namespace skate 
 {
+    int Camera::windowWidth = 1000;
+    int Camera::windowHeight = 800;
+    float Camera::aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+
+    void Camera::SetWindowWidthAndHeight(int windowWidth_, int windowHeight_) noexcept 
+    {
+        windowWidth = windowWidth_;
+        windowHeight = windowHeight_;
+        aspectRatio = static_cast<float>(windowWidth) / static_cast<float>(windowHeight);
+    }
+
     Camera::Camera(const glm::vec3& position, float near_, float far_, float FOVRadian_, float minFOVRadian_, float maxFOVRadian_)
         : near(near_), far(far_), FOVRadian(FOVRadian_), minFOVRadian(minFOVRadian_), maxFOVRadian(maxFOVRadian_)
     {

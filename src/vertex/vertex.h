@@ -3,7 +3,7 @@
 #define __VERTEX_H__
 
 #include <type_traits>
-#include "glad.h"
+#include "config.h"
 #include "glm.hpp"
 
 namespace skate 

@@ -4,7 +4,7 @@
 
 #include <string>
 #include <assert.h>
-#include "glad.h"
+#include "config.h"
 #include "stb_image.h"
 
 namespace skate 

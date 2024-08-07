@@ -55,9 +55,6 @@ include_directories(${SRC_DIR}/object_pool)
 add_subdirectory(${SRC_DIR}/light)
 include_directories(${SRC_DIR}/light)
 
-add_subdirectory(${SRC_DIR}/util)
-include_directories(${SRC_DIR}/util)
-
 add_subdirectory(${SRC_DIR}/camera)
 include_directories(${SRC_DIR}/camera)
 
@@ -91,7 +88,6 @@ target_link_libraries(${PROJECT_NAME}
     texture
     input_handler
     camera
-    util
     light
     object_pool
     observer_subject

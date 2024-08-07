@@ -8,7 +8,7 @@ namespace skate
     static void framebufferSizeCallback(GLFWwindow* window, int width, int height) noexcept 
     {
         glViewport(0, 0, width, height);
-        util::SetWindowWidthAndHeight(width, height);
+        Camera::SetWindowWidthAndHeight(width, height);
         Camera* selectedCamera = InputHandler::Instance().GetSelectedCamera();
         if (selectedCamera != NULL)
             selectedCamera->UpdateProjection();
@@ -103,8 +103,8 @@ namespace skate
     static void cursorPosCallback(GLFWwindow* window, double xPos, double yPos) noexcept 
     {
         // Last positions from the last mouse callback
-        static float lastX = util::windowWidth / 2.0f; 
-        static float lastY = util::windowWidth / 2.0f;
+        static float lastX = Camera::windowWidth / 2.0f; 
+        static float lastY = Camera::windowWidth / 2.0f;
 
         float xPosf = static_cast<float>(xPos);
         float yPosf = static_cast<float>(yPos);
@@ -178,7 +178,7 @@ namespace skate
 
     void InputHandler::ActivateInputs(GLFWwindow *window) noexcept 
     {
-        glfwSetCursorPos(window, util::windowWidth / 2.0, util::windowHeight / 2.0);
+        glfwSetCursorPos(window, Camera::windowWidth / 2.0, Camera::windowHeight / 2.0);
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwSetCursorPosCallback(window, cursorPosCallback);
         glfwSetKeyCallback(window, activeKeyCallback);

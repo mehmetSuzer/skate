@@ -6,9 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
 #include "config.h"
-#include "glad.h"
 #include "light_caster.h"
 
 // Update shaders as well when you update this

@@ -32,7 +32,7 @@ int main()
     assert(videoMode != NULL);
     GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "skate", monitor, NULL);
 #else
-    GLFWwindow *window = glfwCreateWindow(util::windowWidth, util::windowHeight, "skate", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(Camera::windowWidth, Camera::windowHeight, "skate", NULL, NULL);
 #endif
 
     assert(window != NULL);
@@ -47,7 +47,7 @@ int main()
 #ifdef __FULL_SCREEN__
     glViewport(0, 0, videoMode->width, videoMode->height);
 #else
-    glViewport(0, 0, util::windowWidth, util::windowHeight);
+    glViewport(0, 0, Camera::windowWidth, Camera::windowHeight);
 #endif
 
     // Global OpenGL settings
@@ -64,21 +64,9 @@ int main()
     //-------------------------------- TEXTURES, LIGHTS, AND SHADERS -------------------------------//
 
     Texture::InitializeCommonTextures();
-    const Texture brickTexture(
-        util::texturesDir + "common/brick.png", 
-        GL_REPEAT, GL_REPEAT, 
-        GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
-    );
-    const Texture woodContainerDiffuseMap(
-        util::texturesDir + "container/albedo.png", 
-        GL_REPEAT, GL_REPEAT, 
-        GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
-    );
-    const Texture woodContainerSpecularMap(
-        util::texturesDir + "container/metallic.png", 
-        GL_REPEAT, GL_REPEAT, 
-        GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
-    );
+    const Texture brickTexture("data/textures/common/brick.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture woodContainerDiffuseMap("data/textures/container/albedo.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture woodContainerSpecularMap("data/textures/container/metallic.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
 
     const glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
     DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
@@ -158,7 +146,7 @@ int main()
 
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-    LoadableColorModel object(util::modelsDir + "medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
+    LoadableColorModel object("data/models/medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
     object.Select();
 
     //-------------------------------------- WHILE LOOP --------------------------------------//

@@ -2,6 +2,11 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+// In order to ensure that glad is imported before GLFW, include this header file.
+// Do not manually include glad or GLFW
+#include "glad.h"
+#include <GLFW/glfw3.h>
+
 // If you want to use the array implementation of Observer-Subject Design Pattern, keep this defined. 
 // If you prefer the linked list implementation, comment out.
 #define __OBSERVER_SUBJECT_ARRAY_IMPLEMENTATION__

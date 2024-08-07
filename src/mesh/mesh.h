@@ -2,7 +2,6 @@
 #ifndef __MESH_H__
 #define __MESH_H__
 
-#include <vector>
 #include "vertex.h"
 #include "shader.h"
 
