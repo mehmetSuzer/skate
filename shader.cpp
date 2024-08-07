@@ -29,6 +29,59 @@ namespace skate
         return buffer.str();
     }
 
+    Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
+    {
+        GLint success;
+        GLchar shaderInfoLog[1024];
+
+        //-------------------------------------- VERTEX SHADER --------------------------------------//
+
+        const std::string vertexShaderCode = ReadShaderSource(vertexShaderPath.c_str());
+        const char* vertexShaderSource = vertexShaderCode.c_str();
+        const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+        glCompileShader(vertexShader);
+
+    #ifdef __SHADER_DEBUG__
+        glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+        glGetShaderInfoLog(vertexShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
+        std::cout << "SHADER COMPILATION: " << vertexShaderPath << " --> " << ((strlen(shaderInfoLog) != 0) ? shaderInfoLog : "SUCCESS") << std::endl;
+        assert(success); // Check whether the shader is compiled successfully
+    #endif 
+
+        //-------------------------------------- FRAGMENT SHADER --------------------------------------//
+
+        const std::string fragmentShaderCode = ReadShaderSource(fragmentShaderPath.c_str());
+        const char* fragmentShaderSource = fragmentShaderCode.c_str();
+        const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+        glCompileShader(fragmentShader);
+
+    #ifdef __SHADER_DEBUG__
+        glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+        glGetShaderInfoLog(fragmentShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
+        std::cout << "SHADER COMPILATION: " << fragmentShaderPath << " --> " << ((strlen(shaderInfoLog) != 0) ? shaderInfoLog : "SUCCESS") << std::endl;
+        assert(success); // Check whether the shader is compiled successfully
+    #endif
+
+        //-------------------------------------- LINKING --------------------------------------//
+
+        ID = glCreateProgram();
+        glAttachShader(ID, vertexShader);
+        glAttachShader(ID, fragmentShader);
+        glLinkProgram(ID);
+
+    #ifdef __SHADER_DEBUG__
+        glGetProgramiv(ID, GL_LINK_STATUS, &success);
+        glGetProgramInfoLog(ID, sizeof(shaderInfoLog), NULL, shaderInfoLog);
+        std::cout << "SHADER LINKING: " << ((strlen(shaderInfoLog) != 0) ? shaderInfoLog : "SUCCESS") << std::endl << std::endl;
+        assert(success); // Check whether the shader is linked successfully
+    #endif
+
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
+    }
+
     Shader::Shader(const char* vertexShaderPath, const char* fragmentShaderPath, const char* geometryShaderPath)
     {
         GLint success;

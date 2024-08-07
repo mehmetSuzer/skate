@@ -20,12 +20,12 @@ namespace skate
     private:
         GLuint ID;
         
-        static std::string ReadShaderSource(const std::string& filename);
+        static std::string ReadShaderSource(const char* filename);
 
     public:
         // Shader paths must be with respect to glsl/ folder. glsl/ part is automatically added in the method.
         // E.g. vertex/texture_shader.glsl and fragment/texture_shader.glsl.
-        Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
+        Shader(const char* vertexShaderPath, const char* fragmentShaderPath, const char* geometryShader = NULL);
 
         inline GLuint GetID(void) const noexcept 
         {
