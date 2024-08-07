@@ -81,18 +81,10 @@ int main()
     };
 
     const Shader colorShader("vertex/color_shader.glsl", "fragment/color_shader.glsl");
-    const Shader colorBorderShader("vertex/color_border_shader.glsl", "fragment/border_shader.glsl");
     const Shader materialShader("vertex/material_shader.glsl", "fragment/material_shader.glsl");
-    const Shader materialBorderShader("vertex/material_border_shader.glsl", "fragment/border_shader.glsl");
     const Shader textureShader("vertex/texture_shader.glsl", "fragment/texture_shader.glsl");
-    const Shader textureBorderShader("vertex/texture_border_shader.glsl", "fragment/border_shader.glsl");
-
-    const std::vector<Shader> shaders = 
-    {
-        colorShader, colorBorderShader,
-        materialShader, materialBorderShader,
-        textureShader, textureBorderShader,
-     };
+    const Shader borderShader("vertex/border_shader.glsl", "fragment/border_shader.glsl");
+    const std::vector<Shader> shaders = { colorShader, materialShader, textureShader, borderShader };
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
@@ -116,7 +108,7 @@ int main()
     {
         ColorMesh(pyramidColorVertices, pyramidIndices, 1.0f, 0.0f, GL_STATIC_DRAW),
     };
-    const Model colorPyramid(colorPyramidMeshes, glm::vec3(0.0f, 0.0f, -2.5f));
+    Model colorPyramid(colorPyramidMeshes, glm::vec3(0.0f, 0.0f, -2.5f));
 
     //---------------------------------- MATERIAL PYRAMID MODEL ---------------------------------//
 
@@ -124,7 +116,7 @@ int main()
     {
         MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::bronze, GL_STATIC_DRAW),
     };
-    const Model materialPyramid(materialPyramidMeshes, glm::vec3(-2.5f, 0.0f, 0.0f));
+    Model materialPyramid(materialPyramidMeshes, glm::vec3(-2.5f, 0.0f, 0.0f));
 
     //---------------------------------- TEXTURE PYRAMID MODEL ---------------------------------//
 
@@ -210,11 +202,11 @@ int main()
         glStencilMask(0x00);
         glDisable(GL_DEPTH_TEST);
 
-        container.DrawBorder(textureBorderShader);
-        object.DrawBorder(colorBorderShader);
-        colorPyramid.DrawBorder(colorBorderShader);
-        materialPyramid.DrawBorder(materialBorderShader);
-        texturePyramid.DrawBorder(textureBorderShader);
+        container.DrawBorder(borderShader);
+        object.DrawBorder(borderShader);
+        colorPyramid.DrawBorder(borderShader);
+        materialPyramid.DrawBorder(borderShader);
+        texturePyramid.DrawBorder(borderShader);
 
         // texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
         // directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());
@@ -229,9 +221,8 @@ int main()
     texturePyramid.Delete();
     object.Delete();
 
-    textureShader.Delete();
-    colorShader.Delete();
-    materialShader.Delete();
+    for (uint32_t i = 0; i < shaders.size(); i++)
+        shaders[i].Delete();
 
     Texture::DeleteCommonTextures();
     brickTexture.Delete();
