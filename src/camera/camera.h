@@ -33,12 +33,12 @@ namespace skate
         static constexpr float highSpeed = 3.0f * lowSpeed;
         float speed = lowSpeed;
 
-        const float minFOVRadian;
-        const float maxFOVRadian;
-        float FOVRadian;
-
         const float near;
         const float far;
+
+        float FOVRadian;
+        const float minFOVRadian;
+        const float maxFOVRadian;
 
         glm::mat4 view;
         glm::mat4 projection;

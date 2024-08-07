@@ -2,12 +2,14 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include "exception.h"
-#include "light_caster.h"
+
+#include "config.h"
 #include "glad.h"
+#include "light_caster.h"
 
 // Update shaders as well when you update this
 #define MAX_LIGHT_CASTER_NUMBER 8

@@ -2,9 +2,8 @@
 #ifndef __UTIL_H__
 #define __UTIL_H__
 
-#include "exception.h"
+#include <string>
 #include "glad.h"
-#include "glm.hpp"
 
 namespace skate 
 {
@@ -14,8 +13,6 @@ namespace skate
         extern const std::string dataDir;
         extern const std::string modelsDir;
         extern const std::string texturesDir;
-
-        extern const glm::vec4 backgroundColor;
 
         extern GLsizei windowWidth;
         extern GLsizei windowHeight;

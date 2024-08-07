@@ -15,11 +15,8 @@ namespace skate
         stbi_set_flip_vertically_on_load(true);
         unsigned char* bytes = stbi_load(path.c_str(), &imageWidth, &imageHeight, &colorChannelNumber, 0);
 
-        if (bytes == NULL) 
-            throw Exception("Failed to read " + path);
-
-        if (colorChannelNumber != 1 && colorChannelNumber != 3 && colorChannelNumber != 4) 
-            throw Exception("Invalid Color Channel: " + std::to_string(colorChannelNumber));
+        assert(bytes != NULL); // Check whether the image file is read successfully
+        assert(colorChannelNumber == 1 || colorChannelNumber == 3 || colorChannelNumber == 4); // Gray or RGB or RGBA
 
         glGenTextures(1, &ID);
         glBindTexture(GL_TEXTURE_2D, ID);

@@ -37,8 +37,7 @@ namespace skate
             postProcessSteps |= aiProcess_FlipUVs;
         
         const aiScene *scene = importer.ReadFile(path, postProcessSteps);
-        if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
-            throw Exception("ERROR::ASSIMP::" + std::string(importer.GetErrorString()) + "\n");
+        assert(scene != NULL && !(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) && scene->mRootNode != NULL); // Check import failure
         
         directory = path.substr(0, path.find_last_of('/')) + '/';
         ProcessNode(scene->mRootNode, scene);
@@ -81,7 +80,7 @@ namespace skate
                 indices.push_back(face.mIndices[j]);
         }
 
-        aiMaterial* mat = (mesh->mMaterialIndex >= 0) ? scene->mMaterials[mesh->mMaterialIndex] : NULL;
+        aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];
 
         const Texture& diffuse  = LoadMaterialTexture(mat, aiTextureType_DIFFUSE);
         const Texture& specular = LoadMaterialTexture(mat, aiTextureType_SPECULAR);
@@ -92,7 +91,7 @@ namespace skate
 
     const Texture& LoadableTextureModel::LoadMaterialTexture(aiMaterial *mat, aiTextureType type) noexcept 
     {
-        if (mat == NULL || mat->GetTextureCount(type) == 0)
+        if (mat->GetTextureCount(type) == 0)
         {
             if (type == aiTextureType_DIFFUSE || type == aiTextureType_SPECULAR)
                 return Texture::white;

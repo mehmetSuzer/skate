@@ -9,6 +9,9 @@
 // Starts the program in full screen
 // #define __FULL_SCREEN__
 
+// Enables shader releated debug info (compilation-linking)
+#define __SHADER_DEBUG__
+
 // Disables VSYNC and prints FPS
 #define __FPS__
 

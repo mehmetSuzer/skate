@@ -1,5 +1,4 @@
 
-#include <iostream>
 #include "input_handler.h"
 #include "scene.h"
 #include "model.h"
@@ -13,13 +12,11 @@
 
 using namespace skate;
 
-int main(int argc, char **argv)
+int main()
 {
     //-------------------------------------- INITIALIZATION --------------------------------------//
 
-    if (glfwInit() == GLFW_FALSE)
-        throw Exception("Failed to initialize GLFW!");
-
+    assert(glfwInit());
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -30,34 +27,22 @@ int main(int argc, char **argv)
 
 #ifdef __FULL_SCREEN__
     GLFWmonitor *monitor = glfwGetPrimaryMonitor();
-    if (!monitor)
-        throw Exception("Failed to Find the Primary Monitor!");
-
+    assert(monitor != NULL);
     const GLFWvidmode *videoMode = glfwGetVideoMode(monitor);
-    if (!videoMode)
-        throw Exception("Failed to Get the Video Mode of the Monitor!");
-
+    assert(videoMode != NULL);
     GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "skate", monitor, NULL);
 #else
     GLFWwindow *window = glfwCreateWindow(util::windowWidth, util::windowHeight, "skate", NULL, NULL);
 #endif
 
-    if (window == NULL)
-    {
-        glfwTerminate();
-        throw Exception("Failed to create GLFW Window!");
-    }
+    assert(window != NULL);
     glfwMakeContextCurrent(window);
 
     Camera camera(glm::vec3(0.0f));
     InputHandler::Instance().Initialize(window);
     InputHandler::Instance().SelectCamera(&camera);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        glfwTerminate();
-        throw Exception("Failed to initialize GLAD!");
-    }
+    assert(gladLoadGLLoader((GLADloadproc)glfwGetProcAddress));
 
 #ifdef __FULL_SCREEN__
     glViewport(0, 0, videoMode->width, videoMode->height);
@@ -95,6 +80,7 @@ int main(int argc, char **argv)
         GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST
     );
 
+    const glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
     DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
     PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f));
     SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), Transform::WorldDown);
@@ -217,7 +203,7 @@ int main(int argc, char **argv)
             shaders[i].UpdateView(projectionView, cameraPosition);
 
         glStencilMask(0xFF);
-        glClearColor(util::backgroundColor.r, util::backgroundColor.g, util::backgroundColor.b, util::backgroundColor.a);
+        glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         // Draw models

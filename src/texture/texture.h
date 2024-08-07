@@ -2,10 +2,10 @@
 #ifndef __TEXTURE_H__
 #define __TEXTURE_H__
 
-#include "stb_image.h"
-#include "exception.h"
+#include <string>
+#include <assert.h>
 #include "glad.h"
-#include "util.h"
+#include "stb_image.h"
 
 namespace skate 
 {

@@ -7,8 +7,7 @@ namespace skate
     {
         const std::string path = "glsl/" + filename;
         std::ifstream file(path);
-        if (!file.is_open())
-            throw Exception("File " + path + " couldn't be found!");
+        assert(file.is_open());
 
         std::stringstream buffer;
         std::string line;
@@ -18,14 +17,11 @@ namespace skate
             {
                 size_t start = line.find_first_of('<');
                 size_t end = line.find_last_of('>');
-                if (start != std::string::npos && end != std::string::npos) 
-                {
-                    std::string includeFilename = line.substr(start+1, end-start-1);
-                    std::string includeSource = ReadShaderSource(includeFilename);
-                    buffer << includeSource << std::endl;
-                } 
-                else
-                    throw Exception("Invalid source include! Line: " + line);
+                assert(start != std::string::npos && end != std::string::npos); // Check invalid source include
+
+                std::string includeFilename = line.substr(start+1, end-start-1);
+                std::string includeSource = ReadShaderSource(includeFilename);
+                buffer << includeSource << std::endl;
             } 
             else
                 buffer << line << std::endl;
@@ -44,12 +40,12 @@ namespace skate
         glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
         glCompileShader(vertexShader);
 
+    #ifdef __SHADER_DEBUG__
         glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-        if (!success) 
-        {
-            glGetShaderInfoLog(vertexShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
-            throw Exception("SHADER::VERTEX::COMPILATION_FAILED\nFile Path: " + vertexShaderPath + "\n" + shaderInfoLog);
-        }
+        glGetShaderInfoLog(vertexShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
+        std::cout << "SHADER COMPILATION: " << vertexShaderPath << " --> " << ((strlen(shaderInfoLog) != 0) ? shaderInfoLog : "SUCCESS") << std::endl;
+        assert(success); // Check whether the shader is compiled successfully
+    #endif 
 
         const std::string fragmentShaderCode = ReadShaderSource(fragmentShaderPath);
         const char* fragmentShaderSource = fragmentShaderCode.c_str();
@@ -57,24 +53,24 @@ namespace skate
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
         glCompileShader(fragmentShader);
 
+    #ifdef __SHADER_DEBUG__
         glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-        if (!success) 
-        {
-            glGetShaderInfoLog(fragmentShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
-            throw Exception("SHADER::FRAGMENT::COMPILATION_FAILED\nFile Path: " + fragmentShaderPath + "\n" + shaderInfoLog);
-        }
+        glGetShaderInfoLog(fragmentShader, sizeof(shaderInfoLog), NULL, shaderInfoLog);
+        std::cout << "SHADER COMPILATION: " << fragmentShaderPath << " --> " << ((strlen(shaderInfoLog) != 0) ? shaderInfoLog : "SUCCESS") << std::endl;
+        assert(success); // Check whether the shader is compiled successfully
+    #endif
 
         ID = glCreateProgram();
         glAttachShader(ID, vertexShader);
         glAttachShader(ID, fragmentShader);
         glLinkProgram(ID);
 
+    #ifdef __SHADER_DEBUG__
         glGetProgramiv(ID, GL_LINK_STATUS, &success);
-        if (!success) 
-        {
-            glGetProgramInfoLog(ID, sizeof(shaderInfoLog), NULL, shaderInfoLog);
-            throw Exception("SHADER::PROGRAM::LINKING_FAILED\n" + std::string(shaderInfoLog));
-        }
+        glGetProgramInfoLog(ID, sizeof(shaderInfoLog), NULL, shaderInfoLog);
+        std::cout << "SHADER LINKING: " << ((strlen(shaderInfoLog) != 0) ? shaderInfoLog : "SUCCESS") << std::endl << std::endl;
+        assert(success); // Check whether the shader is linked successfully
+    #endif
 
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);

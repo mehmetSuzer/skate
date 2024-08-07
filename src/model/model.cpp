@@ -5,19 +5,19 @@ namespace skate
 {
     template<typename Mesh>
     Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& quaternion, const glm::vec3& scalar_) noexcept
-        : transform(Transform(position_, quaternion, scalar_)), meshes(meshes_) {}
+        : meshes(meshes_), transform(Transform(position_, quaternion, scalar_)) {}
     
     template<typename Mesh>
     Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& quaternion, float scale) noexcept
-        : transform(Transform(position_, quaternion, scale)), meshes(meshes_) {}
+        : meshes(meshes_), transform(Transform(position_, quaternion, scale)) {}
     
     template<typename Mesh>
     Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_) noexcept
-        : transform(Transform(position_, eulerAngles, scalar_)), meshes(meshes_) {}
+        : meshes(meshes_), transform(Transform(position_, eulerAngles, scalar_)) {}
     
     template<typename Mesh>
     Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale) noexcept
-        : transform(Transform(position_, eulerAngles, scale)), meshes(meshes_) {}
+        : meshes(meshes_), transform(Transform(position_, eulerAngles, scale)) {}
 
     template<typename Mesh>
     void Model<Mesh>::Draw(const Shader& shader) const noexcept 

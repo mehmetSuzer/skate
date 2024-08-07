@@ -1,5 +1,5 @@
 
-cmake_minimum_required(VERSION 3.12.0)
+cmake_minimum_required(VERSION 3.13.0)
 cmake_policy(SET CMP0072 NEW)
 
 set(CMAKE_C_STANDARD 11)
@@ -7,12 +7,18 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Use -O3 for high optimization.
+# Use -flto for link-time optimization.
+# Use -g0 to disable debug information.
+# Use -Wall and -Wextra to enable warnings.
 # Comment if any problem occurs or a debug is needed
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -DNDEBUG -g0 -Wall")
 
 project(skate VERSION 1.0.0)
 
 find_package(OpenGL REQUIRED)
+find_package(glfw3 REQUIRED)
+find_package(assimp REQUIRED)
 
 set(LIB_DIR lib)
 set(SRC_DIR src)
@@ -39,9 +45,6 @@ include_directories(${SRC_DIR}/material)
 
 add_subdirectory(${SRC_DIR}/config)
 include_directories(${SRC_DIR}/config)
-
-add_subdirectory(${SRC_DIR}/exception)
-include_directories(${SRC_DIR}/exception)
 
 add_subdirectory(${SRC_DIR}/observer_subject)
 include_directories(${SRC_DIR}/observer_subject)
@@ -92,7 +95,6 @@ target_link_libraries(${PROJECT_NAME}
     light
     object_pool
     observer_subject
-    exception
     transform
     glm
     glad

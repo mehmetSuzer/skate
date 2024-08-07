@@ -37,8 +37,7 @@ namespace skate
             postProcessSteps |= aiProcess_FlipUVs;
         
         const aiScene *scene = importer.ReadFile(path, postProcessSteps);
-        if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
-            throw Exception("ERROR::ASSIMP::" + std::string(importer.GetErrorString()) + "\n");
+        assert(scene != NULL && !(scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) && scene->mRootNode != NULL); // Check import failure
         
         ProcessNode(scene->mRootNode, scene);
     }
@@ -65,13 +64,10 @@ namespace skate
         float metalness = 0.0f;
         float roughness = 0.0f;
 
-        if (mesh->mMaterialIndex >= 0) 
-        {
-            // Values are not affected if Get does not return aiReturn_SUCCESS
-            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, vertexColor);
-            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_METALLIC_FACTOR, metalness);
-            scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughness);
-        }
+        // Values are not affected if Get does not return aiReturn_SUCCESS
+        scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_COLOR_DIFFUSE, vertexColor);
+        scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_METALLIC_FACTOR, metalness);
+        scene->mMaterials[mesh->mMaterialIndex]->Get(AI_MATKEY_ROUGHNESS_FACTOR, roughness);
 
         for (uint32_t i = 0; i < mesh->mNumVertices; i++) 
         {
