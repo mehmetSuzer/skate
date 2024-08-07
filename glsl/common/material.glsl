@@ -1,6 +1,6 @@
 
-#ifndef __MATERIAL_GLSL__
-#define __MATERIAL_GLSL__
+#ifndef _MATERIAL_GLSL_
+#define _MATERIAL_GLSL_
 
 struct Material 
 {
@@ -12,4 +12,4 @@ struct Material
 
 uniform Material material;
 
-#endif // __MATERIAL_GLSL__
+#endif // _MATERIAL_GLSL_

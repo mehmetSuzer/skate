@@ -6,8 +6,13 @@
 
 out vec4 FragColor;
 
-in vec3 position;
-in vec3 normal;
+in VS_OUT
+{
+    vec3 position;
+    vec3 normal;
+    vec4 color;
+    vec2 texCoord;
+} fsIn;
 
 uniform vec3 cameraPosition;
 
@@ -16,10 +21,10 @@ vec4 DirectionalLight(Light light, vec3 directionToCamera)
     float ambientPower = 0.2f;
     vec3 ambient = material.ambient * ambientPower;
 
-    float diffusePower = max(dot(normal, -light.direction), 0.0f);
+    float diffusePower = max(dot(fsIn.normal, -light.direction), 0.0f);
     vec3 diffuse = material.diffuse * diffusePower;
     
-    vec3 reflectionDirection = reflect(light.direction, normal);
+    vec3 reflectionDirection = reflect(light.direction, fsIn.normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), material.shininess) : 0.0f;
     vec3 specular = material.specular * specularPower;
 
@@ -28,7 +33,7 @@ vec4 DirectionalLight(Light light, vec3 directionToCamera)
 
 vec4 PointLight(Light light, vec3 directionToCamera)
 {
-    vec3 positionToLightPosition = light.position - position;
+    vec3 positionToLightPosition = light.position - fsIn.position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
 
@@ -37,10 +42,10 @@ vec4 PointLight(Light light, vec3 directionToCamera)
     float ambientPower = 0.1f;
     vec3 ambient = material.ambient * ambientPower;
 
-    float diffusePower = max(dot(normal, directionToLight), 0.0f);
+    float diffusePower = max(dot(fsIn.normal, directionToLight), 0.0f);
     vec3 diffuse = material.diffuse * diffusePower;
 
-    vec3 reflectionDirection = reflect(-directionToLight, normal);
+    vec3 reflectionDirection = reflect(-directionToLight, fsIn.normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), material.shininess) : 0.0f;
     vec3 specular = material.specular * specularPower;
 
@@ -49,7 +54,7 @@ vec4 PointLight(Light light, vec3 directionToCamera)
 
 vec4 SpotLight(Light light, vec3 directionToCamera)
 {
-    vec3 positionToLightPosition = light.position - position;
+    vec3 positionToLightPosition = light.position - fsIn.position;
     float distanceToLight = length(positionToLightPosition);
     vec3 directionToLight = positionToLightPosition / distanceToLight;
 
@@ -64,9 +69,9 @@ vec4 SpotLight(Light light, vec3 directionToCamera)
     if (cosTheta < light.cosOuterCutOff)
         return vec4(attenuation * ambient * light.color, 1.0f);
 
-    float diffusePower = max(dot(normal, directionToLight), 0.0f);
+    float diffusePower = max(dot(fsIn.normal, directionToLight), 0.0f);
 
-    vec3 reflectionDirection = reflect(-directionToLight, normal);
+    vec3 reflectionDirection = reflect(-directionToLight, fsIn.normal);
     float specularPower = (diffusePower > 0.0f) ? pow(max(dot(directionToCamera, reflectionDirection), 0.0f), material.shininess) : 0.0f;
 
     // If between the inner cone and the outer cone
@@ -86,8 +91,9 @@ vec4 SpotLight(Light light, vec3 directionToCamera)
 
 void main() 
 {
-    vec3 directionToCamera = normalize(cameraPosition - position);
+    vec3 directionToCamera = normalize(cameraPosition - fsIn.position);
     FragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    
     for (int i = 0; i < lightCasterNumber; i++) 
     {
         if (lights[i].type == DIRECTIONAL_LIGHT)

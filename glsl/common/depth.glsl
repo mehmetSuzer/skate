@@ -1,6 +1,6 @@
 
-#ifndef __DEPTH_GLSL__
-#define __DEPTH_GLSL__
+#ifndef _DEPTH_GLSL_
+#define _DEPTH_GLSL_
 
 const float near = 0.1f; 
 const float far  = 100.0f; 
@@ -13,4 +13,4 @@ vec4 LinearizeDepth(float depth)
     return vec4(vec3(normalizedDepth), 1.0f);
 }
 
-#endif // __DEPTH_GLSL__
+#endif // _DEPTH_GLSL_

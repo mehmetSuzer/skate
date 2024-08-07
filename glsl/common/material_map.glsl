@@ -1,6 +1,6 @@
 
-#ifndef __MATERIAL_MAP_GLSL__
-#define __MATERIAL_MAP_GLSL__
+#ifndef _MATERIAL_MAP_GLSL_
+#define _MATERIAL_MAP_GLSL_
 
 struct MaterialMap 
 {
@@ -12,4 +12,4 @@ struct MaterialMap
 
 uniform MaterialMap materialMap;
 
-#endif // __MATERIAL_MAP_GLSL__
+#endif // _MATERIAL_MAP_GLSL_

@@ -1,6 +1,6 @@
 
-#ifndef __LIGHT_GLSL__
-#define __LIGHT_GLSL__
+#ifndef _LIGHT_GLSL_
+#define _LIGHT_GLSL_
 
 #define MAX_LIGHT_CASTER_NUMBER 8
 
@@ -24,4 +24,4 @@ struct Light
 uniform int lightCasterNumber;
 uniform Light lights[MAX_LIGHT_CASTER_NUMBER];
 
-#endif // __LIGHT_GLSL__
+#endif // _LIGHT_GLSL_

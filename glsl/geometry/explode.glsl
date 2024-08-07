@@ -4,14 +4,21 @@
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
-in VS_OUT 
+in VS_OUT
 {
     vec3 position;
     vec3 normal;
+    vec4 color;
+    vec2 texCoord;
 } gsIn[];
 
-out vec3 position;
-out vec3 normal;
+out VS_OUT
+{
+    vec3 position;
+    vec3 normal;
+    vec4 color;
+    vec2 texCoord;
+} gsOut;
 
 void main() 
 {
@@ -19,22 +26,28 @@ void main()
     vec3 b = vec3(gl_in[2].gl_Position) - vec3(gl_in[1].gl_Position);
     vec3 normal = normalize(cross(a, b));
     
-    float magnitude = 0.02f;
+    float magnitude = 0.06f;
     vec4 shift = vec4(normal * magnitude, 0.0f);
 
     gl_Position = gl_in[0].gl_Position + shift;
-    position = gsIn[0].position;
-    normal = gsIn[0].normal;
+    gsOut.position = gsIn[0].position;
+    gsOut.normal = gsIn[0].normal;
+    gsOut.color = gsIn[0].color;
+    gsOut.texCoord = gsIn[0].texCoord;
     EmitVertex();
 
     gl_Position = gl_in[1].gl_Position + shift;
-    position = gsIn[1].position;
-    normal = gsIn[1].normal;
+    gsOut.position = gsIn[1].position;
+    gsOut.normal = gsIn[1].normal;
+    gsOut.color = gsIn[1].color;
+    gsOut.texCoord = gsIn[1].texCoord;
     EmitVertex();
 
     gl_Position = gl_in[2].gl_Position + shift;
-    position = gsIn[2].position;
-    normal = gsIn[2].normal;
+    gsOut.position = gsIn[2].position;
+    gsOut.normal = gsIn[2].normal;
+    gsOut.color = gsIn[2].color;
+    gsOut.texCoord = gsIn[2].texCoord;
     EmitVertex();
 
     EndPrimitive();
