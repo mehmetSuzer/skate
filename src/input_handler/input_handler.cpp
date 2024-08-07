@@ -17,40 +17,40 @@ namespace skate
     static void activeKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept 
     {
         Camera* selectedCamera = InputHandler::Instance().GetSelectedCamera();
-        const enum Button button = InputHandler::Instance().GetButton(key);
+        const InputHandler::Button button = InputHandler::Instance().GetButton(key);
 
-        if (selectedCamera == NULL && button != ESCAPE_BUTTON && button != INPUT_ACTIVATION_BUTTON)
+        if (selectedCamera == NULL && button != InputHandler::ESCAPE_BUTTON && button != InputHandler::INPUT_ACTIVATION_BUTTON)
             return;
 
         if (action == GLFW_PRESS) 
         {
             switch (button)
             {
-            case ESCAPE_BUTTON:
+            case InputHandler::ESCAPE_BUTTON:
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
                 break;
-            case INPUT_ACTIVATION_BUTTON:
+            case InputHandler::INPUT_ACTIVATION_BUTTON:
                 InputHandler::Instance().DeactivateInputs(window);
                 break;
-            case FORWARD_BUTTON:
-                selectedCamera->SetForwardDirection(AXIS_POSITIVE);
+            case InputHandler::FORWARD_BUTTON:
+                selectedCamera->SetForwardDirection(Camera::AXIS_POSITIVE);
                 break;
-            case BACKWARD_BUTTON:
-                selectedCamera->SetForwardDirection(AXIS_NEGATIVE);
+            case InputHandler::BACKWARD_BUTTON:
+                selectedCamera->SetForwardDirection(Camera::AXIS_NEGATIVE);
                 break;
-            case RIGHT_BUTTON:
-                selectedCamera->SetRightDirection(AXIS_POSITIVE);
+            case InputHandler::RIGHT_BUTTON:
+                selectedCamera->SetRightDirection(Camera::AXIS_POSITIVE);
                 break;
-            case LEFT_BUTTON:
-                selectedCamera->SetRightDirection(AXIS_NEGATIVE);
+            case InputHandler::LEFT_BUTTON:
+                selectedCamera->SetRightDirection(Camera::AXIS_NEGATIVE);
                 break;
-            case UP_BUTTON:
-                selectedCamera->SetUpDirection(AXIS_POSITIVE);
+            case InputHandler::UP_BUTTON:
+                selectedCamera->SetUpDirection(Camera::AXIS_POSITIVE);
                 break;
-            case DOWN_BUTTON:
-                selectedCamera->SetUpDirection(AXIS_NEGATIVE);
+            case InputHandler::DOWN_BUTTON:
+                selectedCamera->SetUpDirection(Camera::AXIS_NEGATIVE);
                 break;
-            case SPEED_UP_BUTTON:
+            case InputHandler::SPEED_UP_BUTTON:
                 selectedCamera->SetHighSpeed();
                 break;
             default:
@@ -61,21 +61,21 @@ namespace skate
         {
             switch (button)
             {
-            case ESCAPE_BUTTON:
+            case InputHandler::ESCAPE_BUTTON:
                 break;
-            case FORWARD_BUTTON:
-            case BACKWARD_BUTTON:
-                selectedCamera->SetForwardDirection(AXIS_NONE);
+            case InputHandler::FORWARD_BUTTON:
+            case InputHandler::BACKWARD_BUTTON:
+                selectedCamera->SetForwardDirection(Camera::AXIS_NONE);
                 break;
-            case RIGHT_BUTTON:
-            case LEFT_BUTTON:
-                selectedCamera->SetRightDirection(AXIS_NONE);
+            case InputHandler::RIGHT_BUTTON:
+            case InputHandler::LEFT_BUTTON:
+                selectedCamera->SetRightDirection(Camera::AXIS_NONE);
                 break;
-            case UP_BUTTON:
-            case DOWN_BUTTON:
-                selectedCamera->SetUpDirection(AXIS_NONE);
+            case InputHandler::UP_BUTTON:
+            case InputHandler::DOWN_BUTTON:
+                selectedCamera->SetUpDirection(Camera::AXIS_NONE);
                 break;
-            case SPEED_UP_BUTTON:
+            case InputHandler::SPEED_UP_BUTTON:
                 selectedCamera->SetLowSpeed();
                 break;
             default:
@@ -86,12 +86,12 @@ namespace skate
 
     static void deactiveKeyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) noexcept 
     {
-        const enum Button button = InputHandler::Instance().GetButton(key);
+        const InputHandler::Button button = InputHandler::Instance().GetButton(key);
         if (action == GLFW_PRESS) 
         {
             switch (button)
             {
-            case INPUT_ACTIVATION_BUTTON:
+            case InputHandler::INPUT_ACTIVATION_BUTTON:
                 InputHandler::Instance().ActivateInputs(window);
                 break;
             default:
@@ -140,7 +140,7 @@ namespace skate
 
     InputHandler InputHandler::instance;
 
-    void InputHandler::SetButton(GLuint key, enum Button button) noexcept 
+    void InputHandler::SetButton(GLuint key, Button button) noexcept 
     {
         uint32_t index = 0;
         while (index < buttonMapSize && buttonMap[index] != button) 

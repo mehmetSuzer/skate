@@ -41,7 +41,7 @@ namespace skate
 
     public:
         ~Observer() noexcept;
-        virtual void OnNotify(const T& t, enum Event event) noexcept = 0;
+        virtual void OnNotify(const T& t, Event event) noexcept = 0;
     };
 
     // Subject class for Subject-Observer Design Pattern.
@@ -55,7 +55,7 @@ namespace skate
         uint32_t observerNumber = 0;
 
     protected:
-        void Notify(const T& t, enum Event event) const noexcept;
+        void Notify(const T& t, Event event) const noexcept;
 
     public:
         ~Subject() noexcept;
@@ -78,7 +78,7 @@ namespace skate
 
     public:
         ~Observer() noexcept;
-        virtual void OnNotify(const T& t, enum Event event) noexcept = 0;
+        virtual void OnNotify(const T& t, Event event) noexcept = 0;
     };
 
     // Subject class for Subject-Observer Design Pattern.
@@ -90,7 +90,7 @@ namespace skate
         Observer<T>* head = NULL;
 
     protected:
-        void Notify(const T& t, enum Event event) const noexcept;
+        void Notify(const T& t, Event event) const noexcept;
 
     public:
         ~Subject() noexcept;

@@ -89,7 +89,7 @@ namespace skate
 
         for (uint32_t i = 0; i < lightCasterNumber; i++) 
         {
-            const Light light = lightCasters[i]->GetLight();
+            const LightCaster::Light light = lightCasters[i]->GetLight();
             const std::string arrayString = "lights[" + std::to_string(i) + "].";
 
             SetUniformInt(light.type, (arrayString + "type").c_str());

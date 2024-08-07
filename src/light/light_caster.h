@@ -24,26 +24,6 @@ namespace skate
         const glm::vec3 white =     glm::vec3(1.0f,  1.0f,  1.0f);
     }
 
-    enum LightCasterType 
-    {
-        DIRECTIONAL_LIGHT = 0,
-        POINT_LIGHT,
-        SPOT_LIGHT,
-    };
-
-    typedef struct 
-    {
-        const enum LightCasterType type;
-        const glm::vec3 color;        // all
-        const glm::vec3 position;     // point and spot
-        const glm::vec3 direction;    // directional and spot
-        const float intensity;        // directional
-        const float linear;           // point and spot
-        const float quadratic;        // point and spot
-        const float cosInnerCutOff;   // spot
-        const float cosOuterCutOff;   // spot
-    } Light;
-
     // Abstract class for light sources
     class LightCaster 
     {
@@ -52,14 +32,34 @@ namespace skate
         bool active = true;
 
     public:
+        enum LightCasterType 
+        {
+            DIRECTIONAL_LIGHT = 0,
+            POINT_LIGHT,
+            SPOT_LIGHT,
+        };
+
+        typedef struct 
+        {
+            const LightCasterType type;
+            const glm::vec3 color;        // all
+            const glm::vec3 position;     // point and spot
+            const glm::vec3 direction;    // directional and spot
+            const float intensity;        // directional
+            const float linear;           // point and spot
+            const float quadratic;        // point and spot
+            const float cosInnerCutOff;   // spot
+            const float cosOuterCutOff;   // spot
+        } Light;
+    
         Transform transform;
 
+        virtual ~LightCaster() {}
+        
         LightCaster(const glm::vec3& color_)
         {
             SetColor(color_);
         }
-
-        virtual ~LightCaster() {}
 
         inline const glm::vec3& GetColor(void) const noexcept 
         {

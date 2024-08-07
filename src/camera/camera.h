@@ -7,24 +7,24 @@
 
 namespace skate 
 {
-    enum AxisDirection 
-    {
-        AXIS_NONE = 0,
-        AXIS_POSITIVE,
-        AXIS_NEGATIVE,
-    };
-
-    typedef struct 
-    {
-        enum AxisDirection right;
-        enum AxisDirection up;
-        enum AxisDirection forward;
-    } CameraDirection;
-
     // First person camera where vertical roll is prevented
     class Camera 
     {
+    public:
+        enum AxisDirection 
+        {
+            AXIS_NONE = 0,
+            AXIS_POSITIVE,
+            AXIS_NEGATIVE,
+        };
+
     private:
+        typedef struct 
+        {
+            AxisDirection right;
+            AxisDirection up;
+            AxisDirection forward;
+        } CameraDirection;
         CameraDirection direction = {AXIS_NONE, AXIS_NONE, AXIS_NONE};
 
         const float maxCosAngleBetweenForwardAndWorldUp = glm::cos(M_PIf / 36.0f);
@@ -66,17 +66,17 @@ namespace skate
             return projection;
         }
 
-        inline void SetRightDirection(enum AxisDirection axisDirection) noexcept 
+        inline void SetRightDirection(AxisDirection axisDirection) noexcept 
         {
             direction.right = axisDirection;
         }
 
-        inline void SetUpDirection(enum AxisDirection axisDirection) noexcept 
+        inline void SetUpDirection(AxisDirection axisDirection) noexcept 
         {
             direction.up = axisDirection;
         }
 
-        inline void SetForwardDirection(enum AxisDirection axisDirection) noexcept 
+        inline void SetForwardDirection(AxisDirection axisDirection) noexcept 
         {
             direction.forward = axisDirection;
         }

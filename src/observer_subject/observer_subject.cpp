@@ -59,7 +59,7 @@ namespace skate
 
     // Notifies all observers in the array.
     template<typename T>
-    void Subject<T>::Notify(const T& t, enum Event event) const noexcept 
+    void Subject<T>::Notify(const T& t, Event event) const noexcept 
     {
         for (uint32_t i = 0; i < observerNumber; i++) 
             observers[i]->OnNotify(t, event);
@@ -138,7 +138,7 @@ namespace skate
 
     // Notifies all observers in the linked list.
     template<typename T>
-    void Subject<T>::Notify(const T& t, enum Event event) const noexcept 
+    void Subject<T>::Notify(const T& t, Event event) const noexcept 
     {
         Observer<T>* observer = head;
         while (observer != NULL) 

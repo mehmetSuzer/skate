@@ -7,24 +7,24 @@
 
 namespace skate 
 {
-    enum Button : uint8_t 
-    {
-        UNKNOWN_BUTTON = 0,
-        ESCAPE_BUTTON,
-        INPUT_ACTIVATION_BUTTON,
-        FORWARD_BUTTON,
-        BACKWARD_BUTTON,
-        RIGHT_BUTTON,
-        LEFT_BUTTON,
-        UP_BUTTON,
-        DOWN_BUTTON,
-        SPEED_UP_BUTTON,
-    };
-
     // Singleton input handler which handles the mouse and the keyboard inputs
     class InputHandler 
     {
-    private:
+    public:
+        enum Button
+        {
+            UNKNOWN_BUTTON = 0,
+            ESCAPE_BUTTON,
+            INPUT_ACTIVATION_BUTTON,
+            FORWARD_BUTTON,
+            BACKWARD_BUTTON,
+            RIGHT_BUTTON,
+            LEFT_BUTTON,
+            UP_BUTTON,
+            DOWN_BUTTON,
+            SPEED_UP_BUTTON,
+        };
+        
         static InputHandler instance;
         bool initialized = false;
 
@@ -33,7 +33,7 @@ namespace skate
         bool firstMouse = true;
 
         static const uint32_t buttonMapSize = GLFW_KEY_LAST+1;
-        enum Button buttonMap[buttonMapSize];
+        Button buttonMap[buttonMapSize];
 
         Camera* selectedCamera = NULL;
 
@@ -83,12 +83,12 @@ namespace skate
             firstMouse = false;
         }
 
-        inline enum Button GetButton(GLuint key) const noexcept 
+        inline Button GetButton(GLuint key) const noexcept 
         {
             return buttonMap[key];
         }
 
-        void SetButton(GLuint key, enum Button button) noexcept;
+        void SetButton(GLuint key, Button button) noexcept;
         void Initialize(GLFWwindow* window) noexcept;
         void ActivateInputs(GLFWwindow *window) noexcept;
         void DeactivateInputs(GLFWwindow* window) noexcept;
