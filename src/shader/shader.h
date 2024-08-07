@@ -2,10 +2,12 @@
 #ifndef __SHADER_H__
 #define __SHADER_H__
 
+#include <fstream>
+#include <sstream>
 #include <vector>
 #include "exception.h"
-#include "util.h"
 #include "light_caster.h"
+#include "glad.h"
 
 // Update shaders as well when you update this
 #define MAX_LIGHT_CASTER_NUMBER 8
@@ -18,8 +20,12 @@ namespace skate
     private:
         GLuint ID;
         
+        static std::string ReadShaderSource(const std::string& filename);
+
     public:
-        explicit Shader(util::ShaderType type);
+        // Shader paths must be with respect to glsl/ folder. glsl/ part is automatically added in the method.
+        // E.g. vertex/texture_shader.glsl and fragment/texture_shader.glsl.
+        Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath);
 
         inline GLuint GetID(void) const noexcept 
         {

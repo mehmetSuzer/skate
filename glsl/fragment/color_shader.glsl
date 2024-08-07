@@ -3,7 +3,6 @@
 
 #include <common/light.glsl>
 #include <common/color_uniforms.glsl>
-#include <common/stencil.glsl>
 
 out vec4 FragColor;
 
@@ -79,12 +78,6 @@ vec4 SpotLight(Light light, vec3 directionToCamera)
 
 void main() 
 {
-    if (drawBorder)
-    {
-        FragColor = BORDER_COLOR;
-        return;
-    }
-    
     vec3 directionToCamera = normalize(cameraPosition - position);
     FragColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
     for (int i = 0; i < lightCasterNumber; i++) 

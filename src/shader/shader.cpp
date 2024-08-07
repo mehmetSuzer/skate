@@ -3,15 +3,44 @@
 
 namespace skate 
 {
-    Shader::Shader(util::ShaderType type) 
+    std::string Shader::ReadShaderSource(const std::string& filename) 
+    {
+        const std::string path = "glsl/" + filename;
+        std::ifstream file(path);
+        if (!file.is_open())
+            throw Exception("File " + path + " couldn't be found!");
+
+        std::stringstream buffer;
+        std::string line;
+        while (std::getline(file, line)) 
+        {
+            if (line.find("#include") != std::string::npos) 
+            {
+                size_t start = line.find_first_of('<');
+                size_t end = line.find_last_of('>');
+                if (start != std::string::npos && end != std::string::npos) 
+                {
+                    std::string includeFilename = line.substr(start+1, end-start-1);
+                    std::string includeSource = ReadShaderSource(includeFilename);
+                    buffer << includeSource << std::endl;
+                } 
+                else
+                    throw Exception("Invalid source include! Line: " + line);
+            } 
+            else
+                buffer << line << std::endl;
+        }
+        return buffer.str();
+    }
+
+    Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentShaderPath) 
     {
         GLint success;
         GLchar shaderInfoLog[1024];
 
-        const std::string vertexShaderPath = util::GetShaderProgramPath(util::VERTEX_SHADER_PROGRAM, type);
-        const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        const std::string vertexShaderCode = util::ReadShaderSource(vertexShaderPath);
+        const std::string vertexShaderCode = ReadShaderSource(vertexShaderPath);
         const char* vertexShaderSource = vertexShaderCode.c_str();
+        const GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
         glCompileShader(vertexShader);
 
@@ -22,10 +51,9 @@ namespace skate
             throw Exception("SHADER::VERTEX::COMPILATION_FAILED\nFile Path: " + vertexShaderPath + "\n" + shaderInfoLog);
         }
 
-        const std::string fragmentShaderPath = util::GetShaderProgramPath(util::FRAGMENT_SHADER_PROGRAM, type);
-        const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        const std::string fragmentShaderCode = util::ReadShaderSource(fragmentShaderPath);
+        const std::string fragmentShaderCode = ReadShaderSource(fragmentShaderPath);
         const char* fragmentShaderSource = fragmentShaderCode.c_str();
+        const GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
         glCompileShader(fragmentShader);
 

@@ -106,11 +106,19 @@ int main(int argc, char **argv)
         // (LightCaster*)&spotLight,
     };
 
-    const Shader colorShader(util::COLOR_SHADER);
-    const Shader materialShader(util::MATERIAL_SHADER);
-    const Shader textureShader(util::TEXTURE_SHADER);
+    const Shader colorShader("vertex/color_shader.glsl", "fragment/color_shader.glsl");
+    const Shader colorBorderShader("vertex/color_border_shader.glsl", "fragment/border_shader.glsl");
+    const Shader materialShader("vertex/material_shader.glsl", "fragment/material_shader.glsl");
+    const Shader materialBorderShader("vertex/material_border_shader.glsl", "fragment/border_shader.glsl");
+    const Shader textureShader("vertex/texture_shader.glsl", "fragment/texture_shader.glsl");
+    const Shader textureBorderShader("vertex/texture_border_shader.glsl", "fragment/border_shader.glsl");
 
-    const std::vector<Shader> shaders = { colorShader, materialShader, textureShader };
+    const std::vector<Shader> shaders = 
+    {
+        colorShader, colorBorderShader,
+        materialShader, materialBorderShader,
+        textureShader, textureBorderShader,
+     };
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
@@ -217,12 +225,6 @@ int main(int argc, char **argv)
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         glEnable(GL_DEPTH_TEST);
 
-        for (uint32_t i = 0; i < shaders.size(); i++) 
-        {
-            shaders[i].Use();
-            shaders[i].SetUniformBool(false, "drawBorder");
-        }
-
         container.Draw(textureShader);
         object.Draw(colorShader);
         colorPyramid.Draw(colorShader);
@@ -234,17 +236,11 @@ int main(int argc, char **argv)
         glStencilMask(0x00);
         glDisable(GL_DEPTH_TEST);
 
-        for (uint32_t i = 0; i < shaders.size(); i++) 
-        {
-            shaders[i].Use();
-            shaders[i].SetUniformBool(true, "drawBorder");
-        }
-
-        container.DrawBorder(textureShader);
-        object.DrawBorder(colorShader);
-        colorPyramid.DrawBorder(colorShader);
-        materialPyramid.DrawBorder(materialShader);
-        texturePyramid.DrawBorder(textureShader);
+        container.DrawBorder(textureBorderShader);
+        object.DrawBorder(colorBorderShader);
+        colorPyramid.DrawBorder(colorBorderShader);
+        materialPyramid.DrawBorder(materialBorderShader);
+        texturePyramid.DrawBorder(textureBorderShader);
 
         // texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
         // directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());
