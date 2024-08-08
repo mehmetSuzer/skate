@@ -1,9 +1,8 @@
 
 #version 330 core
 
-#include <common/light.glsl>
-#include <common/material.glsl>
 #include <common/fragment.glsl>
+#include <common/material.glsl>
 
 vec4 DirectionalLight(Light light, vec3 directionToCamera)
 {

@@ -24,7 +24,7 @@ namespace skate
 
     public:
         // Shader paths must be with respect to glsl/ folder. glsl/ part is automatically added in the method.
-        // E.g. vertex/texture_shader.glsl and fragment/texture_shader.glsl.
+        // E.g. vertex/texture_shader.glsl, fragment/texture_shader.glsl, or geometry/pass_through.glsl
         Shader(const char* vertexShaderPath, const char* fragmentShaderPath, const char* geometryShader = NULL);
 
         inline GLuint GetID(void) const noexcept 

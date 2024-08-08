@@ -8,19 +8,6 @@
 
 namespace skate 
 {
-    // A vertex that has only position
-    struct LightVertex
-    {
-        glm::vec3 position;
-
-        static void LinkAttributes(void) noexcept 
-        {      
-            // position
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(LightVertex), (void*)offsetof(LightVertex, position));
-        }
-    };
-
     // A vertex that has position and normal
     struct MaterialVertex 
     {
@@ -83,8 +70,7 @@ namespace skate
     template<typename Vertex>
     struct isAValidVertex 
     {
-        static constexpr bool value =   std::is_same<Vertex, LightVertex>::value    ||
-                                        std::is_same<Vertex, ColorVertex>::value    ||
+        static constexpr bool value =   std::is_same<Vertex, ColorVertex>::value    ||
                                         std::is_same<Vertex, MaterialVertex>::value ||
                                         std::is_same<Vertex, TextureVertex>::value;
     };

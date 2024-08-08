@@ -69,9 +69,9 @@ int main()
     const Texture woodContainerSpecularMap("data/textures/container/metallic.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
 
     const glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
-    DirectionalLight directionalLight = DirectionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
-    PointLight pointLight = PointLight(glm::vec3(0.0f, 2.0f, 0.0f));
-    SpotLight spotLight = SpotLight(glm::vec3(2.5f, 5.0f, 0.0f), Transform::WorldDown);
+    DirectionalLight directionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
+    PointLight pointLight(glm::vec3(0.0f, 2.0f, 0.0f));
+    SpotLight spotLight(glm::vec3(2.5f, 5.0f, 0.0f), Transform::WorldDown);
 
     const std::vector<LightCaster*> lightCasters = 
     {
@@ -85,6 +85,26 @@ int main()
     const Shader textureShader("vertex/texture_shader.glsl", "fragment/texture_shader.glsl");
     const Shader borderShader("vertex/border_shader.glsl", "fragment/border_shader.glsl");
     const std::vector<Shader> shaders = { colorShader, materialShader, textureShader, borderShader };
+
+    //-------------------------------------- UNIFORM BUFFER --------------------------------------//
+
+    // Generate a uniform buffer object
+    GLuint uniformGlobal;
+    glGenBuffers(1, &uniformGlobal);
+    glBindBuffer(GL_UNIFORM_BUFFER, uniformGlobal);
+    glBufferData(GL_UNIFORM_BUFFER, 96 + 80*MAX_LIGHT_CASTER_NUMBER, NULL, GL_STATIC_DRAW);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+    // Bind the shaders to a binding points
+    const GLuint uniformBlockBinding = 0;
+    for (uint32_t i = 0; i < shaders.size(); i++)
+    {
+        GLuint uniformBlockIndex = glGetUniformBlockIndex(shaders[i].GetID(), "Global");
+        glUniformBlockBinding(shaders[i].GetID(), uniformBlockIndex, uniformBlockBinding);
+    }
+
+    // Bind the uniform buffer object to the same binding point
+    glBindBufferBase(GL_UNIFORM_BUFFER, uniformBlockBinding, uniformGlobal);
 
     //-------------------------------------- CONTAINER MODEL --------------------------------------//
 
@@ -139,7 +159,8 @@ int main()
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
     LoadableColorModel object("data/models/medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
-
+    object.Select();
+    
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
     float currentTime;
@@ -173,13 +194,27 @@ int main()
         const glm::mat4 projectionView = camera.GetProjection() * camera.GetView();
         const glm::vec3& cameraPosition = camera.transform.GetPosition();
 
-        colorShader.UpdateLightCasters(lightCasters);
-        materialShader.UpdateLightCasters(lightCasters);
-        textureShader.UpdateLightCasters(lightCasters);
+        int lightCasterNumber = (lightCasters.size() < MAX_LIGHT_CASTER_NUMBER) ? lightCasters.size() : MAX_LIGHT_CASTER_NUMBER;
+        glBindBuffer(GL_UNIFORM_BUFFER, uniformGlobal);
+        glBufferSubData(GL_UNIFORM_BUFFER, 0, 4, &lightCasterNumber);
+        glBufferSubData(GL_UNIFORM_BUFFER, 16, 12, glm::value_ptr(cameraPosition));
+        glBufferSubData(GL_UNIFORM_BUFFER, 32, 64, glm::value_ptr(projectionView));
 
-        // Update shaders
-        for (uint32_t i = 0; i < shaders.size(); i++) 
-            shaders[i].UpdateView(projectionView, cameraPosition);
+        for (uint32_t i = 0; i < lightCasterNumber; i++) 
+        {
+            const LightCaster::Light light = lightCasters[i]->GetLight();
+
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i,        4, &(light.type));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 4,    4, &(light.intensity));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 8,    4, &(light.linear));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 12,   4, &(light.quadratic));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 16,   4, &(light.cosInnerCutOff));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 20,   4, &(light.cosOuterCutOff));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 32,  12, &(light.color));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 48,  12, &(light.position));
+            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 64,  12, &(light.direction));
+        }
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
         glStencilMask(0xFF);
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);

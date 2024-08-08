@@ -2,6 +2,8 @@
 #ifndef _GEOMETRY_GLSL_
 #define _GEOMETRY_GLSL_
 
+#include <common/global.glsl>
+
 in VS_OUT
 {
     vec3 position;

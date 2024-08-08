@@ -6,6 +6,7 @@ layout (triangle_strip, max_vertices = 3) out;
 
 #include <common/geometry.glsl>
 
+// Does nothing, only passes the vertex data unchanged.
 void main() 
 {
     gl_Position = gl_in[0].gl_Position;

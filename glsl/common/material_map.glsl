@@ -9,7 +9,6 @@ struct MaterialMap
     sampler2D emission;
     float shininess;
 };
-
 uniform MaterialMap materialMap;
 
 #endif // _MATERIAL_MAP_GLSL_

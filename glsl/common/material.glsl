@@ -9,7 +9,6 @@ struct Material
     vec3 specular;
     float shininess;
 }; 
-
 uniform Material material;
 
 #endif // _MATERIAL_GLSL_

@@ -2,6 +2,8 @@
 #ifndef _FRAGMENT_GLSL_
 #define _FRAGMENT_GLSL_
 
+#include <common/global.glsl>
+
 in VS_OUT
 {
     vec3 position;
@@ -11,7 +13,5 @@ in VS_OUT
 } fsIn;
 
 out vec4 FragColor;
-
-uniform vec3 cameraPosition;
 
 #endif // _FRAGMENT_GLSL_

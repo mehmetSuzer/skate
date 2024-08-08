@@ -2,6 +2,8 @@
 #ifndef _LIGHT_GLSL_
 #define _LIGHT_GLSL_
 
+// WARNING: If you change this variable, recalculate the offset of lightCasters in global.glsl
+// and update the allocated memory in the uniform block in the code.
 #define MAX_LIGHT_CASTER_NUMBER 8
 
 #define DIRECTIONAL_LIGHT   0
@@ -9,19 +11,16 @@
 #define SPOT_LIGHT          2
 
 struct Light 
-{
-    int type;
-    vec3 color;             // all
-    vec3 position;          // point and spot
-    vec3 direction;         // directional and spot
-    float intensity;        // directional
-    float linear;           // point and spot
-    float quadratic;        // point and spot
-    float cosInnerCutOff;   // spot
-    float cosOuterCutOff;   // spot
-};
-
-uniform int lightCasterNumber;
-uniform Light lights[MAX_LIGHT_CASTER_NUMBER];
+{                           // usage                    // base alignment   // aligned offset
+    int type;               // all                      // 4                // 0
+    float intensity;        // directional              // 4                // 4
+    float linear;           // point and spot           // 4                // 8
+    float quadratic;        // point and spot           // 4                // 12
+    float cosInnerCutOff;   // spot                     // 4                // 16
+    float cosOuterCutOff;   // spot                     // 4                // 20
+    vec3 color;             // all                      // 16               // 32
+    vec3 position;          // point and spot           // 16               // 48
+    vec3 direction;         // directional and spot     // 16               // 64
+};                                                                          // total size = 80 bytes
 
 #endif // _LIGHT_GLSL_
