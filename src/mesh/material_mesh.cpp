@@ -9,7 +9,7 @@ namespace skate
 
     void MaterialMesh::Draw(const Shader& shader) const noexcept 
     {
-        shader.Use();
+        RenderState::Instance().UseShader(shader);
         shader.SetUniformVec3(material.ambient, "material.ambient");
         shader.SetUniformVec3(material.diffuse, "material.diffuse");
         shader.SetUniformVec3(material.specular, "material.specular");

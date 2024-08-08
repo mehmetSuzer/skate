@@ -9,9 +9,6 @@
 #include "config.h"
 #include "light_caster.h"
 
-// Update shaders as well when you update this
-#define MAX_LIGHT_CASTER_NUMBER 8
-
 namespace skate 
 {
     // Programs that rest on the GPU and run for each specific section of the graphics pipeline
@@ -30,11 +27,6 @@ namespace skate
         inline GLuint GetID(void) const noexcept 
         {
             return ID;
-        }
-
-        inline void Use(void) const noexcept 
-        {
-            glUseProgram(ID);
         }
 
         inline void Delete(void) const noexcept 
@@ -77,8 +69,10 @@ namespace skate
             glUniformMatrix4fv(glGetUniformLocation(ID, uniform), 1, GL_FALSE, glm::value_ptr(matrix));
         }
 
-        void UpdateLightCasters(const std::vector<LightCaster*>& lightCasters) const noexcept;
-        void UpdateView(const glm::mat4& projectionView, const glm::vec3& cameraPosition) const noexcept;
+        inline void SetUniformBlockBinding(GLuint uniformBlockBinding, const char* uniformBlockName) const noexcept 
+        {
+            glUniformBlockBinding(ID, glGetUniformBlockIndex(ID, uniformBlockName), uniformBlockBinding);
+        }
     };
 }
 

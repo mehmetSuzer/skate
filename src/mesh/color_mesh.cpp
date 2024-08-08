@@ -9,7 +9,7 @@ namespace skate
 
     void ColorMesh::Draw(const Shader& shader) const noexcept 
     {
-        shader.Use();
+        RenderState::Instance().UseShader(shader);
         shader.SetUniformFloat(metalness, "metalness");
         shader.SetUniformFloat(roughness, "roughneess");
         

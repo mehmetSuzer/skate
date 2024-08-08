@@ -3,13 +3,15 @@
 #define _LIGHT_GLSL_
 
 // WARNING: If you change this variable, recalculate the offset of lightCasters in global.glsl
-// and update the allocated memory in the uniform block in the code.
+// and update the allocated memory in the uniform buffer object in the code.
 #define MAX_LIGHT_CASTER_NUMBER 8
 
 #define DIRECTIONAL_LIGHT   0
 #define POINT_LIGHT         1
 #define SPOT_LIGHT          2
 
+// WARNING: If you change the order of the variables, recalculate the offset of lightCasters in global.glsl
+// and update the allocated memory in the uniform buffer object in the code.
 struct Light 
 {                           // usage                    // base alignment   // aligned offset
     int type;               // all                      // 4                // 0

@@ -9,7 +9,7 @@ namespace skate
 
     void TextureMesh::Draw(const Shader& shader) const noexcept 
     {
-        shader.Use();
+        RenderState::Instance().UseShader(shader);
         shader.SetUniformInt(0, "materialMap.diffuse");
         shader.SetUniformInt(1, "materialMap.specular");
         shader.SetUniformInt(2, "materialMap.emission");

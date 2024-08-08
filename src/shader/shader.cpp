@@ -105,35 +105,4 @@ namespace skate
             glDeleteShader(geometryShader);
         glDeleteShader(fragmentShader);
     }
-
-    void Shader::UpdateLightCasters(const std::vector<LightCaster*>& lightCasters) const noexcept
-    {
-        uint32_t lightCasterNumber = (lightCasters.size() < MAX_LIGHT_CASTER_NUMBER) ? lightCasters.size() : MAX_LIGHT_CASTER_NUMBER;
-
-        Use();
-        SetUniformInt(lightCasterNumber, "lightCasterNumber");
-
-        for (uint32_t i = 0; i < lightCasterNumber; i++) 
-        {
-            const LightCaster::Light light = lightCasters[i]->GetLight();
-            const std::string arrayString = "lights[" + std::to_string(i) + "].";
-
-            SetUniformInt(light.type, (arrayString + "type").c_str());
-            SetUniformVec3(light.color, (arrayString + "color").c_str());
-            SetUniformVec3(light.position, (arrayString + "position").c_str());
-            SetUniformVec3(light.direction, (arrayString + "direction").c_str());
-            SetUniformFloat(light.intensity, (arrayString + "intensity").c_str());
-            SetUniformFloat(light.linear, (arrayString + "linear").c_str());
-            SetUniformFloat(light.quadratic, (arrayString + "quadratic").c_str());
-            SetUniformFloat(light.cosInnerCutOff, (arrayString + "cosInnerCutOff").c_str());
-            SetUniformFloat(light.cosOuterCutOff, (arrayString + "cosOuterCutOff").c_str());
-        }
-    }
-
-    void Shader::UpdateView(const glm::mat4& projectionView, const glm::vec3& cameraPosition) const noexcept 
-    {
-        Use();
-        SetUniformMat4(projectionView, "projectionView");
-        SetUniformVec3(cameraPosition, "cameraPosition");
-    }
 }

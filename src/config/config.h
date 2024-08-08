@@ -20,4 +20,9 @@
 // Disables VSYNC and prints FPS
 #define __FPS__
 
+// Maximum number of light casters that can be in a scene.
+// Other light casters are ignored.
+// If you update this, update shaders and the uniform buffer object as well.
+#define MAX_LIGHT_CASTER_NUMBER 8
+
 #endif // __CONFIG_H__

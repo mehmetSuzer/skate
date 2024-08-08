@@ -50,16 +50,16 @@ int main()
     glViewport(0, 0, Camera::windowWidth, Camera::windowHeight);
 #endif
 
-    // Global OpenGL settings
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    // Global OpenGL render settings
+    RenderState::Instance().SetDepthTest(true);
+    RenderState::Instance().SetDepthFunc(GL_LESS);
 
-    glEnable(GL_STENCIL_TEST);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    RenderState::Instance().SetStencilTest(true);
+    RenderState::Instance().SetStencilOptions(GL_KEEP, GL_KEEP, GL_REPLACE);
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CCW);
+    RenderState::Instance().SetCull(true);
+    RenderState::Instance().SetCulledFace(GL_BACK);
+    RenderState::Instance().SetFrontFaceDirection(GL_CCW);
 
     //-------------------------------- TEXTURES, LIGHTS, AND SHADERS -------------------------------//
 
@@ -98,10 +98,7 @@ int main()
     // Bind the shaders to a binding points
     const GLuint uniformBlockBinding = 0;
     for (uint32_t i = 0; i < shaders.size(); i++)
-    {
-        GLuint uniformBlockIndex = glGetUniformBlockIndex(shaders[i].GetID(), "Global");
-        glUniformBlockBinding(shaders[i].GetID(), uniformBlockIndex, uniformBlockBinding);
-    }
+        shaders[i].SetUniformBlockBinding(uniformBlockBinding, "Global");
 
     // Bind the uniform buffer object to the same binding point
     glBindBufferBase(GL_UNIFORM_BUFFER, uniformBlockBinding, uniformGlobal);
@@ -205,36 +202,48 @@ int main()
             const LightCaster::Light light = lightCasters[i]->GetLight();
 
             glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i,        4, &(light.type));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 4,    4, &(light.intensity));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 8,    4, &(light.linear));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 12,   4, &(light.quadratic));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 16,   4, &(light.cosInnerCutOff));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 20,   4, &(light.cosOuterCutOff));
             glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 32,  12, &(light.color));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 48,  12, &(light.position));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 64,  12, &(light.direction));
+
+            if (light.type == LightCaster::DIRECTIONAL_LIGHT)
+            {
+                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 4,    4, &(light.intensity));
+                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 64,  12, &(light.direction));
+            }
+            else
+            {
+                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 8,    4, &(light.linear));
+                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 12,   4, &(light.quadratic));
+                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 48,  12, &(light.position));
+
+                if (light.type == LightCaster::SPOT_LIGHT)
+                {
+                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 4,    4, &(light.intensity));
+                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 16,   4, &(light.cosInnerCutOff));
+                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 20,   4, &(light.cosOuterCutOff));
+                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 64,  12, &(light.direction));
+                }
+            }
         }
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-        glStencilMask(0xFF);
+        RenderState::Instance().SetStencilMask(0xFF);
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         // Draw models
-        glStencilMask(0xFF);
-        glStencilFunc(GL_ALWAYS, 1, 0xFF);
-        glEnable(GL_DEPTH_TEST);
+        RenderState::Instance().SetStencilFunc(GL_ALWAYS, 1, 0xFF);
+        RenderState::Instance().SetDepthTest(true);
 
-        container.Draw(textureShader);
         object.Draw(colorShader);
         colorPyramid.Draw(colorShader);
-        materialPyramid.Draw(materialShader);
         texturePyramid.Draw(textureShader);
+        container.Draw(textureShader);
+        materialPyramid.Draw(materialShader);
 
         // Draw models' borders if they are selected
-        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-        glStencilMask(0x00);
-        glDisable(GL_DEPTH_TEST);
+        RenderState::Instance().SetStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        RenderState::Instance().SetStencilMask(0x00);
+        RenderState::Instance().SetDepthTest(false);
 
         container.DrawBorder(borderShader);
         object.DrawBorder(borderShader);
@@ -262,6 +271,7 @@ int main()
     brickTexture.Delete();
     woodContainerDiffuseMap.Delete();
     woodContainerSpecularMap.Delete();
+    glDeleteBuffers(1, &uniformGlobal);
 
     glfwTerminate();
     return 0;

@@ -70,6 +70,9 @@ include_directories(${SRC_DIR}/texture)
 add_subdirectory(${SRC_DIR}/shader)
 include_directories(${SRC_DIR}/shader)
 
+add_subdirectory(${SRC_DIR}/render_state)
+include_directories(${SRC_DIR}/render_state)
+
 add_subdirectory(${SRC_DIR}/mesh)
 include_directories(${SRC_DIR}/mesh)
 
@@ -84,6 +87,7 @@ add_executable(${PROJECT_NAME} main.cpp scene.h)
 target_link_libraries(${PROJECT_NAME} 
     loadable_model
     mesh
+    render_state
     shader
     texture
     input_handler

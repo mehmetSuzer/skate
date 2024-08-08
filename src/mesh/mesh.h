@@ -3,7 +3,7 @@
 #define __MESH_H__
 
 #include "vertex.h"
-#include "shader.h"
+#include "render_state.h"
 
 namespace skate 
 {

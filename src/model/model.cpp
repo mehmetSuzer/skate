@@ -22,7 +22,7 @@ namespace skate
     template<typename Mesh>
     void Model<Mesh>::Draw(const Shader& shader) const noexcept 
     {
-        shader.Use();
+        RenderState::Instance().UseShader(shader);
         shader.SetUniformMat4(transform.GetModelMatrix(), "model");
         shader.SetUniformMat3(transform.GetNormalMatrix(), "normalMatrix");
 
