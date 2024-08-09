@@ -245,11 +245,16 @@ int main()
         RenderState::Instance().SetStencilMask(0x00);
         RenderState::Instance().SetDepthTest(false);
 
-        container.DrawBorder(borderShader);
-        object.DrawBorder(borderShader);
-        colorPyramid.DrawBorder(borderShader);
-        materialPyramid.DrawBorder(borderShader);
-        texturePyramid.DrawBorder(borderShader);
+        if (container.IsSelected())
+            container.Draw(borderShader);
+        if (object.IsSelected())
+            object.Draw(borderShader);
+        if (colorPyramid.IsSelected())
+            colorPyramid.Draw(borderShader);
+        if (materialPyramid.IsSelected())
+            materialPyramid.Draw(borderShader);
+        if (texturePyramid.IsSelected())
+            texturePyramid.Draw(borderShader);
 
         // texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
         // directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());

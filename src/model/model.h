@@ -27,18 +27,22 @@ namespace skate
         Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_) noexcept;
         Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale) noexcept;
 
+        inline bool IsSelected(void) const noexcept
+        {
+            return selected;
+        }
+
         inline void Select(void) noexcept
         {
             selected = true;
         }
 
-        inline void Unselected(void) noexcept
+        inline void Unselect(void) noexcept
         {
             selected = false;
         }
         
         void Draw(const Shader& shader) const noexcept;
-        void DrawBorder(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;
     };
 }

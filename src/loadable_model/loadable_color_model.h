@@ -32,6 +32,11 @@ namespace skate
         LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar);
         LoadableColorModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale);
 
+        inline bool IsSelected(void) const noexcept
+        {
+            return selected;
+        }
+        
         inline void Select(void) noexcept
         {
             selected = true;
@@ -43,7 +48,6 @@ namespace skate
         }
         
         void Draw(const Shader& shader) const noexcept;
-        void DrawBorder(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;
     };
 }

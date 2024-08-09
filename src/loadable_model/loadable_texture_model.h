@@ -37,18 +37,22 @@ namespace skate
         LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar);
         LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale);
 
+        inline bool IsSelected(void) const noexcept
+        {
+            return selected;
+        }
+        
         inline void Select(void) noexcept
         {
             selected = true;
         }
 
-        inline void Unselected(void) noexcept
+        inline void Unselect(void) noexcept
         {
             selected = false;
         }
 
         void Draw(const Shader& shader) const noexcept;
-        void DrawBorder(const Shader& shader) const noexcept;
         void Delete(void) const noexcept;
     };
 }

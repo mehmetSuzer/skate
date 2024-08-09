@@ -97,13 +97,7 @@ namespace skate
         for (uint32_t i = 0; i < meshes.size(); i++)
             meshes[i].Draw(shader);
     }
-
-    void LoadableColorModel::DrawBorder(const Shader& shader) const noexcept
-    {
-        if (selected)
-            Draw(shader);
-    }
-
+    
     void LoadableColorModel::Delete(void) const noexcept 
     {
         for (uint32_t i = 0; i < meshes.size(); i++) 

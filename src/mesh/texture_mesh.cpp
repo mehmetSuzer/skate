@@ -27,7 +27,8 @@ namespace skate
         glBindVertexArray(0);
     }
 
-    void TextureMesh::Delete(void) const noexcept {
+    void TextureMesh::Delete(void) const noexcept 
+    {
         glDeleteBuffers(1, &EBO);
         glDeleteBuffers(1, &VBO);
         glDeleteVertexArrays(1, &VAO);
