@@ -20,4 +20,12 @@ out VS_OUT
     vec2 texCoord;
 } gsOut;
 
+void defaultPassToFragmentShader(int index)
+{
+    gsOut.position = gsIn[index].position;
+    gsOut.normal = gsIn[index].normal;
+    gsOut.color = gsIn[index].color;
+    gsOut.texCoord = gsIn[index].texCoord;
+}
+
 #endif // _GEOMETRY_GLSL_

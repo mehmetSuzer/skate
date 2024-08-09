@@ -84,7 +84,8 @@ int main()
     Shader materialShader("vertex/material_shader.glsl", "fragment/material_shader.glsl");
     Shader textureShader("vertex/texture_shader.glsl", "fragment/texture_shader.glsl");
     Shader borderShader("vertex/border_shader.glsl", "fragment/border_shader.glsl");
-    const std::vector<Shader*> shaders = { &colorShader, &materialShader, &textureShader, &borderShader };
+    Shader normalVectorShader("vertex/normal_vector_shader.glsl", "fragment/normal_vector_shader.glsl", "geometry/normal_vector_shader.glsl");
+    const std::vector<Shader*> shaders = { &colorShader, &materialShader, &textureShader, &borderShader, &normalVectorShader };
 
     //-------------------------------------- UNIFORM BUFFER --------------------------------------//
 
@@ -92,7 +93,7 @@ int main()
     GLuint uniformGlobal;
     glGenBuffers(1, &uniformGlobal);
     glBindBuffer(GL_UNIFORM_BUFFER, uniformGlobal);
-    glBufferData(GL_UNIFORM_BUFFER, 96 + 80*MAX_LIGHT_CASTER_NUMBER, NULL, GL_STATIC_DRAW);
+    glBufferData(GL_UNIFORM_BUFFER, 160 + 80*MAX_LIGHT_CASTER_NUMBER, NULL, GL_STATIC_DRAW);
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
     // Bind the shaders to a binding points
@@ -107,20 +108,16 @@ int main()
 
     Model<TextureMesh> container(glm::vec3(2.5f, 0.0f, 0.0f));
     container.AddMesh(TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap));
-    container.Select();
 
     Model<ColorMesh> colorPyramid(glm::vec3(0.0f, 0.0f, -2.5f));
     colorPyramid.AddMesh(ColorMesh(pyramidColorVertices, pyramidIndices));
-    colorPyramid.Select();
 
     Model<MaterialMesh> materialPyramid(glm::vec3(-2.5f, 0.0f, 0.0f));
     materialPyramid.AddMesh(MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::cyanPlastic));
-    materialPyramid.Select();
     
     Model<TextureMesh> texturePyramid(glm::vec3(0.0f, 0.0f, 2.5f));
     texturePyramid.AddMesh(TextureMesh(pyramidTextureVertices, pyramidIndices, brickTexture));
-    texturePyramid.Select();
-    
+
     //------------------------------------- LOADABLE MODELS ------------------------------------//
 
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
@@ -158,39 +155,39 @@ int main()
 #endif
 
         camera.UpdatePosition(elapsedTimeSinceLastFrame);
-        const glm::mat4 projectionView = camera.GetProjection() * camera.GetView();
         const glm::vec3& cameraPosition = camera.transform.GetPosition();
 
         int lightCasterNumber = (lightCasters.size() < MAX_LIGHT_CASTER_NUMBER) ? lightCasters.size() : MAX_LIGHT_CASTER_NUMBER;
         glBindBuffer(GL_UNIFORM_BUFFER, uniformGlobal);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, 4, &lightCasterNumber);
         glBufferSubData(GL_UNIFORM_BUFFER, 16, 12, glm::value_ptr(cameraPosition));
-        glBufferSubData(GL_UNIFORM_BUFFER, 32, 64, glm::value_ptr(projectionView));
+        glBufferSubData(GL_UNIFORM_BUFFER, 32, 64, glm::value_ptr(camera.GetProjection()));
+        glBufferSubData(GL_UNIFORM_BUFFER, 96, 64, glm::value_ptr(camera.GetView()));
 
         for (uint32_t i = 0; i < lightCasterNumber; i++) 
         {
             const LightCaster::Light light = lightCasters[i]->GetLight();
 
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i,        4, &(light.type));
-            glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 32,  12, &(light.color));
+            glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i,        4, &(light.type));
+            glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 32,  12, &(light.color));
 
             if (light.type == LightCaster::DIRECTIONAL_LIGHT)
             {
-                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 4,    4, &(light.intensity));
-                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 64,  12, &(light.direction));
+                glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 4,    4, &(light.intensity));
+                glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 64,  12, &(light.direction));
             }
             else
             {
-                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 8,    4, &(light.linear));
-                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 12,   4, &(light.quadratic));
-                glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 48,  12, &(light.position));
+                glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 8,    4, &(light.linear));
+                glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 12,   4, &(light.quadratic));
+                glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 48,  12, &(light.position));
 
                 if (light.type == LightCaster::SPOT_LIGHT)
                 {
-                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 4,    4, &(light.intensity));
-                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 16,   4, &(light.cosInnerCutOff));
-                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 20,   4, &(light.cosOuterCutOff));
-                    glBufferSubData(GL_UNIFORM_BUFFER, 96 + 80*i + 64,  12, &(light.direction));
+                    glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 4,    4, &(light.intensity));
+                    glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 16,   4, &(light.cosInnerCutOff));
+                    glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 20,   4, &(light.cosOuterCutOff));
+                    glBufferSubData(GL_UNIFORM_BUFFER, 160 + 80*i + 64,  12, &(light.direction));
                 }
             }
         }
@@ -209,6 +206,9 @@ int main()
         texturePyramid.Render(textureShader);
         container.Render(textureShader);
         materialPyramid.Render(materialShader);
+
+        // Render models' normal vectors
+        object.Render(normalVectorShader);
 
         // Draw models' borders if they are selected
         RenderState::Instance().SetStencilFunc(GL_NOTEQUAL, 1, 0xFF);

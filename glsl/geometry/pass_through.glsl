@@ -10,24 +10,15 @@ layout (triangle_strip, max_vertices = 3) out;
 void main() 
 {
     gl_Position = gl_in[0].gl_Position;
-    gsOut.position = gsIn[0].position;
-    gsOut.normal = gsIn[0].normal;
-    gsOut.color = gsIn[0].color;
-    gsOut.texCoord = gsIn[0].texCoord;
+    defaultPassToFragmentShader(0);
     EmitVertex();
 
     gl_Position = gl_in[1].gl_Position;
-    gsOut.position = gsIn[1].position;
-    gsOut.normal = gsIn[1].normal;
-    gsOut.color = gsIn[1].color;
-    gsOut.texCoord = gsIn[1].texCoord;
+    defaultPassToFragmentShader(1);
     EmitVertex();
 
     gl_Position = gl_in[2].gl_Position;
-    gsOut.position = gsIn[2].position;
-    gsOut.normal = gsIn[2].normal;
-    gsOut.color = gsIn[2].color;
-    gsOut.texCoord = gsIn[2].texCoord;
+    defaultPassToFragmentShader(2);
     EmitVertex();
 
     EndPrimitive();

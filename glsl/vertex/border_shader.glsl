@@ -11,5 +11,5 @@ void main()
     vec3 position = vec3(model * vec4(aPosition, 1.0f));
     vec3 normal = normalize(normalMatrix * aNormal);
     position += 0.02f * normal;
-    gl_Position = projectionView * vec4(position, 1.0f);
+    gl_Position = projection * view * vec4(position, 1.0f);
 }
