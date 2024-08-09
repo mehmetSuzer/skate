@@ -84,7 +84,7 @@ int main()
     const Shader materialShader("vertex/material_shader.glsl", "fragment/material_shader.glsl");
     const Shader textureShader("vertex/texture_shader.glsl", "fragment/texture_shader.glsl");
     const Shader borderShader("vertex/border_shader.glsl", "fragment/border_shader.glsl");
-    const std::vector<Shader> shaders = { colorShader, materialShader, textureShader, borderShader };
+    const std::vector<const Shader*> shaders = { &colorShader, &materialShader, &textureShader, &borderShader };
 
     //-------------------------------------- UNIFORM BUFFER --------------------------------------//
 
@@ -98,7 +98,7 @@ int main()
     // Bind the shaders to a binding points
     const GLuint uniformBlockBinding = 0;
     for (uint32_t i = 0; i < shaders.size(); i++)
-        shaders[i].SetUniformBlockBinding(uniformBlockBinding, "Global");
+        shaders[i]->SetUniformBlockBinding(uniformBlockBinding, "Global");
 
     // Bind the uniform buffer object to the same binding point
     glBindBufferBase(GL_UNIFORM_BUFFER, uniformBlockBinding, uniformGlobal);
@@ -230,15 +230,15 @@ int main()
         glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, backgroundColor.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-        // Draw models
+        // Render models
         RenderState::Instance().SetStencilFunc(GL_ALWAYS, 1, 0xFF);
         RenderState::Instance().SetDepthTest(true);
 
-        object.Draw(colorShader);
-        colorPyramid.Draw(colorShader);
-        texturePyramid.Draw(textureShader);
-        container.Draw(textureShader);
-        materialPyramid.Draw(materialShader);
+        object.Render(colorShader);
+        colorPyramid.Render(colorShader);
+        texturePyramid.Render(textureShader);
+        container.Render(textureShader);
+        materialPyramid.Render(materialShader);
 
         // Draw models' borders if they are selected
         RenderState::Instance().SetStencilFunc(GL_NOTEQUAL, 1, 0xFF);
@@ -246,15 +246,15 @@ int main()
         RenderState::Instance().SetDepthTest(false);
 
         if (container.IsSelected())
-            container.Draw(borderShader);
+            container.Render(borderShader);
         if (object.IsSelected())
-            object.Draw(borderShader);
+            object.Render(borderShader);
         if (colorPyramid.IsSelected())
-            colorPyramid.Draw(borderShader);
+            colorPyramid.Render(borderShader);
         if (materialPyramid.IsSelected())
-            materialPyramid.Draw(borderShader);
+            materialPyramid.Render(borderShader);
         if (texturePyramid.IsSelected())
-            texturePyramid.Draw(borderShader);
+            texturePyramid.Render(borderShader);
 
         // texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
         // directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());
@@ -270,7 +270,7 @@ int main()
     object.Delete();
 
     for (uint32_t i = 0; i < shaders.size(); i++)
-        shaders[i].Delete();
+        shaders[i]->Delete();
 
     Texture::DeleteCommonTextures();
     brickTexture.Delete();

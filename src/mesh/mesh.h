@@ -8,13 +8,13 @@
 namespace skate 
 {
     // The simplest drawable structure which contains the vertices and indices of an object.
-    // Vertex must be one of LightVertex, ColorVertex, MaterialVertex, and TextureVertex!
+    // Vertex must be one of ColorVertex, MaterialVertex, and TextureVertex!
     template<typename Vertex>
     class Mesh 
     {
     static_assert(
         isAValidVertex<Vertex>::value, 
-        "Vertex must be one of LightVertex, ColorVertex, MaterialVertex, and TextureVertex!"
+        "Vertex must be one of ColorVertex, MaterialVertex, and TextureVertex!"
     );
 
     protected:

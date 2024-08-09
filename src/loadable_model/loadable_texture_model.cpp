@@ -4,26 +4,26 @@
 namespace skate 
 {
     LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::quat& quaternion, const glm::vec3& scalar)
-        : transform(Transform(position, quaternion, scalar)) 
     { 
+        transform = Transform(position, quaternion, scalar);
         LoadModel(path); 
     }
     
     LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::quat& quaternion, float scale)
-        : transform(Transform(position, quaternion, scale)) 
     { 
+        transform = Transform(position, quaternion, scale);
         LoadModel(path); 
     }
     
     LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar)
-        : transform(Transform(position, eulerAngles, scalar)) 
     { 
+        transform = Transform(position, eulerAngles, scalar);
         LoadModel(path); 
     }
 
     LoadableTextureModel::LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale)
-        : transform(Transform(position, eulerAngles, scale)) 
     { 
+        transform = Transform(position, eulerAngles, scale);
         LoadModel(path); 
     }
 
@@ -114,7 +114,7 @@ namespace skate
         return texturesLoaded.back();
     }
 
-    void LoadableTextureModel::Draw(const Shader& shader) const noexcept 
+    void LoadableTextureModel::Render(const Shader& shader) const noexcept 
     {
         RenderState::Instance().UseShader(shader);
         shader.SetUniformMat4(transform.GetModelMatrix(), "model");

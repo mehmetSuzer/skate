@@ -6,7 +6,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "transform.h"
+#include "renderable.h"
 #include "texture_mesh.h"
 
 namespace skate 
@@ -14,10 +14,9 @@ namespace skate
     // Models that have more than one material map for a type is not supported. 
     // For instance, a model having 2 albedo maps cannot be loaded fully. One of the albedo maps is discarded.
     // In such cases, either combine the textures in one image, or split the model into several models.
-    class LoadableTextureModel 
+    class LoadableTextureModel : public Renderable
     {
     private:
-        bool selected = false;
         std::vector<TextureMesh> meshes;
         std::vector<Texture> texturesLoaded;
         std::string directory;
@@ -28,8 +27,6 @@ namespace skate
         const Texture& LoadMaterialTexture(aiMaterial *mat, aiTextureType type) noexcept;
         
     public:
-        Transform transform;
-
         LoadableTextureModel(const std::string& path, const glm::vec3& position, 
             const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar = glm::vec3(1.0f));
         
@@ -37,23 +34,8 @@ namespace skate
         LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, const glm::vec3& scalar);
         LoadableTextureModel(const std::string& path, const glm::vec3& position, const glm::vec3& eulerAngles, float scale);
 
-        inline bool IsSelected(void) const noexcept
-        {
-            return selected;
-        }
-        
-        inline void Select(void) noexcept
-        {
-            selected = true;
-        }
-
-        inline void Unselect(void) noexcept
-        {
-            selected = false;
-        }
-
-        void Draw(const Shader& shader) const noexcept;
-        void Delete(void) const noexcept;
+        void Render(const Shader& shader) const noexcept override;
+        void Delete(void) const noexcept override;
     };
 }
 
