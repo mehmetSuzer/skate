@@ -13,6 +13,8 @@ namespace skate
         bool selected = false;
 
     public:
+        virtual ~Renderable() noexcept {}
+
         Transform transform;
 
         inline bool IsSelected(void) const noexcept

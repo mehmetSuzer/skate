@@ -38,7 +38,7 @@ int main()
     assert(window != NULL);
     glfwMakeContextCurrent(window);
 
-    Camera camera(glm::vec3(0.0f));
+    Camera camera(glm::vec3(0.0f, 0.5f, 0.0f));
     InputHandler::Instance().Initialize(window);
     InputHandler::Instance().SelectCamera(&camera);
 
@@ -67,6 +67,7 @@ int main()
     const Texture brickTexture("data/textures/common/brick.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture woodContainerDiffuseMap("data/textures/container/albedo.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
     const Texture woodContainerSpecularMap("data/textures/container/metallic.png", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
+    const Texture brownMudLeavesDiffuseMap("data/textures/brown_mud_leaves/albedo.jpg", GL_REPEAT, GL_REPEAT, GL_NEAREST_MIPMAP_LINEAR, GL_NEAREST);
 
     const glm::vec4 backgroundColor = glm::vec4(0.07f, 0.13f, 0.17f, 1.0f);
     DirectionalLight directionalLight(glm::vec3(0.0f, -0.8f, -0.6f));
@@ -106,7 +107,10 @@ int main()
 
     //-------------------------------------- CUSTOM MODELS --------------------------------------//
 
-    Model<TextureMesh> container(glm::vec3(2.5f, 0.0f, 0.0f));
+    Model<TextureMesh> terrain(glm::vec3(0.0f, 0.0f, 0.0f), glm::quat(1.0f, 0.0f, 0.0f, 0.0f), 100.0f);
+    terrain.AddMesh(TextureMesh(terrainVertices, terrainIndices, brownMudLeavesDiffuseMap, Texture::black));
+
+    Model<TextureMesh> container(glm::vec3(2.5f, 0.5f, 0.0f));
     container.AddMesh(TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap));
 
     Model<ColorMesh> colorPyramid(glm::vec3(0.0f, 0.0f, -2.5f));
@@ -120,7 +124,7 @@ int main()
 
     //------------------------------------- LOADABLE MODELS ------------------------------------//
 
-    const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
+    const glm::vec3 objectPosition = glm::vec3(20.0f, 1.3f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
     LoadableColorModel object("data/models/medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
     object.Select();
@@ -202,29 +206,33 @@ int main()
         RenderState::Instance().SetDepthTest(true);
 
         object.Render(colorShader);
+        RenderState::Instance().SetStencilMask(0x00); // other models dont have borders, dont write to stencil buffer
         colorPyramid.Render(colorShader);
         texturePyramid.Render(textureShader);
         container.Render(textureShader);
+        terrain.Render(textureShader);
         materialPyramid.Render(materialShader);
 
         // Render models' normal vectors
-        object.Render(normalVectorShader);
+        // object.Render(normalVectorShader);
 
         // Draw models' borders if they are selected
         RenderState::Instance().SetStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         RenderState::Instance().SetStencilMask(0x00);
         RenderState::Instance().SetDepthTest(false);
 
-        if (container.IsSelected())
-            container.Render(borderShader);
         if (object.IsSelected())
             object.Render(borderShader);
         if (colorPyramid.IsSelected())
             colorPyramid.Render(borderShader);
-        if (materialPyramid.IsSelected())
-            materialPyramid.Render(borderShader);
         if (texturePyramid.IsSelected())
             texturePyramid.Render(borderShader);
+        if (container.IsSelected())
+            container.Render(borderShader);
+        if (terrain.IsSelected())
+            terrain.Render(borderShader);
+        if (materialPyramid.IsSelected())
+            materialPyramid.Render(borderShader);
 
         // texturePyramid.transform.Rotate(elapsedTimeSinceLastFrame, texturePyramid.transform.GetUp());
         // directionalLight.transform.Rotate(elapsedTimeSinceLastFrame, directionalLight.transform.GetRight());
@@ -246,6 +254,7 @@ int main()
     brickTexture.Delete();
     woodContainerDiffuseMap.Delete();
     woodContainerSpecularMap.Delete();
+    brownMudLeavesDiffuseMap.Delete();
     glDeleteBuffers(1, &uniformGlobal);
 
     glfwTerminate();

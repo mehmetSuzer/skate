@@ -166,6 +166,20 @@ namespace skate
 		2, 7, 6,
 		2, 6, 3,
 	};
+
+	const std::vector<TextureVertex> terrainVertices = 
+	{			 	 //         positions          /             normals           /         textures        //
+		TextureVertex{glm::vec3(-0.5f,  0.0f,  0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2( 0.0f,   0.0f)},
+		TextureVertex{glm::vec3( 0.5f,  0.0f,  0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(10.0f,   0.0f)},
+		TextureVertex{glm::vec3( 0.5f,  0.0f, -0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2(10.0f,  10.0f)},
+		TextureVertex{glm::vec3(-0.5f,  0.0f, -0.5f), glm::vec3( 0.0f,  1.0f,  0.0f), glm::vec2( 0.0f,  10.0f)},
+	};
+
+	const std::vector<GLuint> terrainIndices = 
+	{
+		0, 1, 2,
+		0, 2, 3,
+	};
 }
 
 #endif // __SCENE_H__
