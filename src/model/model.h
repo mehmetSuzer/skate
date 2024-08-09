@@ -14,16 +14,18 @@ namespace skate
     class Model : public Renderable
     {
     private:
-        const std::vector<Mesh>& meshes;
+        std::vector<Mesh> meshes;
 
     public:
-        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, 
-            const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), const glm::vec3& scalar_ = glm::vec3(1.0f)) noexcept;
+        Model(const glm::vec3& position_, const glm::quat& quaternion = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), 
+            const glm::vec3& scalar_ = glm::vec3(1.0f)) noexcept;
         
-        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& quaternion, float scale) noexcept;
-        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_) noexcept;
-        Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale) noexcept;
+        Model(const glm::vec3& position_, const glm::quat& quaternion, float scale) noexcept;
+        Model(const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_) noexcept;
+        Model(const glm::vec3& position_, const glm::vec3& eulerAngles, float scale) noexcept;
         
+        void AddMesh(const Mesh& mesh) noexcept;
+
         void Render(const Shader& shader) const noexcept override;
         void Delete(void) const noexcept override;
     };

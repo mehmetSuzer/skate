@@ -80,11 +80,11 @@ int main()
         // (LightCaster*)&spotLight,
     };
 
-    const Shader colorShader("vertex/color_shader.glsl", "fragment/color_shader.glsl");
-    const Shader materialShader("vertex/material_shader.glsl", "fragment/material_shader.glsl");
-    const Shader textureShader("vertex/texture_shader.glsl", "fragment/texture_shader.glsl");
-    const Shader borderShader("vertex/border_shader.glsl", "fragment/border_shader.glsl");
-    const std::vector<const Shader*> shaders = { &colorShader, &materialShader, &textureShader, &borderShader };
+    Shader colorShader("vertex/color_shader.glsl", "fragment/color_shader.glsl");
+    Shader materialShader("vertex/material_shader.glsl", "fragment/material_shader.glsl");
+    Shader textureShader("vertex/texture_shader.glsl", "fragment/texture_shader.glsl");
+    Shader borderShader("vertex/border_shader.glsl", "fragment/border_shader.glsl");
+    const std::vector<Shader*> shaders = { &colorShader, &materialShader, &textureShader, &borderShader };
 
     //-------------------------------------- UNIFORM BUFFER --------------------------------------//
 
@@ -103,55 +103,25 @@ int main()
     // Bind the uniform buffer object to the same binding point
     glBindBufferBase(GL_UNIFORM_BUFFER, uniformBlockBinding, uniformGlobal);
 
-    //-------------------------------------- CONTAINER MODEL --------------------------------------//
+    //-------------------------------------- CUSTOM MODELS --------------------------------------//
 
-    const std::vector<TextureMesh> containerMeshes = 
-    {
-        TextureMesh(
-            containerTextureVertices, 
-            containerIndices, 
-            woodContainerDiffuseMap, 
-            woodContainerSpecularMap, 
-            Texture::black,
-            16.0f, 
-            GL_STATIC_DRAW
-        ),
-    };
-    Model container(containerMeshes, glm::vec3(2.5f, 0.0f, 0.0f));
+    Model<TextureMesh> container(glm::vec3(2.5f, 0.0f, 0.0f));
+    container.AddMesh(TextureMesh(containerTextureVertices, containerIndices, woodContainerDiffuseMap, woodContainerSpecularMap));
+    container.Select();
 
-    //----------------------------------- COLOR PYRAMID MODEL -----------------------------------//
+    Model<ColorMesh> colorPyramid(glm::vec3(0.0f, 0.0f, -2.5f));
+    colorPyramid.AddMesh(ColorMesh(pyramidColorVertices, pyramidIndices));
+    colorPyramid.Select();
 
-    const std::vector<ColorMesh> colorPyramidMeshes = 
-    {
-        ColorMesh(pyramidColorVertices, pyramidIndices, 1.0f, 0.0f, GL_STATIC_DRAW),
-    };
-    Model colorPyramid(colorPyramidMeshes, glm::vec3(0.0f, 0.0f, -2.5f));
-
-    //---------------------------------- MATERIAL PYRAMID MODEL ---------------------------------//
-
-    const std::vector<MaterialMesh> materialPyramidMeshes = 
-    {
-        MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::cyanPlastic, GL_STATIC_DRAW),
-    };
-    Model materialPyramid(materialPyramidMeshes, glm::vec3(-2.5f, 0.0f, 0.0f));
-
-    //---------------------------------- TEXTURE PYRAMID MODEL ---------------------------------//
-
-    const std::vector<TextureMesh> texturePyramidMeshes = 
-    {
-        TextureMesh(
-            pyramidTextureVertices, 
-            pyramidIndices, 
-            brickTexture, 
-            Texture::white,
-            Texture::black, 
-            16.0f, 
-            GL_STATIC_DRAW
-        ),
-    };
-    Model texturePyramid(texturePyramidMeshes, glm::vec3(0.0f, 0.0f, 2.5f));
-
-    //------------------------------------- OBJECT MODEL ------------------------------------//
+    Model<MaterialMesh> materialPyramid(glm::vec3(-2.5f, 0.0f, 0.0f));
+    materialPyramid.AddMesh(MaterialMesh(pyramidMaterialVertices, pyramidIndices, material::cyanPlastic));
+    materialPyramid.Select();
+    
+    Model<TextureMesh> texturePyramid(glm::vec3(0.0f, 0.0f, 2.5f));
+    texturePyramid.AddMesh(TextureMesh(pyramidTextureVertices, pyramidIndices, brickTexture));
+    texturePyramid.Select();
+    
+    //------------------------------------- LOADABLE MODELS ------------------------------------//
 
     const glm::vec3 objectPosition = glm::vec3(20.0f, 0.0f, -20.0f);
     const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));

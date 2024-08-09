@@ -17,7 +17,8 @@ namespace skate
 
     public:
         TextureMesh(const std::vector<TextureVertex>& vertices_, const std::vector<GLuint>& indices_, 
-            const Texture& diffuse_, const Texture& specular_, const Texture& emission_, float shininess_, GLenum usage) noexcept;
+            const Texture& diffuse_, const Texture& specular_ = Texture::white, const Texture& emission_ = Texture::black, 
+            float shininess_ = 16.0f, GLenum usage = GL_STATIC_DRAW) noexcept;
 
         void Draw(const Shader& shader) const noexcept override;
         void Delete(void) const noexcept override;

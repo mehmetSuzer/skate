@@ -14,7 +14,7 @@ namespace skate
 
     public:
         ColorMesh(const std::vector<ColorVertex>& vertices_, const std::vector<GLuint>& indices_, 
-            float metalness_, float roughness_, GLenum usage) noexcept;
+            float metalness_ = 1.0f, float roughness_ = 0.0f, GLenum usage = GL_STATIC_DRAW) noexcept;
 
         void Draw(const Shader& shader) const noexcept override;
         void Delete(void) const noexcept override;

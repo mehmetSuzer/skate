@@ -4,31 +4,33 @@
 namespace skate 
 {
     template<typename Mesh>
-    Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& quaternion, const glm::vec3& scalar_) noexcept
-        : meshes(meshes_)
+    Model<Mesh>::Model(const glm::vec3& position_, const glm::quat& quaternion, const glm::vec3& scalar_) noexcept
     {
         transform = Transform(position_, quaternion, scalar_);
     }
     
     template<typename Mesh>
-    Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::quat& quaternion, float scale) noexcept
-        : meshes(meshes_) 
+    Model<Mesh>::Model(const glm::vec3& position_, const glm::quat& quaternion, float scale) noexcept
     {
         transform = Transform(position_, quaternion, scale);
     }
     
     template<typename Mesh>
-    Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_) noexcept
-        : meshes(meshes_)
+    Model<Mesh>::Model(const glm::vec3& position_, const glm::vec3& eulerAngles, const glm::vec3& scalar_) noexcept
     {
         transform = Transform(position_, eulerAngles, scalar_);
     }
     
     template<typename Mesh>
-    Model<Mesh>::Model(const std::vector<Mesh>& meshes_, const glm::vec3& position_, const glm::vec3& eulerAngles, float scale) noexcept
-        : meshes(meshes_)
+    Model<Mesh>::Model(const glm::vec3& position_, const glm::vec3& eulerAngles, float scale) noexcept
     {
         transform = Transform(position_, eulerAngles, scale);
+    }
+
+    template<typename Mesh>
+    void Model<Mesh>::AddMesh(const Mesh& mesh) noexcept
+    {
+        meshes.push_back(mesh);
     }
 
     template<typename Mesh>

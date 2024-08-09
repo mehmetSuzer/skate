@@ -14,7 +14,7 @@ namespace skate
 
     public:
         MaterialMesh(const std::vector<MaterialVertex>& vertices_, const std::vector<GLuint>& indices_, 
-            const Material& material_, GLenum usage) noexcept;
+            const Material& material_, GLenum usage = GL_STATIC_DRAW) noexcept;
 
         void Draw(const Shader& shader) const noexcept override;
         void Delete(void) const noexcept override;
