@@ -1,5 +1,4 @@
 
-file(GLOB FILES *.cpp *.h)
 add_library(model INTERFACE)
 
 target_link_libraries(model INTERFACE 

@@ -124,10 +124,10 @@ int main()
 
     //------------------------------------- LOADABLE MODELS ------------------------------------//
 
-    const glm::vec3 objectPosition = glm::vec3(20.0f, 1.3f, -20.0f);
-    const glm::quat objectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
-    LoadableColorModel object("data/models/medieval_village/scene.gltf", objectPosition, objectRotation, 0.1f);
-    object.Select();
+    const glm::vec3 loadedObjectPosition = glm::vec3(20.0f, 1.3f, -20.0f);
+    const glm::quat loadedObjectRotation = glm::angleAxis(-M_PIf/2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+    LoadableColorModel loadedObject("data/models/medieval_village/scene.gltf", loadedObjectPosition, loadedObjectRotation, 0.1f);
+    loadedObject.Select();
     
     //-------------------------------------- WHILE LOOP --------------------------------------//
 
@@ -205,7 +205,7 @@ int main()
         RenderState::Instance().SetStencilFunc(GL_ALWAYS, 1, 0xFF);
         RenderState::Instance().SetDepthTest(true);
 
-        object.Render(colorShader);
+        loadedObject.Render(colorShader);
         RenderState::Instance().SetStencilMask(0x00); // other models dont have borders, dont write to stencil buffer
         colorPyramid.Render(colorShader);
         texturePyramid.Render(textureShader);
@@ -214,15 +214,15 @@ int main()
         materialPyramid.Render(materialShader);
 
         // Render models' normal vectors
-        object.Render(normalVectorShader);
+        container.Render(normalVectorShader);
 
         // Draw models' borders if they are selected
         RenderState::Instance().SetStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         RenderState::Instance().SetStencilMask(0x00);
         RenderState::Instance().SetDepthTest(false);
 
-        if (object.IsSelected())
-            object.Render(borderShader);
+        if (loadedObject.IsSelected())
+            loadedObject.Render(borderShader);
         if (colorPyramid.IsSelected())
             colorPyramid.Render(borderShader);
         if (texturePyramid.IsSelected())
@@ -245,7 +245,7 @@ int main()
     colorPyramid.Delete();
     materialPyramid.Delete();
     texturePyramid.Delete();
-    object.Delete();
+    loadedObject.Delete();
 
     for (uint32_t i = 0; i < shaders.size(); i++)
         shaders[i]->Delete();

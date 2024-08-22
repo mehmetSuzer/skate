@@ -1,5 +1,4 @@
 
-file(GLOB FILES *.cpp *.h)
 add_library(material INTERFACE)
 
 target_link_libraries(material INTERFACE 

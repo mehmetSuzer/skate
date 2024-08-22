@@ -10,11 +10,10 @@ const float normalMagnitude = 0.4f;
 
 void DrawNormal(int index)
 {
-    defaultPassToFragmentShader(index);
-
-    gl_Position = projection * gl_in[index].gl_Position;
+    mat4 projectionView = projection * view;
+    gl_Position = projectionView * gl_in[index].gl_Position;
     EmitVertex();
-    gl_Position = projection * (gl_in[index].gl_Position + vec4(gsIn[index].normal, 0.0) * normalMagnitude);
+    gl_Position = projectionView * (gl_in[index].gl_Position + vec4(gsIn[index].normal, 0.0) * normalMagnitude);
     EmitVertex();
     EndPrimitive();
 }

@@ -1,5 +1,4 @@
 
-file(GLOB FILES *.cpp *.h)
 add_library(vertex INTERFACE)
 
 target_link_libraries(vertex INTERFACE 
