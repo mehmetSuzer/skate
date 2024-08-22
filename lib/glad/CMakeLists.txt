@@ -1,3 +1,4 @@
 
-aux_source_directory(. DIR_GLAD)
-add_library(glad ${DIR_GLAD})
+file(GLOB FILES *.c *.h)
+add_library(glad ${FILES})
+target_include_directories(glad PUBLIC .)

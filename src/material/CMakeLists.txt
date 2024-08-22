@@ -1,2 +1,9 @@
 
-aux_source_directory(. DIR_MATERIAL)
+file(GLOB FILES *.cpp *.h)
+add_library(material INTERFACE)
+
+target_link_libraries(material INTERFACE 
+    glm
+)
+
+target_include_directories(material INTERFACE .)

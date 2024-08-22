@@ -1,3 +1,4 @@
 
-aux_source_directory(. DIR_OBJECT_POOL)
-add_library(object_pool ${DIR_OBJECT_POOL})
+file(GLOB FILES *.cpp *.h)
+add_library(object_pool ${FILES})
+target_include_directories(object_pool PUBLIC .)

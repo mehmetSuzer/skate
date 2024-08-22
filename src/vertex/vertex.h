@@ -4,7 +4,7 @@
 
 #include <type_traits>
 #include "config.h"
-#include "glm.hpp"
+#include "glm/glm.hpp"
 
 namespace skate 
 {

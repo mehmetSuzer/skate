@@ -1,3 +1,10 @@
 
-aux_source_directory(. DIR_RENDER_STATE)
-add_library(render_state ${DIR_RENDER_STATE})
+file(GLOB FILES *.cpp *.h)
+add_library(render_state ${FILES})
+
+target_link_libraries(render_state PUBLIC 
+    config 
+    shader
+)
+
+target_include_directories(render_state PUBLIC .)

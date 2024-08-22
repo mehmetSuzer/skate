@@ -1,3 +1,10 @@
 
-aux_source_directory(. DIR_SHADER)
-add_library(shader ${DIR_SHADER})
+file(GLOB FILES *.cpp *.h)
+add_library(shader ${FILES})
+
+target_link_libraries(shader PUBLIC 
+    config 
+    light
+)
+
+target_include_directories(shader PUBLIC .)

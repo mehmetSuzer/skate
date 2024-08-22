@@ -14,81 +14,42 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Comment if any problem occurs or a debug is needed
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto -DNDEBUG -g0 -Wall")
 
-project(skate VERSION 1.0.0)
+project(skate VERSION 0.1.0)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(assimp REQUIRED)
 
-set(LIB_DIR lib)
-set(SRC_DIR src)
-set(DATA_DIR data)
-set(GLSL_DIR glsl)
+file(COPY ${CMAKE_SOURCE_DIR}/glsl DESTINATION ${CMAKE_BINARY_DIR})
+file(COPY ${CMAKE_SOURCE_DIR}/data DESTINATION ${CMAKE_BINARY_DIR})
 
-file(COPY ${CMAKE_SOURCE_DIR}/${GLSL_DIR} DESTINATION ${CMAKE_BINARY_DIR})
-file(COPY ${CMAKE_SOURCE_DIR}/${DATA_DIR} DESTINATION ${CMAKE_BINARY_DIR})
+add_subdirectory(lib/stb_image)
+add_subdirectory(lib/glad)
+add_subdirectory(lib/glm)
 
-add_subdirectory(${LIB_DIR}/stb)
-include_directories(${LIB_DIR}/stb)
-
-add_subdirectory(${LIB_DIR}/glad)
-include_directories(${LIB_DIR}/glad)
-
-add_subdirectory(${LIB_DIR}/glm)
-include_directories(${LIB_DIR}/glm)
-
-add_subdirectory(${SRC_DIR}/transform)
-include_directories(${SRC_DIR}/transform)
-
-add_subdirectory(${SRC_DIR}/material)
-include_directories(${SRC_DIR}/material)
-
-add_subdirectory(${SRC_DIR}/config)
-include_directories(${SRC_DIR}/config)
-
-add_subdirectory(${SRC_DIR}/observer_subject)
-include_directories(${SRC_DIR}/observer_subject)
-
-add_subdirectory(${SRC_DIR}/object_pool)
-include_directories(${SRC_DIR}/object_pool)
-
-add_subdirectory(${SRC_DIR}/light)
-include_directories(${SRC_DIR}/light)
-
-add_subdirectory(${SRC_DIR}/camera)
-include_directories(${SRC_DIR}/camera)
-
-add_subdirectory(${SRC_DIR}/input_handler)
-include_directories(${SRC_DIR}/input_handler)
-
-add_subdirectory(${SRC_DIR}/vertex)
-include_directories(${SRC_DIR}/vertex)
-
-add_subdirectory(${SRC_DIR}/texture)
-include_directories(${SRC_DIR}/texture)
-
-add_subdirectory(${SRC_DIR}/shader)
-include_directories(${SRC_DIR}/shader)
-
-add_subdirectory(${SRC_DIR}/render_state)
-include_directories(${SRC_DIR}/render_state)
-
-add_subdirectory(${SRC_DIR}/renderable)
-include_directories(${SRC_DIR}/renderable)
-
-add_subdirectory(${SRC_DIR}/mesh)
-include_directories(${SRC_DIR}/mesh)
-
-add_subdirectory(${SRC_DIR}/model)
-include_directories(${SRC_DIR}/model)
-
-add_subdirectory(${SRC_DIR}/loadable_model)
-include_directories(${SRC_DIR}/loadable_model)
+add_subdirectory(src/transform)
+add_subdirectory(src/material)
+add_subdirectory(src/config)
+add_subdirectory(src/observer_subject)
+add_subdirectory(src/object_pool)
+add_subdirectory(src/light)
+add_subdirectory(src/camera)
+add_subdirectory(src/input_handler)
+add_subdirectory(src/vertex)
+add_subdirectory(src/texture)
+add_subdirectory(src/shader)
+add_subdirectory(src/render_state)
+add_subdirectory(src/renderable)
+add_subdirectory(src/mesh)
+add_subdirectory(src/model)
+add_subdirectory(src/loadable_model)
 
 add_executable(${PROJECT_NAME} main.cpp scene.h)
 
 target_link_libraries(${PROJECT_NAME} 
+    # Source
     loadable_model
+    model
     mesh
     renderable
     render_state
@@ -100,9 +61,13 @@ target_link_libraries(${PROJECT_NAME}
     object_pool
     observer_subject
     transform
+    
+    # Lib
     glm
     glad
-    stb
+    stb_image
+
+    # System
     assimp
     glfw
     OpenGL::GL

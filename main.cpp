@@ -32,7 +32,7 @@ int main()
     assert(videoMode != NULL);
     GLFWwindow *window = glfwCreateWindow(videoMode->width, videoMode->height, "skate", monitor, NULL);
 #else
-    GLFWwindow *window = glfwCreateWindow(Camera::windowWidth, Camera::windowHeight, "skate", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(Camera::windowWidth, Camera::windowHeight, "skate", NULL, NULL);
 #endif
 
     assert(window != NULL);
@@ -214,7 +214,7 @@ int main()
         materialPyramid.Render(materialShader);
 
         // Render models' normal vectors
-        // object.Render(normalVectorShader);
+        object.Render(normalVectorShader);
 
         // Draw models' borders if they are selected
         RenderState::Instance().SetStencilFunc(GL_NOTEQUAL, 1, 0xFF);

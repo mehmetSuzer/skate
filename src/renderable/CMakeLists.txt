@@ -1,3 +1,10 @@
 
-aux_source_directory(. DIR_RENDERABLE)
-add_library(renderable ${DIR_RENDERABLE})
+file(GLOB FILES *.cpp *.h)
+add_library(renderable ${FILES})
+
+target_link_libraries(renderable PUBLIC 
+    transform
+    shader
+)
+
+target_include_directories(renderable PUBLIC .)

@@ -1,3 +1,10 @@
 
-aux_source_directory(. DIR_LOADABLE_MODEL)
-add_library(loadable_model ${DIR_LOADABLE_MODEL})
+file(GLOB FILES *.cpp *.h)
+add_library(loadable_model ${FILES})
+
+target_link_libraries(loadable_model PUBLIC 
+    renderable
+    mesh
+)
+
+target_include_directories(loadable_model PUBLIC .)
